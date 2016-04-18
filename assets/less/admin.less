@@ -3,10 +3,7 @@
 -------------------------------------------------------------- */
 
 .form-builder {
-    .form-field-options {
-        display: none;
-    }
-    table#form-fields {
+    &__fields {
         thead {
             th.order,
             th.required {
@@ -22,6 +19,27 @@
             }
         }
         tbody {
+            &.placeholder {
+                td {
+                    background: #F3F3F3;
+                    width: 100%;
+                    height: 100%;
+                    padding: 0.5em;
+                    div {
+                        border: 1px dashed #CCC;
+                        background: #FFF;
+                        height: 100%;
+                    }
+                }
+            }
+            &:nth-child(odd) {
+                td {
+                    background: #F9F9F9;
+                }
+            }
+            td {
+                vertical-align: top;
+            }
             td.order {
                 b {
                     cursor: grab;
@@ -31,6 +49,9 @@
             td.required {
                 width: 50px;
                 text-align: center;
+            }
+            td.order,
+            td.remove {
             }
             td.type {
                 width: 150px;
@@ -50,6 +71,10 @@
                         display: block;
                     }
                 }
+                .supports-defualt-value,
+                .no-default-value {
+                    display: none;
+                }
             }
             td.remove {
                 width: 25px;
@@ -59,24 +84,63 @@
                 width: 100%;
                 min-width: 150px;
             }
-        }
-    }
-}
-.form-field-options {
-    min-width: 500px;
-    max-width: 100%;
-    max-height: 100%;
-    table {
-        margin-bottom: 1em;
-        .option-label {
-            input {
-                width: 100%;
+            tr.options {
+                display: none;
+                > td {
+                    padding: 0;
+                    background: #F0F0F0;
+                    .form-field-options {
+                        display: none;
+                        margin: 0;
+                    }
+                    .form-field-options-padder {
+                        padding: 5px;
+                    }
+                    table {
+                        background: #FFF;
+                        border: 1px solid #DCDCDC;
+                        margin: 0;
+                        thead {
+                            th {
+                                background: #FFF;
+                                color: #333;
+                            }
+                        }
+                        .option-label {
+                            input {
+                                width: 100%;
+                            }
+                        }
+                        .option-selected,
+                        .option-disabled,
+                        .option-remove {
+                            text-align: center;
+                        }
+                        .option-selected,
+                        .option-disabled {
+                            width: 75px;
+                        }
+                        .option-remove {
+                            width: 30px;
+                        }
+                        tfoot {
+                            td {
+                                padding: 0.5em;
+                                border-top: 1px solid #DCDCDC;
+                                background: #F9F9F9;
+                            }
+                        }
+                    }
+                }
+                &.active {
+                    display: table-row;
+                }
             }
         }
-        .option-selected,
-        .option-disabled,
-        .option-remove {
-            text-align: center;
+        tfoot {
+            td {
+                padding: 0.5em;
+            }
         }
     }
 }

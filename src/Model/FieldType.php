@@ -12,7 +12,9 @@
 
 namespace Nails\FormBuilder\Model;
 
-class Field
+use Nails\Factory;
+
+class FieldType
 {
     /**
      * The available Field definitions
@@ -30,63 +32,63 @@ class Field
         $this->aAvailable = array(
             'TEXT' => (object) array(
                 'model'    => 'FieldTypeText',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'PASSWORD' => (object) array(
                 'model'    => 'FieldTypePassword',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'NUMBER' => (object) array(
                 'model'    => 'FieldTypeNumber',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'EMAIL' => (object) array(
                 'model'    => 'FieldTypeEmail',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'TEL' => (object) array(
                 'model'    => 'FieldTypeTel',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'URL' => (object) array(
                 'model'    => 'FieldTypeUrl',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'TEXTAREA' => (object) array(
                 'model'    => 'FieldTypeTextarea',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'SELECT' => (object) array(
                 'model'    => 'FieldTypeSelect',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'CHECKBOX' => (object) array(
                 'model'    => 'FieldTypeCheckbox',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'RADIO' => (object) array(
                 'model'    => 'FieldTypeRadio',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'DATE' => (object) array(
                 'model'    => 'FieldTypeDate',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'TIME' => (object) array(
                 'model'    => 'FieldTypeTime',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'DATETIME' => (object) array(
                 'model'    => 'FieldTypeDateTime',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'FILE' => (object) array(
                 'model'    => 'FieldTypeFile',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             ),
             'HIDDEN' => (object) array(
                 'model'    => 'FieldTypeHidden',
-                'provider' => 'nailsapp/module-custom-forms'
+                'provider' => 'nailsapp/module-form-builder'
             )
         );
     }
@@ -154,13 +156,36 @@ class Field
     // --------------------------------------------------------------------------
 
     /**
+     * Returns the types which support a default value
+     * @return array
+     */
+    public function getAllWithDefaultValue()
+    {
+        $aAvailable = $this->getAll();
+        $aOut       = array();
+
+        foreach ($aAvailable as $sKey => $oType) {
+
+            $oInstance = $oType->instance;
+
+            if ($oInstance::SUPPORTS_DEFAULTS) {
+                $aOut[] = $sKey;
+            }
+        }
+
+        return $aOut;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
      * Get an individual field type instance by it's slug
      * @param  string $sSlug The Field Type's slug
      * @return object
      */
     public function getBySlug($sSlug)
     {
-        $aAvailable = $this->getTypes();
+        $aAvailable = $this->getAll();
 
         foreach ($aAvailable as $sTypeSlug => $oType) {
             if ($sTypeSlug == $sSlug) {

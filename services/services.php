@@ -2,6 +2,27 @@
 
 return array(
     'models' => array(
+        'Form' => function () {
+            if (class_exists('\App\FormBuilder\Model\Form')) {
+                return new \App\FormBuilder\Model\Form();
+            } else {
+                return new \Nails\FormBuilder\Model\Form();
+            }
+        },
+        'FormField' => function () {
+            if (class_exists('\App\FormBuilder\Model\FormField')) {
+                return new \App\FormBuilder\Model\FormField();
+            } else {
+                return new \Nails\FormBuilder\Model\FormField();
+            }
+        },
+        'FormFieldOption' => function () {
+            if (class_exists('\App\FormBuilder\Model\FormFieldOption')) {
+                return new \App\FormBuilder\Model\FormFieldOption();
+            } else {
+                return new \Nails\FormBuilder\Model\FormFieldOption();
+            }
+        },
         'DefaultValue' => function () {
             if (class_exists('\App\FormBuilder\Model\DefaultValue')) {
                 return new \App\FormBuilder\Model\DefaultValue();
@@ -9,11 +30,11 @@ return array(
                 return new \Nails\FormBuilder\Model\DefaultValue();
             }
         },
-        'Field' => function () {
-            if (class_exists('\App\FormBuilder\Model\Field')) {
-                return new \App\FormBuilder\Model\Field();
+        'FieldType' => function () {
+            if (class_exists('\App\FormBuilder\Model\FieldType')) {
+                return new \App\FormBuilder\Model\FieldType();
             } else {
-                return new \Nails\FormBuilder\Model\Field();
+                return new \Nails\FormBuilder\Model\FieldType();
             }
         },
 
