@@ -1,0 +1,44 @@
+{
+    "name": "nailsapp/module-form-builder",
+    "keywords": ["Nails", "Shed Collective", "CodeIgniter", "Form Builder Module"],
+    "homepage": "http://nailsapp.co.uk/modules/form-builder",
+    "description": "The module provides an API for building complex forms.",
+    "license": "MIT",
+    "authors":
+    [
+        {
+            "name": "Pablo de la Pena",
+            "email": "p@nailsapp.co.uk",
+            "homepage": "http://nailsapp.co.uk",
+            "role": "Developer"
+        }
+    ],
+    "support":
+    {
+        "email": "hello@nailsapp.co.uk"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require":
+    {
+        "nailsapp/common": "dev-develop",
+        "nailsapp/module-captcha": "dev-develop"
+    },
+    "require-dev":
+    {
+        "phpunit/phpunit": "4.*"
+    },
+    "autoload":
+    {
+        "psr-4": {"Nails\\FormBuilder\\": "src/"}
+    },
+    "extra":
+    {
+        "nails" :
+        {
+            "moduleName": "formbuilder",
+            "type": "module",
+            "namespace": "Nails\\FormBuilder\\"
+        }
+    }
+}
