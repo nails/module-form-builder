@@ -10,9 +10,10 @@
  * @link
  */
 
-namespace Nails\FormBuilder\FieldType;
+namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
+use Nails\FormBuilder\FieldType\Base;
 use Nails\FormBuilder\Exception\FieldTypeException;
 
 class Number extends Base
@@ -30,9 +31,9 @@ class Number extends Base
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-number', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData);
+        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
+        $sOut .= get_instance()->load->view('formbuilder/fields/body-number', $aData, true);
+        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }

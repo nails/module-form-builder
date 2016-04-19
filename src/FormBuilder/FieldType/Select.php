@@ -10,9 +10,10 @@
  * @link
  */
 
-namespace Nails\FormBuilder\FieldType;
+namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
+use Nails\FormBuilder\FieldType\Base;
 
 class Select extends Base
 {
@@ -28,9 +29,9 @@ class Select extends Base
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-select', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData);
+        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
+        $sOut .= get_instance()->load->view('formbuilder/fields/body-select', $aData, true);
+        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }

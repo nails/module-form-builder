@@ -34,18 +34,17 @@ if (!function_exists('adminNormalizeFormData')) {
             foreach ($aFields as $aField) {
 
                 $aTemp = array(
-                    'id'                   => !empty($aField['id']) ? (int) $aField['id'] : null,
-                    'form_id'              => $aOut['id'],
-                    'type'                 => !empty($aField['type']) ? $aField['type'] : 'TEXT',
-                    'label'                => !empty($aField['label']) ? $aField['label'] : '',
-                    'sub_label'            => !empty($aField['sub_label']) ? $aField['sub_label'] : '',
-                    'placeholder'          => !empty($aField['placeholder']) ? $aField['placeholder'] : '',
-                    'is_required'          => !empty($aField['is_required']) ? (bool) $aField['is_required'] : false,
-                    'default_value'        => !empty($aField['default_value']) ? $aField['default_value'] : '',
-                    'default_value_custom' => !empty($aField['default_value_custom']) ? $aField['default_value_custom'] : '',
-                    'custom_attributes'    => !empty($aField['custom_attributes']) ? $aField['custom_attributes'] : '',
-                    'order'                => $iFieldOrder,
-                    'options'              => array()
+                    'id'                => !empty($aField['id']) ? (int) $aField['id'] : null,
+                    'form_id'           => $aOut['id'],
+                    'type'              => !empty($aField['type']) ? $aField['type'] : 'TEXT',
+                    'label'             => !empty($aField['label']) ? $aField['label'] : '',
+                    'sub_label'         => !empty($aField['sub_label']) ? $aField['sub_label'] : '',
+                    'placeholder'       => !empty($aField['placeholder']) ? $aField['placeholder'] : '',
+                    'is_required'       => !empty($aField['is_required']) ? (bool) $aField['is_required'] : false,
+                    'default_value'     => !empty($aField['default_value']) ? $aField['default_value'] : '',
+                    'custom_attributes' => !empty($aField['custom_attributes']) ? $aField['custom_attributes'] : '',
+                    'order'             => $iFieldOrder,
+                    'options'           => array()
                 );
 
                 if (!empty($aField['options'])) {
@@ -120,8 +119,8 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
                     window.NAILS.FORMBUILDER.push(
                         new _ADMIN_FORM_EDIT(
                             this,
-                            ' . json_encode($oFieldTypeModel->getAllWithOptions()) . ',
-                            ' . json_encode($oFieldTypeModel->getAllWithDefaultValue()) . '
+                            ' . json_encode($oFieldTypeModel->getAllWithOptions(true)) . ',
+                            ' . json_encode($oFieldTypeModel->getAllWithDefaultValue(true)) . '
                         )
                     );
                 });
@@ -150,8 +149,8 @@ if (!function_exists('adminLoadFormBuilderView')) {
                 'sId'            => $sId,
                 'sFieldName'     => $sFieldName,
                 'aFields'        => $aFields,
-                'aFieldTypes'    => $oFieldTypeModel->getAllFlat(),
-                'aDefaultValues' => $oDefaultValueModel->getAllFlat(),
+                'aFieldTypes'    => array('Select...') + $oFieldTypeModel->getAllFlat(true),
+                'aDefaultValues' => array('No Default Value') + $oDefaultValueModel->getAllFlat(true),
             )
         );
     }
@@ -244,7 +243,7 @@ if (!function_exists('formBuilderRender')) {
         //  Render any buttons
         if (!empty($aButtons)) {
 
-            $sOut .= '<p>';
+            $sOut .= '<p class="text-center">';
             foreach ($aButtons as $oButton) {
 
                 $sType  = !empty($oButton['type']) ? $oButton['type'] : 'submit';

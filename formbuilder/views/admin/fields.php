@@ -10,17 +10,29 @@ if (!empty($_POST[$sFieldName])) {
     //  Cast as objects to match database output
     foreach ($aFields as &$aField) {
 
-        if (empty($aField['options'])) {
-            $aField['options'] = array();
+        if (!empty($aField['options'])) {
+
+            $aField['options'] = (object) array(
+                'count' => count($aField['options']),
+                'data'  => $aField['options']
+            );
+
+        } else {
+
+            $aField['options'] = (object) array(
+                'count' => 0,
+                'data'  => array()
+            );
         }
 
-        foreach ($aField['options'] as &$aOption) {
+        foreach ($aField['options']->data as &$aOption) {
             $aOption = (object) $aOption;
         }
+        unset($aOption);
 
         $aField = (object) $aField;
     }
-
+    unset($aField);
 }
 
 ?>
@@ -30,16 +42,12 @@ if (!empty($_POST[$sFieldName])) {
             <thead>
                 <tr>
                     <th class="order">
-                        Order
                     </th>
                     <th class="type">
                         Type
                     </th>
                     <th class="field-label">
-                        Label
-                    </th>
-                    <th class="field-sub-label">
-                        Sub Label
+                        Label &amp; Sub-label
                     </th>
                     <th class="placeholder">
                         Placeholder
@@ -51,7 +59,7 @@ if (!empty($_POST[$sFieldName])) {
                         Default Value
                     </th>
                     <th class="attributes">
-                        Custom Field Attributes
+                        Custom Attributes
                     </th>
                     <th class="remove">
                         &nbsp;
@@ -67,8 +75,8 @@ if (!empty($_POST[$sFieldName])) {
                 ?>
                 <tbody>
                     <tr>
-                        <td class="order" rowspan="2">
-                            <b class="fa fa-bars handle"></b>
+                        <td class="order handle" rowspan="2">
+                            <b class="fa fa-bars"></b>
                             <?php
 
                             echo form_hidden(
@@ -101,11 +109,6 @@ if (!empty($_POST[$sFieldName])) {
                                 set_value($sFieldName . '[' . $i . '][label]', $oField->label),
                                 'placeholder="The field\'s label"'
                             );
-
-                            ?>
-                        </td>
-                        <td class="field-sub-label">
-                            <?php
 
                             echo form_input(
                                 $sFieldName . '[' . $i . '][sub_label]',
@@ -147,15 +150,6 @@ if (!empty($_POST[$sFieldName])) {
                                     set_value($sFieldName . '[' . $i . '][default_value]', $oField->default_value),
                                     'class="select2 field-default"'
                                 );
-
-                                echo form_input(
-                                    $sFieldName . '[' . $i . '][default_value_custom]',
-                                    set_value(
-                                        $sFieldName . '[' . $i . '][default_value_custom]',
-                                        $oField->default_value_custom
-                                    ),
-                                    'placeholder="The default value"'
-                                );
                             ?>
                             </div>
                             <div class="no-default-value js-no-default-value text-muted">
@@ -183,7 +177,7 @@ if (!empty($_POST[$sFieldName])) {
                         </td>
                     </tr>
                     <tr class="options">
-                        <td colspan="7">
+                        <td colspan="6">
                             <?php
 
                             $iOptionCount = !empty($oField->options) ? $oField->options->count : 0;
@@ -296,7 +290,7 @@ if (!empty($_POST[$sFieldName])) {
             ?>
             <tfoot>
                 <tr>
-                    <td colspan="9">
+                    <td colspan="8">
                         <a href="#" class="js-add-field btn btn-xs btn-success">
                             Add Field
                         </a>
@@ -308,8 +302,8 @@ if (!empty($_POST[$sFieldName])) {
     <script type="template/mustache" class="js-template-field">
         <tbody>
             <tr>
-                <td class="order" rowspan="2">
-                    <b class="fa fa-bars handle"></b>
+                <td class="order handle" rowspan="2">
+                    <b class="fa fa-bars"></b>
                 </td>
                 <td class="type">
                     <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypes, null, 'class="select2 field-type"')?>
@@ -318,18 +312,21 @@ if (!empty($_POST[$sFieldName])) {
                     </a>
                 </td>
                 <td class="field-label">
-                    <?=form_input(
+                    <?php
+
+                    echo form_input(
                         $sFieldName . '[{{fieldNumber}}][label]',
                         null,
                         'placeholder="The field\'s label"'
-                    )?>
-                </td>
-                <td class="field-sub-label">
-                    <?=form_input(
+                    );
+
+                    echo form_input(
                         $sFieldName . '[{{fieldNumber}}][sub_label]',
                         null,
                         'placeholder="The field\'s sub-label"'
-                    )?>
+                    );
+
+                    ?>
                 </td>
                 <td class="placeholder">
                     <?=form_input(
@@ -352,11 +349,6 @@ if (!empty($_POST[$sFieldName])) {
                             null,
                             'class="select2 field-default"'
                         )?>
-                        <?=form_input(
-                            $sFieldName . '[{{fieldNumber}}][default_value_custom]',
-                            null,
-                            'placeholder="The default value"'
-                        )?>
                     </div>
                     <div class="no-default-value js-no-default-value text-muted">
                         Field type does not support default values
@@ -376,7 +368,7 @@ if (!empty($_POST[$sFieldName])) {
                 </td>
             </tr>
             <tr class="options">
-                <td colspan="7">
+                <td colspan="6">
                     <div class="form-field-options">
                         <div class="form-field-options-padder">
                             <table data-option-count="0">

@@ -16,10 +16,35 @@ use Nails\FormBuilder\Exception\FieldTypeException;
 
 class Base
 {
-    const LABEL             = '';
-    const SUPPORTS_OPTIONS  = false;
+    /**
+     * The human friendly label to give this field type
+     * @var string
+     */
+    const LABEL = '';
+
+    /**
+     * Whether this field type supports multiple options (i.e like a dropdown list)
+     * @var boolean
+     */
+    const SUPPORTS_OPTIONS = false;
+
+    /**
+     * Whether this field type supports a default value
+     * @var boolean
+     */
     const SUPPORTS_DEFAULTS = false;
-    const VALIDATION_RULES  = '';
+
+    /**
+     * Whether the field type can be selected by human users
+     * @var boolean
+     */
+    const IS_SELECTABLE = true;
+
+    /**
+     * Any custom validation rules for this field type
+     * @var string
+     */
+    const VALIDATION_RULES = '';
 
     // --------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class provides the "Tel" field type
+ * This class provides the "Hidden" field type
  *
  * @package     Nails
  * @subpackage  module-form-builder
@@ -10,13 +10,14 @@
  * @link
  */
 
-namespace Nails\FormBuilder\FieldType;
+namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
+use Nails\FormBuilder\FieldType\Base;
 
-class Tel extends Base
+class Hidden extends Base
 {
-    const LABEL             = 'Telephone';
+    const LABEL             = 'Hidden';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
@@ -28,10 +29,6 @@ class Tel extends Base
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-tel', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData);
-
-        return $sOut;
+        return get_instance()->load->view('formbuilder/fields/body-hidden', $aData, true);
     }
 }

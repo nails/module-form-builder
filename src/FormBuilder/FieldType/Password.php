@@ -10,9 +10,10 @@
  * @link
  */
 
-namespace Nails\FormBuilder\FieldType;
+namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
+use Nails\FormBuilder\FieldType\Base;
 
 class Password extends Base
 {
@@ -28,9 +29,9 @@ class Password extends Base
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-password', $aData);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData);
+        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
+        $sOut .= get_instance()->load->view('formbuilder/fields/body-password', $aData, true);
+        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }

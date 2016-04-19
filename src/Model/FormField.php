@@ -83,25 +83,6 @@ class FormField extends Base
         $aBools[]    = 'is_required';
 
         parent::formatObject($oObj, $aData, $aIntegers, $aBools, $aFloats);
-
-        // --------------------------------------------------------------------------
-
-        //  Work out the default value
-        // $oObj->default_value_processed = '';
-
-        // if ($oObj->default_value === 'CUSTOM') {
-
-        //     $oObj->default_value_processed = $oObj->default_value_custom;
-
-        // } else {
-
-        //     $aDefaults = $this->getDefaultValues();
-        //     foreach ($aDefaults as $sKey => $oDefault) {
-        //         if ($sKey == $oObj->default_value) {
-        //             $oObj->default_value_processed = $oDefault->instance->defaultValue();
-        //         }
-        //     }
-        // }
     }
 
     // --------------------------------------------------------------------------

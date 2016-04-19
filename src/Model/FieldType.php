@@ -29,102 +29,96 @@ class FieldType
      */
     public function __construct()
     {
-        $this->aAvailable = array(
-            'TEXT' => (object) array(
-                'model'    => 'FieldTypeText',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'PASSWORD' => (object) array(
-                'model'    => 'FieldTypePassword',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'NUMBER' => (object) array(
-                'model'    => 'FieldTypeNumber',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'EMAIL' => (object) array(
-                'model'    => 'FieldTypeEmail',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'TEL' => (object) array(
-                'model'    => 'FieldTypeTel',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'URL' => (object) array(
-                'model'    => 'FieldTypeUrl',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'TEXTAREA' => (object) array(
-                'model'    => 'FieldTypeTextarea',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'SELECT' => (object) array(
-                'model'    => 'FieldTypeSelect',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'CHECKBOX' => (object) array(
-                'model'    => 'FieldTypeCheckbox',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'RADIO' => (object) array(
-                'model'    => 'FieldTypeRadio',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'DATE' => (object) array(
-                'model'    => 'FieldTypeDate',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'TIME' => (object) array(
-                'model'    => 'FieldTypeTime',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'DATETIME' => (object) array(
-                'model'    => 'FieldTypeDateTime',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'FILE' => (object) array(
-                'model'    => 'FieldTypeFile',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'HIDDEN' => (object) array(
-                'model'    => 'FieldTypeHidden',
-                'provider' => 'nailsapp/module-form-builder'
-            )
+        //  Look for available FieldTypes
+        $this->aAvailable = array();
+
+        $aComponents = _NAILS_GET_COMPONENTS();
+        foreach ($aComponents as $oComponent) {
+            if (!empty($oComponent->namespace)) {
+                $this->autoLoadTypes(
+                    $oComponent->namespace,
+                    $oComponent->path,
+                    $oComponent->slug
+                );
+            }
+        }
+
+        //  Any subscriptions for the app?
+        $this->autoLoadTypes(
+            'App\\',
+            FCPATH,
+            'app'
         );
     }
 
     // --------------------------------------------------------------------------
 
     /**
+     * Looks for FieldTypes provided by components
+     * @param  string $sNamespace The namespace to check
+     * @param  string $sPath      The path to search
+     * @param  string $sComponent The component being queried
+     * @return void
+     */
+    protected function autoLoadTypes($sNamespace, $sPath, $sComponent)
+    {
+        $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\FieldType\\';
+        $sPath           = $sPath . 'src/FormBuilder/FieldType/';
+
+        if (is_dir($sPath)) {
+
+            $aFiles = directory_map($sPath);
+            foreach ($aFiles as $sFile) {
+                $sClassName = $sClassNamespace . basename($sFile, '.php');
+                if (class_exists($sClassName)) {
+                    $this->aAvailable[] = (object) array(
+                        'slug'          => $sClassName,
+                        'label'         => $sClassName::LABEL,
+                        'model'         => 'FieldType' . basename($sFile, '.php'),
+                        'provider'      => $sComponent,
+                        'instance'      => null,
+                        'is_selectable' => $sClassName::IS_SELECTABLE,
+                    );
+                }
+            }
+        }
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
      * Returns all available Field definitions
+     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
      * @return array
      */
-    public function getAll()
+    public function getAll($bOnlySelectable = false)
     {
+        $aOut = array();
+
         foreach ($this->aAvailable as $oType) {
-            if (!isset($oType->instance)) {
-                $oType->instance = Factory::model($oType->model, $oType->provider);
+            $sClassName = $oType->slug;
+            if (!$bOnlySelectable || $sClassName::IS_SELECTABLE) {
+                $aOut[] = $oType;
             }
         }
 
-        return $this->aAvailable;
+        return $aOut;
     }
 
     // --------------------------------------------------------------------------
 
     /**
      * Return all the available types of field which can be created as a flat array
+     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
      * @return array
      */
-    public function getAllFlat()
+    public function getAllFlat($bOnlySelectable = false)
     {
-        $aAvailable = $this->getAll();
+        $aAvailable = $this->getAll($bOnlySelectable);
         $aOut       = array();
 
-        foreach ($aAvailable as $sKey => $oType) {
-
-            $oInstance   = $oType->instance;
-            $aOut[$sKey] = $oInstance::LABEL;
+        foreach ($aAvailable as $oType) {
+            $aOut[$oType->slug] = $oType->label;
         }
 
         return $aOut;
@@ -134,19 +128,18 @@ class FieldType
 
     /**
      * Returns the types which support defining multiple options
+     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
      * @return array
      */
-    public function getAllWithOptions()
+    public function getAllWithOptions($bOnlySelectable = false)
     {
-        $aAvailable = $this->getAll();
+        $aAvailable = $this->getAll($bOnlySelectable);
         $aOut       = array();
 
-        foreach ($aAvailable as $sKey => $oType) {
-
-            $oInstance = $oType->instance;
-
-            if ($oInstance::SUPPORTS_OPTIONS) {
-                $aOut[] = $sKey;
+        foreach ($aAvailable as $oType) {
+            $sClassName = $oType->slug;
+            if ($sClassName::SUPPORTS_OPTIONS) {
+                $aOut[] = $sClassName;
             }
         }
 
@@ -157,19 +150,18 @@ class FieldType
 
     /**
      * Returns the types which support a default value
+     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
      * @return array
      */
-    public function getAllWithDefaultValue()
+    public function getAllWithDefaultValue($bOnlySelectable = false)
     {
-        $aAvailable = $this->getAll();
+        $aAvailable = $this->getAll($bOnlySelectable);
         $aOut       = array();
 
-        foreach ($aAvailable as $sKey => $oType) {
-
-            $oInstance = $oType->instance;
-
-            if ($oInstance::SUPPORTS_DEFAULTS) {
-                $aOut[] = $sKey;
+        foreach ($aAvailable as $oType) {
+            $sClassName = $oType->slug;
+            if ($sClassName::SUPPORTS_DEFAULTS) {
+                $aOut[] = $sClassName;
             }
         }
 
@@ -180,15 +172,22 @@ class FieldType
 
     /**
      * Get an individual field type instance by it's slug
-     * @param  string $sSlug The Field Type's slug
+     * @param  string  $sSlug            The Field Type's slug
+     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
      * @return object
      */
-    public function getBySlug($sSlug)
+    public function getBySlug($sSlug, $bOnlySelectable = false)
     {
-        $aAvailable = $this->getAll();
+        $aAvailable = $this->getAll($bOnlySelectable);
 
-        foreach ($aAvailable as $sTypeSlug => $oType) {
-            if ($sTypeSlug == $sSlug) {
+        foreach ($aAvailable as $oType) {
+
+            if ($oType->slug == $sSlug) {
+
+                if (!isset($oType->instance)) {
+                    $oType->instance = Factory::model($oType->model, $oType->provider);
+                }
+
                 return $oType->instance;
             }
         }

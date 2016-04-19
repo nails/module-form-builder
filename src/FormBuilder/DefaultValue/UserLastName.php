@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class provides the "UserEmail" default value
+ * This class provides the "UserLastName" default value
  *
  * @package     Nails
  * @subpackage  module-form-builder
@@ -10,11 +10,13 @@
  * @link
  */
 
-namespace Nails\FormBuilder\DefaultValue;
+namespace Nails\FormBuilder\FormBuilder\DefaultValue;
 
-class UserEmail extends Base
+use Nails\FormBuilder\DefaultValue\Base;
+
+class UserLastName extends Base
 {
-    const LABEL = 'User\'s Email';
+    const LABEL = 'User\'s Surname';
 
     // --------------------------------------------------------------------------
 
@@ -24,6 +26,6 @@ class UserEmail extends Base
      */
     public function defaultValue()
     {
-        return activeUser('email');
+        return activeUser('last_name');
     }
 }

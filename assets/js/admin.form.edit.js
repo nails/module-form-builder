@@ -31,10 +31,6 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
             base.fieldTypeChanged($(this));
         });
 
-        $(base.domElement).on('change', '.field-default', function() {
-            base.fieldDefaultChanged($(this));
-        });
-
         $('.js-add-field', base.domElement).on('click', function() {
             base.addField();
             return false;
@@ -63,7 +59,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
         // --------------------------------------------------------------------------
 
         //  Initial states
-        $('td.type .field-type, td.default .field-default', base.fieldsTable).each(function() {
+        $('td.type .field-type', base.fieldsTable).each(function() {
             $(this).trigger('change');
         });
 
@@ -126,9 +122,8 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
         //  Init the select2's
         $('> tbody', base.fieldsTable).last().find('.select2').select2();
 
-        //  Init the field type and default value
+        //  Init the field type
         $('> tbody', base.fieldsTable).last().find('td.type .field-type').trigger('change');
-        $('> tbody', base.fieldsTable).last().find('td.type .field-default').trigger('change');
 
         return base;
     };
@@ -254,31 +249,6 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
             base.log('Does not support default value; hiding');
             elem.closest('tr').find('td.default .js-supports-default-value').hide();
             elem.closest('tr').find('td.default .js-no-default-value').show();
-        }
-
-        return base;
-    };
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Triggered when a default value is changed
-     * @param  {Object} elem The field which changed
-     * @return {Object}
-     */
-    base.fieldDefaultChanged = function(elem) {
-
-        base.log('Default value changed to: ' + elem.val());
-
-        switch (elem.val()) {
-
-            case 'CUSTOM' :
-                elem.siblings('input').addClass('is-active');
-                break;
-
-            default :
-                elem.siblings('input').removeClass('is-active');
-                break;
         }
 
         return base;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class provides the "UserId" default value
+ * This class provides the "Timestamp" default value
  *
  * @package     Nails
  * @subpackage  module-form-builder
@@ -10,11 +10,14 @@
  * @link
  */
 
-namespace Nails\FormBuilder\DefaultValue;
+namespace Nails\FormBuilder\FormBuilder\DefaultValue;
 
-class UserId extends Base
+use Nails\Factory;
+use Nails\FormBuilder\DefaultValue\Base;
+
+class Timestamp extends Base
 {
-    const LABEL = 'User\'s ID';
+    const LABEL = 'The current timestamp';
 
     // --------------------------------------------------------------------------
 
@@ -24,6 +27,7 @@ class UserId extends Base
      */
     public function defaultValue()
     {
-        return activeUser('id');
+        $oNow = Factory::factory('DateTime');
+        return $oNow->format('Y-m-d\TH:i:s');
     }
 }

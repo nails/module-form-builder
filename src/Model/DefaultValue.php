@@ -29,40 +29,58 @@ class DefaultValue
      */
     public function __construct()
     {
-        $this->aAvailable = array(
-            'NONE' => (object) array(
-                'model'    => 'DefaultValueNone',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'USER_ID' => (object) array(
-                'model'    => 'DefaultValueUserId',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'USER_NAME' => (object) array(
-                'model'    => 'DefaultValueUserName',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'USER_FIRST_NAME' => (object) array(
-                'model'    => 'DefaultValueUserFirstName',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'USER_LAST_NAME' => (object) array(
-                'model'    => 'DefaultValueUserLastName',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'USER_EMAIL' => (object) array(
-                'model'    => 'DefaultValueUserEmail',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'TIMESTAMP' => (object) array(
-                'model'    => 'DefaultValueTimestamp',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
-            'CUSTOM' => (object) array(
-                'model'    => 'DefaultValueCustom',
-                'provider' => 'nailsapp/module-form-builder'
-            ),
+        //  Look for available FieldTypes
+        $this->aAvailable = array();
+
+        $aComponents = _NAILS_GET_COMPONENTS();
+        foreach ($aComponents as $oComponent) {
+            if (!empty($oComponent->namespace)) {
+                $this->autoLoadDefaults(
+                    $oComponent->namespace,
+                    $oComponent->path,
+                    $oComponent->slug
+                );
+            }
+        }
+
+        //  Any subscriptions for the app?
+        $this->autoLoadDefaults(
+            'App\\',
+            FCPATH,
+            'app'
         );
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Looks for FieldTypes provided by components
+     * @param  string $sNamespace The namespace to check
+     * @param  string $sPath      The path to search
+     * @param  string $sComponent The component being queried
+     * @return void
+     */
+    protected function autoLoadDefaults($sNamespace, $sPath, $sComponent)
+    {
+        $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\DefaultValue\\';
+        $sPath           = $sPath . 'src/FormBuilder/DefaultValue/';
+
+        if (is_dir($sPath)) {
+
+            $aFiles = directory_map($sPath);
+            foreach ($aFiles as $sFile) {
+                $sClassName = $sClassNamespace . basename($sFile, '.php');
+                if (class_exists($sClassName)) {
+                    $this->aAvailable[] = (object) array(
+                        'slug'     => $sClassName,
+                        'label'    => $sClassName::LABEL,
+                        'model'    => 'DefaultValue' . basename($sFile, '.php'),
+                        'provider' => $sComponent,
+                        'instance' => null
+                    );
+                }
+            }
+        }
     }
 
     // --------------------------------------------------------------------------
@@ -73,12 +91,6 @@ class DefaultValue
      */
     public function getAll()
     {
-        foreach ($this->aAvailable as $oDefault) {
-            if (!isset($oDefault->instance)) {
-                $oDefault->instance = Factory::model($oDefault->model, $oDefault->provider);
-            }
-        }
-
         return $this->aAvailable;
     }
 
@@ -93,9 +105,8 @@ class DefaultValue
         $aAvailable = $this->getAll();
         $aOut       = array();
 
-        foreach ($aAvailable as $sKey => $oDefault) {
-            $oInstance   = $oDefault->instance;
-            $aOut[$sKey] = $oInstance::LABEL;
+        foreach ($aAvailable as $oDefault) {
+            $aOut[$oDefault->slug] = $oDefault->label;
         }
 
         return $aOut;
@@ -108,13 +119,19 @@ class DefaultValue
      * @param  string $sSlug The Default Value's slug
      * @return object
      */
-    public function getBySlug($sSlug) {
-
+    public function getBySlug($sSlug)
+    {
         $aAvailable = $this->getAll();
 
-        foreach ($aAvailable as $sDefaultValueSlug => $oDefaultValue) {
-            if ($sDefaultValueSlug == $sSlug) {
-                return $oDefaultValue->instance;
+        foreach ($aAvailable as $oDefault) {
+
+            if ($oDefault->slug == $sSlug) {
+
+                if (!isset($oDefault->instance)) {
+                    $oDefault->instance = Factory::model($oDefault->model, $oDefault->provider);
+                }
+
+                return $oDefault->instance;
             }
         }
 

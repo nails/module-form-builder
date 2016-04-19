@@ -14,6 +14,10 @@ namespace Nails\FormBuilder\DefaultValue;
 
 class Base
 {
+    /**
+     * The human friendly label to give this field type
+     * @var string
+     */
     const LABEL = '';
 
     // --------------------------------------------------------------------------
