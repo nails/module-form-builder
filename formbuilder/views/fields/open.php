@@ -1,6 +1,6 @@
 <?php
 
-$sRequired = !empty($required) ? '*' : '';
+$sRequired = !empty($label) && !empty($required) ? '*' : '';
 
 ?>
 <div class="form-group <?=!empty($error) ? 'has-error' : ''?>">
