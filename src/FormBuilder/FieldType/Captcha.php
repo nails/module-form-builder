@@ -31,6 +31,10 @@ class Captcha extends Base
      */
     public function render($aData)
     {
+        if (empty($aData['captcha'])) {
+            return '';
+        }
+
         $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
         $sOut .= get_instance()->load->view('formbuilder/fields/body-captcha', $aData, true);
         $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);

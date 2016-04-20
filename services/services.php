@@ -103,6 +103,13 @@ return array(
          * Field Types
          * Silly namespace to avoid collission between app provided field types and app overrides.
          */
+        'FieldTypeCaptcha' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Captcha')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\Captcha();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\Captcha();
+            }
+        },
         'FieldTypeCheckbox' => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Checkbox')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Checkbox();

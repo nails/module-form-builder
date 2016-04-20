@@ -12,6 +12,8 @@
 
 namespace Nails\FormBuilder\Exception;
 
+use Nails\Common\Exception\NailsException;
+
 class FormBuilderException extends NailsException
 {
 }

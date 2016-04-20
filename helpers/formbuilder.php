@@ -11,6 +11,7 @@
  */
 
 use Nails\Factory;
+use Nails\Environment;
 use Nails\FormBuilder\Exceptions\ValidationException;
 
 if (!function_exists('adminNormalizeFormData')) {
@@ -165,12 +166,14 @@ if (!function_exists('formBuilderRender')) {
      */
     function formBuilderRender($aFormData)
     {
-        $sUuid       = !empty($aFormData['form_uuid']) ? $aFormData['form_uuid'] : md5(microtime(true));
-        $sFormAction = !empty($aFormData['form_action']) ? $aFormData['form_action'] : null;
-        $sFormMethod = !empty($aFormData['form_method']) ? strtoupper($aFormData['form_method']) : 'POST';
-        $sFormAttr   = !empty($aFormData['form_attr']) ? strtoupper($aFormData['form_attr']) : '';
-        $sFieldKey   = !empty($aFormData['field_key']) ? strtoupper($aFormData['field_key']) : '';
-        $aFields     = !empty($aFormData['fields']) ? $aFormData['fields'] : array();
+        $sUuid         = !empty($aFormData['form_uuid']) ? $aFormData['form_uuid'] : md5(microtime(true));
+        $sFormAction   = !empty($aFormData['form_action']) ? $aFormData['form_action'] : null;
+        $sFormMethod   = !empty($aFormData['form_method']) ? strtoupper($aFormData['form_method']) : 'POST';
+        $sFormAttr     = !empty($aFormData['form_attr']) ? strtoupper($aFormData['form_attr']) : '';
+        $bHasCaptcha   = !empty($aFormData['has_captcha']);
+        $sCaptchaError = !empty($aFormData['captcha_error']) ? $aFormData['captcha_error'] : null;
+        $sFieldKey     = !empty($aFormData['field_key']) ? strtoupper($aFormData['field_key']) : '';
+        $aFields       = !empty($aFormData['fields']) ? $aFormData['fields'] : array();
 
         if (!empty($aFormData['buttons'])) {
 
@@ -238,6 +241,51 @@ if (!function_exists('formBuilderRender')) {
             }
 
             $iCounter++;
+        }
+
+        //  Render the captcha
+        if ($bHasCaptcha) {
+
+            Factory::helper('captcha', 'nailsapp/module-captcha');
+
+            $oCaptcha = captchaGenerate();
+
+            if (!empty($oCaptcha)) {
+
+                $oFieldType = $oFieldTypeModel->getBySlug('\Nails\FormBuilder\FormBuilder\FieldType\Captcha');
+
+                if (!empty($oFieldType)) {
+
+                    $sId   = 'form-' . $sUuid . '-' . $iCounter;
+                    $aAttr = array(
+                        $sId ? 'id="' . $sId . '"' : '',
+                    );
+
+                    $sOut .= $oFieldType->render(
+                        array(
+                            'id'          => $sId,
+                            'key'         => 'captcha_response',
+                            'label'       => '',
+                            'sub_label'   => null,
+                            'default'     => null,
+                            'value'       => null,
+                            'required'    => null,
+                            'class'       => 'form-control',
+                            'attributes'  => implode(' ', $aAttr),
+                            'options'     => null,
+                            'error'       => !empty($sCaptchaError) ? $sCaptchaError : null,
+                            'captcha'     => $oCaptcha
+                        )
+                    );
+                }
+
+            } elseif (Environment::not('PRODUCTION')) {
+
+                $sOut .= '<p class="alert alert-danger">';
+                $sOut .= '<strong>Failed to generate captcha</strong>';
+                $sOut .= '<br />' . captchaError();
+                $sOut .= '</p>';
+            }
         }
 
         //  Render any buttons

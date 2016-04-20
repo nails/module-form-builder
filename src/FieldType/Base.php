@@ -64,7 +64,7 @@ class Base
      * Validate the user's entry
      * @param  mixed    $mInput The form input's value
      * @param  stdClass $oField The complete field object
-     * @return boolean|string   boolean true if valid, string with error if invalid
+     * @return boolean
      */
     public function validate($mInput, $oField)
     {
