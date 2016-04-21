@@ -152,6 +152,34 @@ return array(
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Hidden();
             }
         },
+        'FieldTypeLikert' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Likert')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\Likert();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\Likert();
+            }
+        },
+        'FieldTypeLikertFrequency' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertFrequency')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\LikertFrequency();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\LikertFrequency();
+            }
+        },
+        'FieldTypeLikertImportance' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertImportance')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\LikertImportance();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\LikertImportance();
+            }
+        },
+        'FieldTypeLikertLikelihood' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertLikelihood')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\LikertLikelihood();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\LikertLikelihood();
+            }
+        },
         'FieldTypeNumber' => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Number')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Number();
