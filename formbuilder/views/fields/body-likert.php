@@ -16,49 +16,106 @@
             $aOptions = array();
             foreach ($options as $oOption) {
 
-                $sDisabled = $oOption->is_disabled ? 'disabled="disabled"' : '';
+                if (!$oOption->is_disabled) {
 
-                if (!empty($value)) {
+                    ?>
+                    <tr>
+                        <td class="likert-scale__label">
+                            <?=$oOption->label?>
+                        </td>
+                        <td class="likert-scale__option text-center">
+                            <label>
+                                <?php
 
-                    $bSelected = $value == $oOption->id;
+                                if (!empty($value)) {
 
-                } else {
+                                    $bSelected = array_key_exists($oOption->id, $value) && $value[$oOption->id] == 0;
 
-                    $bSelected = $oOption->is_selected;
+                                } else {
+
+                                    $bSelected = false;
+                                }
+
+                                echo form_radio($key . '[' . $oOption->id . ']', 0, $bSelected);
+
+                                ?>
+                            </label>
+                        </td>
+                        <td class="likert-scale__option text-center">
+                            <label>
+                                <?php
+
+                                if (!empty($value)) {
+
+                                    $bSelected = array_key_exists($oOption->id, $value) && $value[$oOption->id] == 1;
+
+                                } else {
+
+                                    $bSelected = false;
+                                }
+
+                                echo form_radio($key . '[' . $oOption->id . ']', 1, $bSelected);
+
+                                ?>
+                            </label>
+                        </td>
+                        <td class="likert-scale__option text-center">
+                            <label>
+                                <?php
+
+                                if (!empty($value)) {
+
+                                    $bSelected = array_key_exists($oOption->id, $value) && $value[$oOption->id] == 2;
+
+                                } else {
+
+                                    $bSelected = false;
+                                }
+
+                                echo form_radio($key . '[' . $oOption->id . ']', 2, $bSelected);
+
+                                ?>
+                            </label>
+                        </td>
+                        <td class="likert-scale__option text-center">
+                            <label>
+                                <?php
+
+                                if (!empty($value)) {
+
+                                    $bSelected = array_key_exists($oOption->id, $value) && $value[$oOption->id] == 3;
+
+                                } else {
+
+                                    $bSelected = false;
+                                }
+
+                                echo form_radio($key . '[' . $oOption->id . ']', 3, $bSelected);
+
+                                ?>
+                            </label>
+                        </td>
+                        <td class="likert-scale__option text-center">
+                            <label>
+                                <?php
+
+                                if (!empty($value)) {
+
+                                    $bSelected = array_key_exists($oOption->id, $value) && $value[$oOption->id] == 4;
+
+                                } else {
+
+                                    $bSelected = false;
+                                }
+
+                                echo form_radio($key . '[' . $oOption->id . ']', 4, $bSelected);
+
+                                ?>
+                            </label>
+                        </td>
+                    </tr>
+                    <?php
                 }
-
-                ?>
-                <tr>
-                    <td class="likert-scale__label">
-                        <?=$oOption->label?>
-                    </td>
-                    <td class="likert-scale__option text-center">
-                        <label>
-                            <?=form_radio($key . '[' . $oOption->id . ']', 0, $bSelected, $sDisabled)?>
-                        </label>
-                    </td>
-                    <td class="likert-scale__option text-center">
-                        <label>
-                            <?=form_radio($key . '[' . $oOption->id . ']', 1, $bSelected, $sDisabled)?>
-                        </label>
-                    </td>
-                    <td class="likert-scale__option text-center">
-                        <label>
-                            <?=form_radio($key . '[' . $oOption->id . ']', 2, $bSelected, $sDisabled)?>
-                        </label>
-                    </td>
-                    <td class="likert-scale__option text-center">
-                        <label>
-                            <?=form_radio($key . '[' . $oOption->id . ']', 3, $bSelected, $sDisabled)?>
-                        </label>
-                    </td>
-                    <td class="likert-scale__option text-center">
-                        <label>
-                            <?=form_radio($key . '[' . $oOption->id . ']', 4, $bSelected, $sDisabled)?>
-                        </label>
-                    </td>
-                </tr>
-                <?php
             }
 
             ?>

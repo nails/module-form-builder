@@ -262,4 +262,19 @@ class Form extends Base
             return false;
         }
     }
+
+    // --------------------------------------------------------------------------
+
+    protected function formatObject(
+        &$oObj,
+        $aData = array(),
+        $aIntegers = array(),
+        $aBools = array(),
+        $aFloats = array()
+    ) {
+
+        $aBools[] = 'has_captcha';
+
+        parent::formatObject($oObj, $aData, $aIntegers, $aBools, $aFloats);
+    }
 }

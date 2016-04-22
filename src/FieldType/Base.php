@@ -12,7 +12,8 @@
 
 namespace Nails\FormBuilder\FieldType;
 
-use Nails\FormBuilder\Exception\FieldTypeException;
+use Nails\FormBuilder\Exception\FieldTypeExceptionRequired;
+use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
 
 class Base
 {
@@ -27,6 +28,18 @@ class Base
      * @var boolean
      */
     const SUPPORTS_OPTIONS = false;
+
+    /**
+     * Whether this field type supports setting an option as selected
+     * @var boolean
+     */
+    const SUPPORTS_OPTIONS_SELECTED = true;
+
+    /**
+     * Whether this field type supports setting an option as disabled
+     * @var boolean
+     */
+    const SUPPORTS_OPTIONS_DISABLE = true;
 
     /**
      * Whether this field type supports a default value
@@ -70,7 +83,7 @@ class Base
     {
         //  Test for required fields
         if (!empty($oField->is_required) && empty($mInput)) {
-            throw new FieldTypeException('This field is required.', 1);
+            throw new FieldTypeExceptionRequired('This field is required.', 1);
         }
 
         //  If the field accepts options then ensure that the value is a valid option for the field
@@ -92,7 +105,7 @@ class Base
 
             foreach ($aInput as $sInput) {
                 if (!in_array($sInput, $aValidValues)) {
-                    throw new FieldTypeException('Please choose a valid option.', 1);
+                    throw new FieldTypeExceptionInvalidOption('Please choose a valid option.', 1);
                 }
             }
         }
@@ -103,13 +116,47 @@ class Base
     // --------------------------------------------------------------------------
 
     /**
-     * Clean the user's input into a string (or array of strings) suitable for humans browsing in admin
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
-     * @return mixed
+     * Extracts the OPTION component of the response
+     * @param  string $sKey   The answer's key
+     * @param  string $mValue The answer's value
+     * @return integer
      */
-    public function clean($mInput, $oField)
+    public function extractOptionId($sKey, $mValue)
     {
-        return $mInput;
+        if (static::SUPPORTS_OPTIONS) {
+            return $mValue;
+        }
+
+        return null;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Extracts the TEXT component of the response
+     * @param  string $sKey   The answer's key
+     * @param  string $mValue The answer's value
+     * @return integer
+     */
+    public function extractText($sKey, $mValue)
+    {
+        if (!static::SUPPORTS_OPTIONS) {
+            return trim($mValue);
+        }
+
+        return null;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Extracts any DATA which the Field Type might want to store
+     * @param  string $sKey   The answer's key
+     * @param  string $mValue The answer's value
+     * @return integer
+     */
+    public function extractData($sKey, $mValue)
+    {
+        return null;
     }
 }

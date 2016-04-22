@@ -13,21 +13,24 @@
 use Nails\Factory;
 use Nails\Environment;
 use Nails\FormBuilder\Exceptions\ValidationException;
+use Nails\FormBuilder\Exceptions\ParseException;
 
 if (!function_exists('adminNormalizeFormData')) {
 
     /**
      * Cleans up post data submitted by the admin form builder
-     * @param  integer $iFormId The form ID, if any
-     * @param  array   $aFields The fields to parse
+     * @param  integer $iFormId     The form ID, if any
+     * @param  boolean $bHasCaptcha Whether the form should have a captcha
+     * @param  array   $aFields     The fields to parse
      * @return array
      */
-    function adminNormalizeFormData($iFormId = null, $aFields = array())
+    function adminNormalizeFormData($iFormId = null, $bHasCaptcha = false, $aFields = array())
     {
         $iFieldOrder = 0;
         $aOut        = array(
-            'id'     => (int) $iFormId ?: null,
-            'fields' => array()
+            'id'          => (int) $iFormId ?: null,
+            'has_captcha' => (bool) $bHasCaptcha ?: false,
+            'fields'      => array()
         );
 
         if (!empty($aFields)) {
@@ -75,6 +78,8 @@ if (!function_exists('adminNormalizeFormData')) {
     }
 }
 
+// --------------------------------------------------------------------------
+
 if (!function_exists('adminValidateFormData')) {
 
     /**
@@ -98,6 +103,8 @@ if (!function_exists('adminValidateFormData')) {
         }
     }
 }
+
+// --------------------------------------------------------------------------
 
 if (!function_exists('adminLoadFormBuilderAssets')) {
 
@@ -131,6 +138,8 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
     }
 }
 
+// --------------------------------------------------------------------------
+
 if (!function_exists('adminLoadFormBuilderView')) {
 
     /**
@@ -156,6 +165,8 @@ if (!function_exists('adminLoadFormBuilderView')) {
         );
     }
 }
+
+// --------------------------------------------------------------------------
 
 if (!function_exists('formBuilderRender')) {
 
@@ -278,13 +289,6 @@ if (!function_exists('formBuilderRender')) {
                         )
                     );
                 }
-
-            } elseif (Environment::not('PRODUCTION')) {
-
-                $sOut .= '<p class="alert alert-danger">';
-                $sOut .= '<strong>Failed to generate captcha</strong>';
-                $sOut .= '<br />' . captchaError();
-                $sOut .= '</p>';
             }
         }
 
@@ -311,3 +315,90 @@ if (!function_exists('formBuilderRender')) {
         return $sOut;
     }
 }
+
+// --------------------------------------------------------------------------
+
+if (!function_exists('formBuilderValidate')) {
+
+    /**
+     * Valdates $aUserData against $aFormData
+     * @param  array $aFormFields The form fields
+     * @param  array $aUserData   The posted user data
+     * @return boolean|array
+     */
+    function formBuilderValidate($aFormFields, $aUserData)
+    {
+        $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
+        $bIsValid        = true;
+
+        foreach ($aFormFields as &$oField) {
+
+            $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+            if (!empty($oFieldType)) {
+
+                try {
+
+                    $oFieldType->validate(
+                        !empty($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : null,
+                        $oField
+                    );
+
+                } catch(\Exception $e) {
+
+                    $oField->error = $e->getMessage();
+                    $bIsValid      = false;
+                }
+            }
+        }
+
+        return $bIsValid;
+    }
+}
+
+// --------------------------------------------------------------------------
+
+if (!function_exists('formBuilderParseResponse')) {
+
+    /**
+     * Parses a user's response into the various components, designed for then saving to the databae
+     * @param  array $aFormFields The form fields
+     * @param  array $aUserData   The posted user data
+     * @return boolean|array
+     */
+    function formBuilderParseResponse($aFormFields, $aUserData)
+    {
+        $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
+        $aUserDataParsed = array();
+        $aOut            = array();
+
+        if (count($aFormFields) !== count($aUserData)) {
+            throw new ParseException('Field count must match user count.', 1);
+        }
+
+        foreach ($aUserData as $iFieldId => $mValue) {
+            $aUserDataParsed[] = (object) array(
+                'id'    => $iFieldId,
+                'value' => (array) $mValue
+            );
+        }
+
+        for ($i=0; $i < count($aFormFields); $i++) {
+
+            $oField     = $aFormFields[$i];
+            $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+            if (!empty($oFieldType)) {
+                foreach ($aUserDataParsed[$i]->value as $sKey => $mValue) {
+                    $aOut[] = (object) array(
+                        'field_id'  => $oField->id,
+                        'option_id' => $oFieldType->extractOptionId($sKey, $mValue),
+                        'text'      => $oFieldType->extractText($sKey, $mValue),
+                        'data'      => $oFieldType->extractData($sKey, $mValue)
+                    );
+                }
+            }
+        }
+
+        return $aOut;
+    }
+}
+

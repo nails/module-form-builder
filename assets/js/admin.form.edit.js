@@ -197,6 +197,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
             });
 
         } else {
+
             optionsRow.addClass('active').find('td > .form-field-options').stop().slideDown();
         }
         return base;
@@ -227,11 +228,12 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
      */
     base.fieldTypeChanged = function(elem) {
 
-        base.log('Field type changed to: ' + elem.val());
+        var type = elem.val();
 
+        base.log('Field type changed to: ' + type);
 
         //  Supports options?
-        if ($.inArray(elem.val(), base.typeWithOptions) >= 0) {
+        if (base.doesSupportOptions(type)) {
             base.log('Supports options; showing');
             elem.siblings('a').addClass('is-active');
         } else {
@@ -241,7 +243,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
         }
 
         //  Supports default value?
-        if ($.inArray(elem.val(), base.typeWithDefaultValue) >= 0) {
+        if (base.doesSupportDefaultValue(type)) {
             base.log('Supports default value; showing');
             elem.closest('tr').find('td.default .js-supports-default-value').show();
             elem.closest('tr').find('td.default .js-no-default-value').hide();
@@ -251,7 +253,86 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
             elem.closest('tr').find('td.default .js-no-default-value').show();
         }
 
+        //  Can the options be selected
+        if (base.doesSupportOptionSelect(type)) {
+            base.log('Supports option selection; showing');
+            elem.closest('tbody').find('tr.options .option-selected').show();
+        } else {
+            base.log('Does not support option selection; hiding');
+            elem.closest('tbody').find('tr.options .option-selected').hide();
+            elem.closest('tbody').find('tr.options .option-selected').prop('checked', false);
+        }
+
+        //  Can the options be disabled?
+        if (base.doesSupportOptionDisable(type)) {
+            base.log('Supports option disabling; showing');
+            elem.closest('tbody').find('tr.options .option-disabled').show();
+        } else {
+            base.log('Does not support option disabling; hiding');
+            elem.closest('tbody').find('tr.options .option-disabled').hide();
+            elem.closest('tbody').find('tr.options .option-disabled').prop('checked', false);
+        }
+
         return base;
+    };
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Determines whether a particular field type supports Options
+     * @param  {String} type The field type
+     * @return {Boolean}
+     */
+    base.doesSupportOptions = function(type) {
+        for (var i = base.typeWithOptions.length - 1; i >= 0; i--) {
+            if (base.typeWithOptions[i].slug === type) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Determines whether a particular field type supports Default Values
+     * @param  {String} type The field type
+     * @return {Boolean}
+     */
+    base.doesSupportDefaultValue = function(type) {
+        for (var i = base.typeWithDefaultValue.length - 1; i >= 0; i--) {
+            if (base.typeWithDefaultValue[i].slug === type) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Determines whether a particular field type supports Default Values
+     * @param  {String} type The field type
+     * @return {Boolean}
+     */
+    base.doesSupportOptionSelect = function(type) {
+        for (var i = base.typeWithOptions.length - 1; i >= 0; i--) {
+            if (base.typeWithOptions[i].slug === type) {
+                return base.typeWithOptions[i].can_option_select;
+            }
+        }
+        return false;
+    };
+
+    // --------------------------------------------------------------------------
+
+    base.doesSupportOptionDisable = function(type) {
+        for (var i = base.typeWithOptions.length - 1; i >= 0; i--) {
+            if (base.typeWithOptions[i].slug === type) {
+                return base.typeWithOptions[i].can_option_disable;
+            }
+        }
+        return false;
     };
 
     // --------------------------------------------------------------------------

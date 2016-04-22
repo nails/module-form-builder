@@ -72,12 +72,14 @@ class FieldType
                 $sClassName = $sClassNamespace . basename($sFile, '.php');
                 if (class_exists($sClassName)) {
                     $this->aAvailable[] = (object) array(
-                        'slug'          => $sClassName,
-                        'label'         => $sClassName::LABEL,
-                        'model'         => 'FieldType' . basename($sFile, '.php'),
-                        'provider'      => $sComponent,
-                        'instance'      => null,
-                        'is_selectable' => $sClassName::IS_SELECTABLE,
+                        'slug'               => $sClassName,
+                        'label'              => $sClassName::LABEL,
+                        'model'              => 'FieldType' . basename($sFile, '.php'),
+                        'provider'           => $sComponent,
+                        'instance'           => null,
+                        'is_selectable'      => $sClassName::IS_SELECTABLE,
+                        'can_option_select'  => $sClassName::SUPPORTS_OPTIONS_SELECTED,
+                        'can_option_disable' => $sClassName::SUPPORTS_OPTIONS_DISABLE
                     );
                 }
             }
@@ -139,7 +141,7 @@ class FieldType
         foreach ($aAvailable as $oType) {
             $sClassName = $oType->slug;
             if ($sClassName::SUPPORTS_OPTIONS) {
-                $aOut[] = $sClassName;
+                $aOut[] = $oType;
             }
         }
 
@@ -161,7 +163,7 @@ class FieldType
         foreach ($aAvailable as $oType) {
             $sClassName = $oType->slug;
             if ($sClassName::SUPPORTS_DEFAULTS) {
-                $aOut[] = $sClassName;
+                $aOut[] = $oType;
             }
         }
 
