@@ -18,23 +18,15 @@ class LikertImportance extends Likert
 {
     const LABEL = 'Likert - Importance';
 
-    // --------------------------------------------------------------------------
-
     /**
-     * Renders the field's HTML
-     * @param  $aData The field's data
-     * @return string
+     * The terms to use in this likert question
+     * @var array
      */
-    public function render($aData)
-    {
-        $aData['likertTerms'] = array(
-            'Very Important',
-            'Important',
-            'Moderately Important',
-            'Of Little Importance',
-            'Unimportant'
-        );
-
-        return parent::render($aData);
-    }
+    protected $aLikertTerms = array(
+        'Very Important',
+        'Important',
+        'Moderately Important',
+        'Of Little Importance',
+        'Unimportant'
+    );
 }

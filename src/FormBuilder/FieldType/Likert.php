@@ -27,6 +27,20 @@ class Likert extends Base
     // --------------------------------------------------------------------------
 
     /**
+     * The terms to use in this likert question
+     * @var array
+     */
+    protected $aLikertTerms = array(
+        'Strongly Agree',
+        'Agree',
+        'Undecided',
+        'Disagree',
+        'Strongly Disagree'
+    );
+
+    // --------------------------------------------------------------------------
+
+    /**
      * Renders the field's HTML
      * @param  $aData The field's data
      * @return string
@@ -34,13 +48,7 @@ class Likert extends Base
     public function render($aData)
     {
         if (empty($aData['likertTerms'])) {
-            $aData['likertTerms'] = array(
-                'Strongly Agree',
-                'Agree',
-                'Undecided',
-                'Disagree',
-                'Strongly Disagree'
-            );
+            $aData['likertTerms'] = $this->aLikertTerms;
         }
 
         $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
@@ -127,6 +135,19 @@ class Likert extends Base
         }
 
         return null;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Extracts any DATA which the Field Type might want to store
+     * @param  string $sKey   The answer's key
+     * @param  string $mValue The answer's value
+     * @return integer
+     */
+    public function extractText($sKey, $mValue)
+    {
+        return array_key_exists($mValue, $this->aLikertTerms) ? $this->aLikertTerms[$mValue] : '';
     }
 
     // --------------------------------------------------------------------------

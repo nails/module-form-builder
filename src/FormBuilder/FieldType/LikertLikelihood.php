@@ -18,23 +18,15 @@ class LikertLikelihood extends Likert
 {
     const LABEL = 'Likert - Liklihood';
 
-    // --------------------------------------------------------------------------
-
     /**
-     * Renders the field's HTML
-     * @param  $aData The field's data
-     * @return string
+     * The terms to use in this likert question
+     * @var array
      */
-    public function render($aData)
-    {
-        $aData['likertTerms'] = array(
-            'Very Likely',
-            'Likely',
-            'Maybe',
-            'Unlikely',
-            'Very Unlikely'
-        );
-
-        return parent::render($aData);
-    }
+    protected $aLikertTerms = array(
+        'Very Likely',
+        'Likely',
+        'Maybe',
+        'Unlikely',
+        'Very Unlikely'
+    );
 }

@@ -18,23 +18,15 @@ class LikertFrequency extends Likert
 {
     const LABEL = 'Likert - Frequency';
 
-    // --------------------------------------------------------------------------
-
     /**
-     * Renders the field's HTML
-     * @param  $aData The field's data
-     * @return string
+     * The terms to use in this likert question
+     * @var array
      */
-    public function render($aData)
-    {
-        $aData['likertTerms'] = array(
-            'Very Frequently',
-            'Frequently',
-            'Occassionally',
-            'Rarely',
-            'Never'
-        );
-
-        return parent::render($aData);
-    }
+    protected $aLikertTerms = array(
+        'Very Frequently',
+        'Frequently',
+        'Occassionally',
+        'Rarely',
+        'Never'
+    );
 }
