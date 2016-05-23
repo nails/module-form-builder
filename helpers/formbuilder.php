@@ -202,7 +202,8 @@ if (!function_exists('formBuilderRender')) {
         }
 
         //  Start building the form
-        $sOut = form_open_multipart($sFormAction, 'method="' . $sFormMethod . '" ' . $sFormAttr);
+        $sOut  = form_open_multipart($sFormAction, 'method="' . $sFormMethod . '" ' . $sFormAttr);
+        $sOut .= form_hidden('submitting', true);
 
         //  Render the form fields
         $oFieldTypeModel    = Factory::model('FieldType', 'nailsapp/module-form-builder');
@@ -333,13 +334,15 @@ if (!function_exists('formBuilderValidate')) {
         foreach ($aFormFields as &$oField) {
 
             $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+
             if (!empty($oFieldType)) {
 
                 try {
 
-                    if (!empty($_POST['field'][$oField->id])) {
-                        $_POST['field'][$oField->id] = $oFieldType->validate($_POST['field'][$oField->id], $oField);
+                    if (!array_key_exists($oField->id, $aUserData)) {
+                        $aUserData[$oField->id] = null;
                     }
+                    $aUserData[$oField->id] = $oFieldType->validate($aUserData[$oField->id], $oField);
 
                 } catch(\Exception $e) {
 
