@@ -256,20 +256,21 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
         //  Can the options be selected
         if (base.doesSupportOptionSelect(type)) {
             base.log('Supports option selection; showing');
-            elem.closest('tbody').find('tr.options .option-selected').show();
+            elem.closest('tbody').find('tr.options table').addClass('is-selectable');
+            console.log(elem.closest('table'));
         } else {
             base.log('Does not support option selection; hiding');
-            elem.closest('tbody').find('tr.options .option-selected').hide();
+            elem.closest('tbody').find('tr.options table').removeClass('is-selectable');
             elem.closest('tbody').find('tr.options .option-selected').prop('checked', false);
         }
 
         //  Can the options be disabled?
         if (base.doesSupportOptionDisable(type)) {
             base.log('Supports option disabling; showing');
-            elem.closest('tbody').find('tr.options .option-disabled').show();
+            elem.closest('tbody').find('tr.options table').addClass('is-disableable');
         } else {
             base.log('Does not support option disabling; hiding');
-            elem.closest('tbody').find('tr.options .option-disabled').hide();
+            elem.closest('tbody').find('tr.options table').removeClass('is-disableable');
             elem.closest('tbody').find('tr.options .option-disabled').prop('checked', false);
         }
 

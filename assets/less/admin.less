@@ -119,6 +119,17 @@
                         .option-selected,
                         .option-disabled {
                             width: 75px;
+                            display: none;
+                        }
+                        &.is-selectable {
+                            .option-selected {
+                                display: table-cell;
+                            }
+                        }
+                        &.is-disableable {
+                            .option-disabled {
+                                display: table-cell;
+                            }
                         }
                         .option-remove {
                             width: 30px;

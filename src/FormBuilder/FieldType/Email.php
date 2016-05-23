@@ -20,7 +20,6 @@ class Email extends Base
 {
     const LABEL             = 'Email';
     const SUPPORTS_DEFAULTS = true;
-    const VALIDATION_RULES  = 'valid_email';
 
     // --------------------------------------------------------------------------
 
@@ -48,16 +47,12 @@ class Email extends Base
      */
     public function validate($mInput, $oField)
     {
-        $mResult = parent::validate($mInput, $oField);
-
-        if ($mResult !== true) {
-            return $mResult;
-        }
+        $mInput = parent::validate($mInput, $oField);
 
         if (!valid_email($mInput)) {
             throw new FieldTypeException('This field should be a valid email.', 1);
         }
 
-        return true;
+        return $mInput;
     }
 }

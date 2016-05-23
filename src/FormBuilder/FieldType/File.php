@@ -39,10 +39,10 @@ class File extends Base
     // --------------------------------------------------------------------------
 
     /**
-     * Validate the user's input
+     * Validate and clean the user's entry
      * @param  mixed    $mInput The form input's value
      * @param  stdClass $oField The complete field object
-     * @return boolean|string   boolean true if valid, string with error if invalid
+     * @return mixed
      */
     public function validate($mInput, $oField)
     {
@@ -85,7 +85,8 @@ class File extends Base
 
                 case UPLOAD_ERR_NO_FILE:
 
-                    $sError = 'No file was uploaded.';
+                    //  If the field is not required then don't error
+                    $sError = $oField->is_required ? 'No file was uploaded.' : null;
                     break;
 
                 case UPLOAD_ERR_NO_TMP_DIR:
@@ -109,47 +110,65 @@ class File extends Base
                     break;
             }
 
-            throw new FieldTypeException($sError, 1);
+            if (!emptY($sError)) {
+                throw new FieldTypeException($sError, 1);
+            }
         }
 
-        return true;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Clean the user's input into a string (or array of strings) suitable for humans browsing in admin
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
-     * @return mixed
-     */
-    public function clean($mInput, $oField)
-    {
+        //  Upload the file and return the Object ID
         $sPath = !empty($_FILES['field']['tmp_name'][$oField->id]) ? $_FILES['field']['tmp_name'][$oField->id] : null;
         $sName = !empty($_FILES['field']['name'][$oField->id]) ? $_FILES['field']['name'][$oField->id] : null;
 
         if (!empty($sPath)) {
 
-            $oCdn = Factory::service('Cdn', 'nailsapp/module-cdn');
+            $oCdn    = Factory::service('Cdn', 'nailsapp/module-cdn');
             $oResult = $oCdn->objectCreate(
                 $sPath,
-                'custom-forms-user-upload',
+                'formbuilder-file-upload',
                 array('filename_display' => $sName)
             );
 
-            if ($oResult) {
-
-                $sOut  = $sName . ' &mdash; ';
-                $sOut .=  anchor(cdnServe($oResult->id, true), 'Download File', 'class="btn btn-primary btn-xs"');
-                return $sOut;
-
-            } else {
+            if (!$oResult) {
                 throw new FieldTypeException('Failed to upload file. ' . $oCdn->lastError(), 1);
             }
+
+            return $oResult->id;
 
         } else {
 
             return null;
         }
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Extracts the TEXT component of the response
+     * @param  string $sKey   The answer's key
+     * @param  string $mValue The answer's value
+     * @return integer
+     */
+    public function extractText($sKey, $mValue)
+    {
+        $oCdn = Factory::service('Cdn', 'nailsapp/module-cdn');
+        $oObj = $oCdn->getObject($mValue);
+
+        $sOut  = $oObj->file->name->human . ' (' . $oObj->file->size->human . ')';
+        $sOut .= '<a href="' . cdnServe($oObj->id, true) . '" class="btn btn-xs btn-primary pull-right">Download</a>';
+
+        return $sOut;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Extracts any DATA which the Field Type might want to store
+     * @param  string $sKey   The answer's key
+     * @param  string $mValue The answer's value
+     * @return integer
+     */
+    public function extractData($sKey, $mValue)
+    {
+        return $mValue;
     }
 }

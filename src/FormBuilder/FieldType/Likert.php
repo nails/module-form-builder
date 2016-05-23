@@ -117,7 +117,7 @@ class Likert extends Base
             }
         }
 
-        return true;
+        return $mInput;
     }
 
     // --------------------------------------------------------------------------
@@ -140,7 +140,7 @@ class Likert extends Base
     // --------------------------------------------------------------------------
 
     /**
-     * Extracts any DATA which the Field Type might want to store
+     * Extracts the TEXT component of the response
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer

@@ -35,17 +35,4 @@ class Textarea extends Base
 
         return $sOut;
     }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Clean the user's input into a string (or array of strings) suitable for humans browsing in admin
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
-     * @return mixed
-     */
-    public function clean($mInput, $oField)
-    {
-        return auto_typography($mInput);
-    }
 }

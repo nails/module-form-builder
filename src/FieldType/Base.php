@@ -53,12 +53,6 @@ class Base
      */
     const IS_SELECTABLE = true;
 
-    /**
-     * Any custom validation rules for this field type
-     * @var string
-     */
-    const VALIDATION_RULES = '';
-
     // --------------------------------------------------------------------------
 
     /**
@@ -74,10 +68,10 @@ class Base
     // --------------------------------------------------------------------------
 
     /**
-     * Validate the user's entry
+     * Validate and clean the user's entry
      * @param  mixed    $mInput The form input's value
      * @param  stdClass $oField The complete field object
-     * @return boolean
+     * @return mixed
      */
     public function validate($mInput, $oField)
     {
@@ -110,7 +104,7 @@ class Base
             }
         }
 
-        return true;
+        return $mInput;
     }
 
     // --------------------------------------------------------------------------
@@ -141,7 +135,7 @@ class Base
     public function extractText($sKey, $mValue)
     {
         if (!static::SUPPORTS_OPTIONS) {
-            return trim($mValue);
+            return trim(strip_tags($mValue));
         }
 
         return null;
@@ -212,12 +206,23 @@ class Base
      */
     public function getstatsTextData($aResponses)
     {
-        $aOut = array();
+        $aOut     = array();
+        $aStrings = array();
 
         foreach ($aResponses as $oResponse) {
             if (!empty($oResponse->text)) {
-                $aOut[] = $oResponse->text;
+                if (!array_key_exists($oResponse->text, $aStrings)) {
+                    $aStrings[$oResponse->text] = 0;
+                }
+                $aStrings[$oResponse->text]++;
             }
+        }
+
+        foreach ($aStrings as $sString => $iCount) {
+            if ($iCount > 1) {
+                $sString .= ' <span class="count" title="This item repeats ' . $iCount . ' times">' . $iCount . '</span>';
+            }
+            $aOut[] = $sString;
         }
 
         return $aOut;

@@ -40,42 +40,27 @@ class DateTime extends Base
     // --------------------------------------------------------------------------
 
     /**
-     * Validate the user's entry
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
-     * @return boolean|string   boolean true if valid, string with error if invalid
-     */
-    public function validate($mInput, $oField)
-    {
-        $mResult = parent::validate($mInput, $oField);
-
-        if ($mResult !== true) {
-            return $mResult;
-        }
-
-        $oDate = new \DateTime($mInput);
-        if (empty($oDate)) {
-            throw new FieldTypeException('This field should be a valid datetime.', 1);
-        }
-
-        return true;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Clean the user's input
+     * Validate and clean the user's entry
      * @param  mixed    $mInput The form input's value
      * @param  stdClass $oField The complete field object
      * @return mixed
      */
-    public function clean($mInput, $oField)
+    public function validate($mInput, $oField)
     {
-        $oDate = new \DateTime($mInput);
-        if (empty($oDate)) {
-            return null;
+        $mInput = parent::validate($mInput, $oField);
+
+        try {
+
+            $oDate = new \DateTime($mInput);
+
+            if (empty($oDate)) {
+                throw new FieldTypeException('This field should be a valid date and time.', 1);
+            }
+
+        } catch (\Exception $e) {
+            throw new FieldTypeException('This field should be a valid date and time.', 1);
         }
 
-        return $oDate->format('Y-m-d H:i:s');
+        return empty($oDate) ? null : $oDate->format('Y-m-d H:i:s');
     }
 }

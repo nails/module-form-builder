@@ -12,8 +12,7 @@
 
 use Nails\Factory;
 use Nails\Environment;
-use Nails\FormBuilder\Exceptions\ValidationException;
-use Nails\FormBuilder\Exceptions\ParseException;
+use Nails\FormBuilder\Exception\ValidationException;
 
 if (!function_exists('adminNormalizeFormData')) {
 
@@ -338,10 +337,9 @@ if (!function_exists('formBuilderValidate')) {
 
                 try {
 
-                    $oFieldType->validate(
-                        !empty($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : null,
-                        $oField
-                    );
+                    if (!empty($_POST['field'][$oField->id])) {
+                        $_POST['field'][$oField->id] = $oFieldType->validate($_POST['field'][$oField->id], $oField);
+                    }
 
                 } catch(\Exception $e) {
 
@@ -371,21 +369,29 @@ if (!function_exists('formBuilderParseResponse')) {
         $aUserDataParsed = array();
         $aOut            = array();
 
-        if (count($aFormFields) !== count($aUserData)) {
-            throw new ParseException('Field count must match user count.', 1);
-        }
-
         foreach ($aUserData as $iFieldId => $mValue) {
+
+            $oField = null;
+            foreach ($aFormFields as $oFormField) {
+                if ($oFormField->id == $iFieldId) {
+                    $oField = $oFormField;
+                    break;
+                }
+            }
+
             $aUserDataParsed[] = (object) array(
                 'id'    => $iFieldId,
-                'value' => (array) $mValue
+                'value' => (array) $mValue,
+                'field' => $oField
             );
         }
 
-        for ($i=0; $i < count($aFormFields); $i++) {
 
-            $oField     = $aFormFields[$i];
+        for ($i=0; $i < count($aUserDataParsed); $i++) {
+
+            $oField     = $aUserDataParsed[$i]->field;
             $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+
             if (!empty($oFieldType)) {
                 foreach ($aUserDataParsed[$i]->value as $sKey => $mValue) {
                     $aOut[] = (object) array(

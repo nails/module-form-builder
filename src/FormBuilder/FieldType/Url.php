@@ -19,7 +19,6 @@ class Url extends Base
 {
     const LABEL             = 'URL';
     const SUPPORTS_DEFAULTS = true;
-    const VALIDATION_RULES  = 'prep_url';
 
     // --------------------------------------------------------------------------
 
@@ -35,5 +34,20 @@ class Url extends Base
         $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
 
         return $sOut;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Validate and clean the user's entry
+     * @param  mixed    $mInput The form input's value
+     * @param  stdClass $oField The complete field object
+     * @return mixed
+     */
+    public function validate($mInput, $oField)
+    {
+        $mInput = parent::validate($mInput, $oField);
+
+        return empty($mInput) ? null : prep_url($mInput);
     }
 }

@@ -20,7 +20,6 @@ class Number extends Base
 {
     const LABEL             = 'Number';
     const SUPPORTS_DEFAULTS = true;
-    const VALIDATION_RULES  = 'is_numeric';
 
     // --------------------------------------------------------------------------
 
@@ -48,16 +47,12 @@ class Number extends Base
      */
     public function validate($mInput, $oField)
     {
-        $mResult = parent::validate($mInput, $oField);
-
-        if ($mResult !== true) {
-            return $mResult;
-        }
+        $mInput = parent::validate($mInput, $oField);
 
         if (!is_numeric($mInput)) {
             throw new FieldTypeException('This field should be numeric.', 1);
         }
 
-        return true;
+        return $mInput;
     }
 }

@@ -47,12 +47,12 @@ class Select extends Base
      */
     public function validate($mInput, $oField)
     {
-        $bResult = parent::validate($mInput, $oField);
+        $mInput = parent::validate($mInput, $oField);
 
         //  The parent won't catch "empty" fields, i.e the field option has an ID but the label is blank
         //  For a UX perspective, let's assume an empty label is an empty response.
 
-        if ($bResult && $oField->is_required) {
+        if ($mInput && $oField->is_required) {
             foreach ($oField->options->data as $oOption) {
                 if ((int) $mInput === $oOption->id) {
                     if (empty($oOption->label)) {
@@ -62,6 +62,6 @@ class Select extends Base
             }
         }
 
-        return $bResult;
+        return $mInput;
     }
 }
