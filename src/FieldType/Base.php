@@ -159,4 +159,67 @@ class Base
     {
         return null;
     }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Takes responses for this field type and aggregates them into data suitable for stats/charting
+     * @param  array  $aResponses The array of responses from ResponseAnswer
+     * @return array
+     */
+    public function getStatsChartData($aResponses)
+    {
+        $aOut = array(
+            'columns' => array(
+                array('string', 'Label'),
+                array('number', 'Responses')
+            ),
+            'rows' => array()
+        );
+
+        if (!static::SUPPORTS_OPTIONS) {
+            return $aOut;
+        }
+
+        //  Work out all the options and assign a value
+        $aRows = array();
+        foreach ($aResponses as $oResponse) {
+            if (!empty($oResponse->option)) {
+                if (!array_key_exists($oResponse->option->label, $aRows)) {
+                    $aRows[$oResponse->option->label] = 0;
+                }
+                $aRows[$oResponse->option->label]++;
+            }
+        }
+
+        foreach ($aRows as $sLabel => $iValue) {
+            $aOut['rows'][] = array(
+                $sLabel,
+                $iValue
+            );
+        }
+
+        //  Return the details for a single chart (i.e only 1 item in this array)
+        return array($aOut);
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Takes responses for this field type and extracts all the text components
+     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @return array
+     */
+    public function getstatsTextData($aResponses)
+    {
+        $aOut = array();
+
+        foreach ($aResponses as $oResponse) {
+            if (!empty($oResponse->text)) {
+                $aOut[] = $oResponse->text;
+            }
+        }
+
+        return $aOut;
+    }
 }

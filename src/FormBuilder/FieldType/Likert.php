@@ -162,4 +162,59 @@ class Likert extends Base
     {
         return $mValue;
     }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Takes responses for this field type and aggregates them into data suitable for stats/charting
+     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @return array
+     */
+    public function getStatsChartData($aResponses)
+    {
+        //  Work out all the options and assign a value
+        $aCharts = array();
+        foreach ($aResponses as $oResponse) {
+            if (!empty($oResponse->option)) {
+                if (!array_key_exists($oResponse->option->label, $aCharts)) {
+                    $aCharts[$oResponse->option->label] = array(0, 0, 0, 0, 0);
+                }
+                $aCharts[$oResponse->option->label][$oResponse->data]++;
+            }
+        }
+
+        $aOut = array();
+
+        foreach ($aCharts as $sLabel => $aRows) {
+
+            $aOut[] = array(
+                'title'   => $sLabel,
+                'columns' => array(
+                    array('string', 'Label'),
+                    array('number', 'Responses')
+                ),
+                'rows'    => array(
+                    array($this->aLikertTerms[0], $aRows[0]),
+                    array($this->aLikertTerms[1], $aRows[1]),
+                    array($this->aLikertTerms[2], $aRows[2]),
+                    array($this->aLikertTerms[3], $aRows[3]),
+                    array($this->aLikertTerms[4], $aRows[4])
+                )
+            );
+        }
+
+        return $aOut;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Takes responses for this field type and extracts all the text components
+     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @return array
+     */
+    public function getstatsTextData($aResponses)
+    {
+        return array();
+    }
 }
