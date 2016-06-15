@@ -180,6 +180,13 @@ return array(
                 return new \Nails\FormBuilder\FormBuilder\FieldType\LikertLikelihood();
             }
         },
+        'FieldTypeLikertUsefulness' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertUsefulness')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\LikertUsefulness();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\LikertUsefulness();
+            }
+        },
         'FieldTypeNumber' => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Number')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Number();
