@@ -66,7 +66,7 @@ class FieldType
         $sPath           = $sPath . 'src/FormBuilder/FieldType/';
 
         if (is_dir($sPath)) {
-
+            Factory::helper('directory');
             $aFiles = directory_map($sPath);
             foreach ($aFiles as $sFile) {
                 $sClassName = $sClassNamespace . basename($sFile, '.php');
