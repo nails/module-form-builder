@@ -108,7 +108,7 @@ class FormField extends Base
             if ($mResult) {
 
                 $iFormFieldId = $bReturnObject ? $mResult->id : $mResult;
-                $bResult      = $this->saveAsscociatedItems(
+                $bResult      = $this->saveAssociatedItems(
                     $iFormFieldId,
                     $aOptions,
                     'form_field_id',
@@ -155,7 +155,7 @@ class FormField extends Base
             $oDb->trans_begin();
 
             if (parent::update($iId, $aData)) {
-                $bResult = $this->saveAsscociatedItems(
+                $bResult = $this->saveAssociatedItems(
                     $iId,
                     $aOptions,
                     'form_field_id',

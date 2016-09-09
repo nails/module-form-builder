@@ -83,7 +83,7 @@ class Form extends Base
             if ($mResult) {
 
                 $iFormId = $bReturnObject ? $mResult->id : $mResult;
-                $bResult = $this->saveAsscociatedItems(
+                $bResult = $this->saveAssociatedItems(
                     $iFormId,
                     $aFields,
                     'form_id',
@@ -131,7 +131,7 @@ class Form extends Base
 
             if (parent::update($iId, $aData)) {
 
-                $bResult = $this->saveAsscociatedItems(
+                $bResult = $this->saveAssociatedItems(
                     $iId,
                     $aFields,
                     'form_id',
