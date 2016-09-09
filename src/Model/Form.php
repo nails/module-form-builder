@@ -24,7 +24,7 @@ class Form extends Base
     {
         parent::__construct();
         $this->table             = NAILS_DB_PREFIX . 'formbuilder_form';
-        $this->tablePrefix       = 'fbf';
+        $this->tableAlias       = 'fbf';
         $this->tableSlugColumn   = null;
         $this->tableLabelColumn  = null;
         $this->defaultSortColumn = null;

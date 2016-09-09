@@ -25,7 +25,7 @@ class FormFieldOption extends Base
         parent::__construct();
 
         $this->table             = NAILS_DB_PREFIX . 'formbuilder_form_field_option';
-        $this->tablePrefix       = 'ffo';
+        $this->tableAlias       = 'ffo';
         $this->defaultSortColumn = 'order';
     }
 
