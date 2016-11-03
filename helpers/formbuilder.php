@@ -368,6 +368,7 @@ if (!function_exists('formBuilderParseResponse')) {
      */
     function formBuilderParseResponse($aFormFields, $aUserData)
     {
+        $aUserData       = array_filter($aUserData);
         $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
         $aUserDataParsed = array();
         $aOut            = array();
@@ -388,7 +389,6 @@ if (!function_exists('formBuilderParseResponse')) {
                 'field' => $oField
             );
         }
-
 
         for ($i=0; $i < count($aUserDataParsed); $i++) {
 
