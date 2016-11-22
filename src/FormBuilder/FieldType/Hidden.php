@@ -17,18 +17,21 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Hidden extends Base
 {
-    const LABEL             = 'Hidden';
+    const LABEL = 'Hidden';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
-     * @param  $aData The field's data
+     *
+     * @param  array $aData The field's data
      * @return string
      */
     public function render($aData)
     {
-        return get_instance()->load->view('formbuilder/fields/body-hidden', $aData, true);
+        $oView = Factory::service('View');
+
+        return $oView->load('formbuilder/fields/body-hidden', $aData, true);
     }
 }

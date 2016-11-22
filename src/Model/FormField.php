@@ -35,7 +35,7 @@ class FormField extends Base
      * Returns all field objects
      * @param null    $iPage            The page to return
      * @param null    $iPerPage         The number of objects per page
-     * @param array   $aData            Data to pass to _getcount_common
+     * @param array   $aData            Data to pass to getCountCommon
      * @param boolean $bIncludeDeleted  Whether to include deleted results
      * @return array
      */
@@ -65,7 +65,7 @@ class FormField extends Base
      * correctly format the output. Use this to cast integers and booleans and/or organise data into objects.
      *
      * @param  object $oObj      A reference to the object being formatted.
-     * @param  array  $aData     The same data array which is passed to _getcount_common, for reference if needed
+     * @param  array  $aData     The same data array which is passed to getCountCommon, for reference if needed
      * @param  array  $aIntegers Fields which should be cast as integers if numerical and not null
      * @param  array  $aBools    Fields which should be cast as booleans if not null
      * @param  array  $aFloats   Fields which should be cast as floats if not null

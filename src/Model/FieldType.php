@@ -18,6 +18,7 @@ class FieldType
 {
     /**
      * The available Field definitions
+     *
      * @var array
      */
     protected $aAvailable;
@@ -25,7 +26,7 @@ class FieldType
     // --------------------------------------------------------------------------
 
     /**
-     * Cosntruct the model, look for available Field definitions
+     * Construct the model, look for available Field definitions
      */
     public function __construct()
     {
@@ -55,6 +56,7 @@ class FieldType
 
     /**
      * Looks for FieldTypes provided by components
+     *
      * @param  string $sNamespace The namespace to check
      * @param  string $sPath      The path to search
      * @param  string $sComponent The component being queried
@@ -90,7 +92,8 @@ class FieldType
 
     /**
      * Returns all available Field definitions
-     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
+     *
+     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
      * @return array
      */
     public function getAll($bOnlySelectable = false)
@@ -111,7 +114,8 @@ class FieldType
 
     /**
      * Return all the available types of field which can be created as a flat array
-     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
+     *
+     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
      * @return array
      */
     public function getAllFlat($bOnlySelectable = false)
@@ -130,7 +134,8 @@ class FieldType
 
     /**
      * Returns the types which support defining multiple options
-     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
+     *
+     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
      * @return array
      */
     public function getAllWithOptions($bOnlySelectable = false)
@@ -152,7 +157,8 @@ class FieldType
 
     /**
      * Returns the types which support a default value
-     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
+     *
+     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
      * @return array
      */
     public function getAllWithDefaultValue($bOnlySelectable = false)
@@ -174,8 +180,9 @@ class FieldType
 
     /**
      * Get an individual field type instance by it's slug
-     * @param  string  $sSlug            The Field Type's slug
-     * @param  boolean $bOnlySelectedble Filter out field types which are not selectable by the user
+     *
+     * @param  string  $sSlug           The Field Type's slug
+     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
      * @return object
      */
     public function getBySlug($sSlug, $bOnlySelectable = false)

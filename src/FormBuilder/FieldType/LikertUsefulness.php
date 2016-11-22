@@ -12,14 +12,13 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
-use Nails\Factory;
-
 class LikertUsefulness extends Likert
 {
     const LABEL = 'Likert - Usefulness';
 
     /**
      * The terms to use in this likert question
+     *
      * @var array
      */
     protected $aLikertTerms = array(

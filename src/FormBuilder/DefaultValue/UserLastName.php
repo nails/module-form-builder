@@ -22,6 +22,7 @@ class UserLastName extends Base
 
     /**
      * Return the calculated default value
+     *
      * @return mixed
      */
     public function defaultValue()

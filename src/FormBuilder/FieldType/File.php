@@ -13,8 +13,8 @@
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
-use Nails\FormBuilder\FieldType\Base;
 use Nails\FormBuilder\Exception\FieldTypeException;
+use Nails\FormBuilder\FieldType\Base;
 
 class File extends Base
 {
@@ -24,14 +24,16 @@ class File extends Base
 
     /**
      * Renders the field's HTML
-     * @param  $aData The field's data
+     *
+     * @param  array $aData The field's data
      * @return string
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-file', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
+        $oView = Factory::service('View');
+        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/body-file', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -40,14 +42,15 @@ class File extends Base
 
     /**
      * Validate and clean the user's entry
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
+     *
+     * @param  mixed     $mInput The form input's value
+     * @param  \stdClass $oField The complete field object
+     * @throws FieldTypeException
      * @return mixed
      */
     public function validate($mInput, $oField)
     {
         if (!isset($_FILES['field']['error'][$oField->id]) && $oField->is_required) {
-            return 'This field is required.';
             throw new FieldTypeException('This field is required.', 1);
         }
 
@@ -61,7 +64,7 @@ class File extends Base
 
                     if (!is_null($maxFileSize)) {
 
-                        $oCdn = Factory::service('Cdn', 'nailsapp/module-cdn');
+                        $oCdn        = Factory::service('Cdn', 'nailsapp/module-cdn');
                         $maxFileSize = $oCdn->returnBytes($maxFileSize);
                         $maxFileSize = $oCdn->formatBytes($maxFileSize);
 
@@ -144,6 +147,7 @@ class File extends Base
 
     /**
      * Extracts the TEXT component of the response
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -153,7 +157,7 @@ class File extends Base
         $oCdn = Factory::service('Cdn', 'nailsapp/module-cdn');
         $oObj = $oCdn->getObject($mValue);
 
-        $sOut  = $oObj->file->name->human . ' (' . $oObj->file->size->human . ')';
+        $sOut = $oObj->file->name->human . ' (' . $oObj->file->size->human . ')';
         $sOut .= '<a href="' . cdnServe($oObj->id, true) . '" class="btn btn-xs btn-primary pull-right">Download</a>';
 
         return $sOut;
@@ -163,6 +167,7 @@ class File extends Base
 
     /**
      * Extracts any DATA which the Field Type might want to store
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer

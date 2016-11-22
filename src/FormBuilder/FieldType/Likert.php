@@ -13,21 +13,22 @@
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
-use Nails\FormBuilder\FieldType\Base;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
+use Nails\FormBuilder\FieldType\Base;
 
 class Likert extends Base
 {
-    const LABEL                     = 'Likert - Agreement';
-    const SUPPORTS_DEFAULTS         = false;
-    const SUPPORTS_OPTIONS          = true;
+    const LABEL = 'Likert - Agreement';
+    const SUPPORTS_DEFAULTS = false;
+    const SUPPORTS_OPTIONS = true;
     const SUPPORTS_OPTIONS_SELECTED = false;
 
     // --------------------------------------------------------------------------
 
     /**
      * The terms to use in this likert question
+     *
      * @var array
      */
     protected $aLikertTerms = array(
@@ -42,7 +43,8 @@ class Likert extends Base
 
     /**
      * Renders the field's HTML
-     * @param  $aData The field's data
+     *
+     * @param  array $aData The field's data
      * @return string
      */
     public function render($aData)
@@ -51,9 +53,10 @@ class Likert extends Base
             $aData['likertTerms'] = $this->aLikertTerms;
         }
 
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-likert', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
+        $oView = Factory::service('View');
+        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/body-likert', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -62,8 +65,11 @@ class Likert extends Base
 
     /**
      * Override the parent method to check options are valid and within range
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
+     *
+     * @param  mixed     $mInput The form input's value
+     * @param  \stdClass $oField The complete field object
+     * @throws FieldTypeExceptionInvalidOption
+     * @throws FieldTypeException
      * @return boolean
      */
     public function validate($mInput, $oField)
@@ -72,11 +78,10 @@ class Likert extends Base
 
             parent::validate($mInput, $oField);
 
-        //  This field will throw FieldTypeExceptionInvalidOption exception as the
-        //  form is build using the option value as the key rather than the value.
+            //  This field will throw FieldTypeExceptionInvalidOption exception as the
+            //  form is build using the option value as the key rather than the value.
         } catch (FieldTypeExceptionInvalidOption $e) {
 
-            $bIsValid     = true;
             $aValidValues = array();
 
             foreach ($oField->options->data as $oOption) {
@@ -124,6 +129,7 @@ class Likert extends Base
 
     /**
      * Extracts the OPTION component of the response
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -141,6 +147,7 @@ class Likert extends Base
 
     /**
      * Extracts the TEXT component of the response
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -154,6 +161,7 @@ class Likert extends Base
 
     /**
      * Extracts any DATA which the Field Type might want to store
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -167,6 +175,7 @@ class Likert extends Base
 
     /**
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
+     *
      * @param  array $aResponses The array of responses from ResponseAnswer
      * @return array
      */
@@ -210,10 +219,11 @@ class Likert extends Base
 
     /**
      * Takes responses for this field type and extracts all the text components
+     *
      * @param  array $aResponses The array of responses from ResponseAnswer
      * @return array
      */
-    public function getstatsTextData($aResponses)
+    public function getStatsTextData($aResponses)
     {
         return array();
     }

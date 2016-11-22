@@ -12,43 +12,50 @@
 
 namespace Nails\FormBuilder\FieldType;
 
-use Nails\FormBuilder\Exception\FieldTypeExceptionRequired;
+use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
+use Nails\FormBuilder\Exception\FieldTypeExceptionRequired;
 
 class Base
 {
     /**
      * The human friendly label to give this field type
+     *
      * @var string
      */
     const LABEL = '';
 
     /**
      * Whether this field type supports multiple options (i.e like a dropdown list)
+     *
      * @var boolean
      */
     const SUPPORTS_OPTIONS = false;
 
     /**
      * Whether this field type supports setting an option as selected
+     *
      * @var boolean
      */
     const SUPPORTS_OPTIONS_SELECTED = true;
 
     /**
      * Whether this field type supports setting an option as disabled
+     *
      * @var boolean
      */
     const SUPPORTS_OPTIONS_DISABLE = true;
 
     /**
      * Whether this field type supports a default value
+     *
      * @var boolean
      */
     const SUPPORTS_DEFAULTS = false;
 
     /**
      * Whether the field type can be selected by human users
+     *
      * @var boolean
      */
     const IS_SELECTABLE = true;
@@ -57,7 +64,9 @@ class Base
 
     /**
      * Renders the field's HTML
-     * @param  $aConfig The config array
+     *
+     * @param  array $aConfig The config array
+     * @throws FieldTypeException
      * @return string
      */
     public function render($aConfig)
@@ -69,8 +78,11 @@ class Base
 
     /**
      * Validate and clean the user's entry
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
+     *
+     * @param  mixed     $mInput The form input's value
+     * @param  \stdClass $oField The complete field object
+     * @throws FieldTypeExceptionRequired
+     * @throws FieldTypeExceptionInvalidOption
      * @return mixed
      */
     public function validate($mInput, $oField)
@@ -83,7 +95,6 @@ class Base
         //  If the field accepts options then ensure that the value is a valid option for the field
         if (static::SUPPORTS_OPTIONS) {
 
-            $bIsValid     = true;
             $aValidValues = array();
 
             foreach ($oField->options->data as $oOption) {
@@ -111,6 +122,7 @@ class Base
 
     /**
      * Extracts the OPTION component of the response
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -128,6 +140,7 @@ class Base
 
     /**
      * Extracts the TEXT component of the response
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -145,6 +158,7 @@ class Base
 
     /**
      * Extracts any DATA which the Field Type might want to store
+     *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
      * @return integer
@@ -158,7 +172,8 @@ class Base
 
     /**
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
-     * @param  array  $aResponses The array of responses from ResponseAnswer
+     *
+     * @param  array $aResponses The array of responses from ResponseAnswer
      * @return array
      */
     public function getStatsChartData($aResponses)
@@ -168,7 +183,7 @@ class Base
                 array('string', 'Label'),
                 array('number', 'Responses')
             ),
-            'rows' => array()
+            'rows'    => array()
         );
 
         if (!static::SUPPORTS_OPTIONS) {
@@ -201,10 +216,11 @@ class Base
 
     /**
      * Takes responses for this field type and extracts all the text components
+     *
      * @param  array $aResponses The array of responses from ResponseAnswer
      * @return array
      */
-    public function getstatsTextData($aResponses)
+    public function getStatsTextData($aResponses)
     {
         $aOut     = array();
         $aStrings = array();

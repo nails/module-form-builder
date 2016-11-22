@@ -23,11 +23,13 @@ class Timestamp extends Base
 
     /**
      * Return the calculated default value
+     *
      * @return mixed
      */
     public function defaultValue()
     {
         $oNow = Factory::factory('DateTime');
+
         return $oNow->format('Y-m-d\TH:i:s');
     }
 }

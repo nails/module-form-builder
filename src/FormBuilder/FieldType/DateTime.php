@@ -13,26 +13,28 @@
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Factory;
-use Nails\FormBuilder\FieldType\Base;
 use Nails\FormBuilder\Exception\FieldTypeException;
+use Nails\FormBuilder\FieldType\Base;
 
 class DateTime extends Base
 {
-    const LABEL             = 'Date &amp; Time';
+    const LABEL = 'Date &amp; Time';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
-     * @param  $aData The field's data
+     *
+     * @param  array $aData The field's data
      * @return string
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-datetime', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
+        $oView = Factory::service('View');
+        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/body-datetime', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -41,8 +43,10 @@ class DateTime extends Base
 
     /**
      * Validate and clean the user's entry
+     *
      * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
+     * @param  \stdClass $oField The complete field object
+     * @throws FieldTypeException
      * @return mixed
      */
     public function validate($mInput, $oField)

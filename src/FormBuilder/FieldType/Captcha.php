@@ -17,16 +17,17 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Captcha extends Base
 {
-    const LABEL             = 'Captcha';
-    const SUPPORTS_OPTIONS  = false;
+    const LABEL = 'Captcha';
+    const SUPPORTS_OPTIONS = false;
     const SUPPORTS_DEFAULTS = false;
-    const IS_SELECTABLE     = false;
+    const IS_SELECTABLE = false;
 
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
-     * @param  $aData The field's data
+     *
+     * @param  array $aData The field's data
      * @return string
      */
     public function render($aData)
@@ -35,9 +36,10 @@ class Captcha extends Base
             return '';
         }
 
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-captcha', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
+        $oView = Factory::service('View');
+        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/body-captcha', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }

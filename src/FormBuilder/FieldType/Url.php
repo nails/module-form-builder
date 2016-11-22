@@ -17,21 +17,23 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Url extends Base
 {
-    const LABEL             = 'URL';
+    const LABEL = 'URL';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
-     * @param  $aData The field's data
+     *
+     * @param  array $aData The field's data
      * @return string
      */
     public function render($aData)
     {
-        $sOut  = get_instance()->load->view('formbuilder/fields/open', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/body-url', $aData, true);
-        $sOut .= get_instance()->load->view('formbuilder/fields/close', $aData, true);
+        $oView = Factory::service('View');
+        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/body-url', $aData, true);
+        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -40,8 +42,9 @@ class Url extends Base
 
     /**
      * Validate and clean the user's entry
-     * @param  mixed    $mInput The form input's value
-     * @param  stdClass $oField The complete field object
+     *
+     * @param  mixed     $mInput The form input's value
+     * @param  \stdClass $oField The complete field object
      * @return mixed
      */
     public function validate($mInput, $oField)

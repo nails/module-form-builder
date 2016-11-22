@@ -18,6 +18,7 @@ class DefaultValue
 {
     /**
      * The available DefaultValue definitions
+     *
      * @var array
      */
     protected $aAvailable;
@@ -25,7 +26,7 @@ class DefaultValue
     // --------------------------------------------------------------------------
 
     /**
-     * Cosntruct the model, look for available DefaultValue definitions
+     * Construct the model, look for available DefaultValue definitions
      */
     public function __construct()
     {
@@ -55,6 +56,7 @@ class DefaultValue
 
     /**
      * Looks for FieldTypes provided by components
+     *
      * @param  string $sNamespace The namespace to check
      * @param  string $sPath      The path to search
      * @param  string $sComponent The component being queried
@@ -87,6 +89,7 @@ class DefaultValue
 
     /**
      * Returns all available DefaultValue definitions
+     *
      * @return array
      */
     public function getAll()
@@ -98,6 +101,7 @@ class DefaultValue
 
     /**
      * Returns the various default values which a field can have as a flat array
+     *
      * @return array
      */
     public function getAllFlat()
@@ -116,6 +120,7 @@ class DefaultValue
 
     /**
      * Get an individual default value instance by it's slug
+     *
      * @param  string $sSlug The Default Value's slug
      * @return object
      */

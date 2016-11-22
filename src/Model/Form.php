@@ -12,8 +12,8 @@
 
 namespace Nails\FormBuilder\Model;
 
-use Nails\Factory;
 use Nails\Common\Model\Base;
+use Nails\Factory;
 
 class Form extends Base
 {
@@ -24,7 +24,7 @@ class Form extends Base
     {
         parent::__construct();
         $this->table             = NAILS_DB_PREFIX . 'formbuilder_form';
-        $this->tableAlias       = 'fbf';
+        $this->tableAlias        = 'fbf';
         $this->tableSlugColumn   = null;
         $this->tableLabelColumn  = null;
         $this->defaultSortColumn = null;
@@ -34,10 +34,11 @@ class Form extends Base
 
     /**
      * Returns all form objects
-     * @param null    $iPage            The page to return
-     * @param null    $iPerPage         The number of objects per page
-     * @param array   $aData            Data to pass to _getcount_common
-     * @param boolean $bIncludeDeleted  Whether to include deleted results
+     *
+     * @param null    $iPage           The page to return
+     * @param null    $iPerPage        The number of objects per page
+     * @param array   $aData           Data to pass to getCountCommon
+     * @param boolean $bIncludeDeleted Whether to include deleted results
      * @return array
      */
     public function getAll($iPage = null, $iPerPage = null, $aData = array(), $bIncludeDeleted = false)
@@ -63,6 +64,7 @@ class Form extends Base
 
     /**
      * Creates a new form
+     *
      * @param array   $aData         The data to create the object with
      * @param boolean $bReturnObject Whether to return just the new ID or the full object
      * @return mixed
@@ -72,9 +74,9 @@ class Form extends Base
         $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : array();
         unset($aData['fields']);
 
-        try {
+        $oDb = Factory::service('Database');
 
-            $oDb = Factory::service('Database');
+        try {
 
             $oDb->trans_begin();
 
@@ -100,12 +102,14 @@ class Form extends Base
             }
 
             $oDb->trans_commit();
+
             return $mResult;
 
         } catch (\Exception $e) {
 
             $oDb->trans_rollback();
             $this->setError($e->getMessage());
+
             return false;
         }
     }
@@ -114,6 +118,7 @@ class Form extends Base
 
     /**
      * Update an existing form
+     *
      * @param int   $iId   The ID of the form to update
      * @param array $aData The data to update the form with
      * @return mixed
@@ -123,9 +128,9 @@ class Form extends Base
         $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : array();
         unset($aData['fields']);
 
-        try {
+        $oDb = Factory::service('Database');
 
-            $oDb = Factory::service('Database');
+        try {
 
             $oDb->trans_begin();
 
@@ -147,12 +152,14 @@ class Form extends Base
             }
 
             $oDb->trans_commit();
+
             return true;
 
         } catch (\Exception $e) {
 
             $oDb->trans_rollback();
             $this->setError($e->getMessage());
+
             return false;
         }
     }
@@ -161,6 +168,7 @@ class Form extends Base
 
     /**
      * Creates a new copy of an existing form
+     *
      * @param  integer $iFormId       The ID of the form to duplicate
      * @param  boolean $bReturnObject Whether to return the entire new form object, or just the ID
      * @param  array   $aReturnData   An array to pass to the getById() call when $bReturnObject is true
@@ -168,10 +176,11 @@ class Form extends Base
      */
     public function copy($iFormId, $bReturnObject = false, $aReturnData = array())
     {
+        $oDb = Factory::service('Database');
+
         try {
 
             //  Begin the transaction
-            $oDb = Factory::service('Database');
             $oDb->trans_begin();
 
             //  Check form exists
@@ -212,7 +221,6 @@ class Form extends Base
             //  Fields
             $oDb->where_in('form_id', $oForm->id);
             $aFormFieldRows = $oDb->get($sTableFields)->result();
-            $aFormFieldIds  = array();
             foreach ($aFormFieldRows as $oRow) {
 
                 $iOldFieldId = $oRow->id;
@@ -259,6 +267,7 @@ class Form extends Base
 
             $oDb->trans_rollback();
             $this->setError($e->getMessage());
+
             return false;
         }
     }
@@ -271,7 +280,8 @@ class Form extends Base
         $aIntegers = array(),
         $aBools = array(),
         $aFloats = array()
-    ) {
+    )
+    {
 
         $aBools[] = 'has_captcha';
 
