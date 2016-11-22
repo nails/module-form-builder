@@ -208,6 +208,13 @@ return array(
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Radio();
             }
         },
+        'FieldTypeScale' => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Scale')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\Scale();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\Scale();
+            }
+        },
         'FieldTypeSelect' => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Select')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Select();
