@@ -78,7 +78,6 @@ class Scale extends Base
      */
     public function getStatsChartData($aResponses)
     {
-
         $aOut = array(
             'columns' => array(
                 array('string', 'Label'),
