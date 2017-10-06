@@ -31,7 +31,7 @@ class DefaultValue
     public function __construct()
     {
         //  Look for available FieldTypes
-        $this->aAvailable = array();
+        $this->aAvailable = [];
 
         $aComponents = _NAILS_GET_COMPONENTS();
         foreach ($aComponents as $oComponent) {
@@ -60,6 +60,7 @@ class DefaultValue
      * @param  string $sNamespace The namespace to check
      * @param  string $sPath      The path to search
      * @param  string $sComponent The component being queried
+     *
      * @return void
      */
     protected function autoLoadDefaults($sNamespace, $sPath, $sComponent)
@@ -73,13 +74,13 @@ class DefaultValue
             foreach ($aFiles as $sFile) {
                 $sClassName = $sClassNamespace . basename($sFile, '.php');
                 if (class_exists($sClassName)) {
-                    $this->aAvailable[] = (object) array(
+                    $this->aAvailable[] = (object) [
                         'slug'     => $sClassName,
                         'label'    => $sClassName::LABEL,
                         'model'    => 'DefaultValue' . basename($sFile, '.php'),
                         'provider' => $sComponent,
-                        'instance' => null
-                    );
+                        'instance' => null,
+                    ];
                 }
             }
         }
@@ -107,7 +108,7 @@ class DefaultValue
     public function getAllFlat()
     {
         $aAvailable = $this->getAll();
-        $aOut       = array();
+        $aOut       = [];
 
         foreach ($aAvailable as $oDefault) {
             $aOut[$oDefault->slug] = $oDefault->label;
@@ -122,6 +123,7 @@ class DefaultValue
      * Get an individual default value instance by it's slug
      *
      * @param  string $sSlug The Default Value's slug
+     *
      * @return object
      */
     public function getBySlug($sSlug)

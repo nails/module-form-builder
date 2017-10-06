@@ -31,7 +31,7 @@ class FieldType
     public function __construct()
     {
         //  Look for available FieldTypes
-        $this->aAvailable = array();
+        $this->aAvailable = [];
 
         $aComponents = _NAILS_GET_COMPONENTS();
         foreach ($aComponents as $oComponent) {
@@ -60,6 +60,7 @@ class FieldType
      * @param  string $sNamespace The namespace to check
      * @param  string $sPath      The path to search
      * @param  string $sComponent The component being queried
+     *
      * @return void
      */
     protected function autoLoadTypes($sNamespace, $sPath, $sComponent)
@@ -73,7 +74,7 @@ class FieldType
             foreach ($aFiles as $sFile) {
                 $sClassName = $sClassNamespace . basename($sFile, '.php');
                 if (class_exists($sClassName)) {
-                    $this->aAvailable[] = (object) array(
+                    $this->aAvailable[] = (object) [
                         'slug'               => $sClassName,
                         'label'              => $sClassName::LABEL,
                         'model'              => 'FieldType' . basename($sFile, '.php'),
@@ -81,8 +82,8 @@ class FieldType
                         'instance'           => null,
                         'is_selectable'      => $sClassName::IS_SELECTABLE,
                         'can_option_select'  => $sClassName::SUPPORTS_OPTIONS_SELECTED,
-                        'can_option_disable' => $sClassName::SUPPORTS_OPTIONS_DISABLE
-                    );
+                        'can_option_disable' => $sClassName::SUPPORTS_OPTIONS_DISABLE,
+                    ];
                 }
             }
         }
@@ -94,11 +95,12 @@ class FieldType
      * Returns all available Field definitions
      *
      * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     *
      * @return array
      */
     public function getAll($bOnlySelectable = false)
     {
-        $aOut = array();
+        $aOut = [];
 
         foreach ($this->aAvailable as $oType) {
             $sClassName = $oType->slug;
@@ -116,12 +118,13 @@ class FieldType
      * Return all the available types of field which can be created as a flat array
      *
      * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     *
      * @return array
      */
     public function getAllFlat($bOnlySelectable = false)
     {
         $aAvailable = $this->getAll($bOnlySelectable);
-        $aOut       = array();
+        $aOut       = [];
 
         foreach ($aAvailable as $oType) {
             $aOut[$oType->slug] = $oType->label;
@@ -136,12 +139,13 @@ class FieldType
      * Returns the types which support defining multiple options
      *
      * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     *
      * @return array
      */
     public function getAllWithOptions($bOnlySelectable = false)
     {
         $aAvailable = $this->getAll($bOnlySelectable);
-        $aOut       = array();
+        $aOut       = [];
 
         foreach ($aAvailable as $oType) {
             $sClassName = $oType->slug;
@@ -159,12 +163,13 @@ class FieldType
      * Returns the types which support a default value
      *
      * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     *
      * @return array
      */
     public function getAllWithDefaultValue($bOnlySelectable = false)
     {
         $aAvailable = $this->getAll($bOnlySelectable);
-        $aOut       = array();
+        $aOut       = [];
 
         foreach ($aAvailable as $oType) {
             $sClassName = $oType->slug;
@@ -183,6 +188,7 @@ class FieldType
      *
      * @param  string  $sSlug           The Field Type's slug
      * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     *
      * @return object
      */
     public function getBySlug($sSlug, $bOnlySelectable = false)

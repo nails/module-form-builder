@@ -12,8 +12,8 @@
 
 namespace Nails\FormBuilder\Model;
 
-use Nails\Factory;
 use Nails\Common\Model\Base;
+use Nails\Factory;
 
 class FormField extends Base
 {
@@ -25,7 +25,7 @@ class FormField extends Base
         parent::__construct();
 
         $this->table             = NAILS_DB_PREFIX . 'formbuilder_form_field';
-        $this->tableAlias       = 'ff';
+        $this->tableAlias        = 'ff';
         $this->defaultSortColumn = 'order';
     }
 
@@ -33,14 +33,23 @@ class FormField extends Base
 
     /**
      * Returns all field objects
-     * @param null    $iPage            The page to return
-     * @param null    $iPerPage         The number of objects per page
-     * @param array   $aData            Data to pass to getCountCommon
-     * @param boolean $bIncludeDeleted  Whether to include deleted results
+     *
+     * @param null    $iPage           The page to return
+     * @param null    $iPerPage        The number of objects per page
+     * @param array   $aData           Data to pass to getCountCommon
+     * @param boolean $bIncludeDeleted Whether to include deleted results
+     *
      * @return array
      */
-    public function getAll($iPage = null, $iPerPage = null, $aData = array(), $bIncludeDeleted = false)
+    public function getAll($iPage = null, $iPerPage = null, $aData = [], $bIncludeDeleted = false)
     {
+        //  If the first value is an array then treat as if called with getAll(null, null, $aData);
+        //  @todo (Pablo - 2017-10-06) - Convert these to expandable fields
+        if (is_array($iPage)) {
+            $aData = $iPage;
+            $iPage = null;
+        }
+
         $aItems = parent::getAll($iPage, $iPerPage, $aData, $bIncludeDeleted);
 
         if (!empty($aItems)) {
@@ -69,14 +78,15 @@ class FormField extends Base
      * @param  array  $aIntegers Fields which should be cast as integers if numerical and not null
      * @param  array  $aBools    Fields which should be cast as booleans if not null
      * @param  array  $aFloats   Fields which should be cast as floats if not null
+     *
      * @return void
      */
     protected function formatObject(
         &$oObj,
-        $aData = array(),
-        $aIntegers = array(),
-        $aBools = array(),
-        $aFloats = array()
+        $aData = [],
+        $aIntegers = [],
+        $aBools = [],
+        $aFloats = []
     ) {
 
         $aIntegers[] = 'form_id';
@@ -89,13 +99,15 @@ class FormField extends Base
 
     /**
      * Creates a new field
+     *
      * @param array   $aData         The data to create the object with
      * @param boolean $bReturnObject Whether to return just the new ID or the full object
+     *
      * @return mixed
      */
-    public function create($aData = array(), $bReturnObject = false)
+    public function create($aData = [], $bReturnObject = false)
     {
-        $aOptions = array_key_exists('options', $aData) ? $aData['options'] : array();
+        $aOptions = array_key_exists('options', $aData) ? $aData['options'] : [];
         unset($aData['options']);
 
         try {
@@ -139,13 +151,15 @@ class FormField extends Base
 
     /**
      * Update an existing field
+     *
      * @param int   $iId   The ID of the field to update
      * @param array $aData The data to update the field with
+     *
      * @return mixed
      */
-    public function update($iId, $aData = array())
+    public function update($iId, $aData = [])
     {
-        $aOptions = array_key_exists('options', $aData) ? $aData['options'] : array();
+        $aOptions = array_key_exists('options', $aData) ? $aData['options'] : [];
         unset($aData['options']);
 
         try {

@@ -39,10 +39,18 @@ class Form extends Base
      * @param null    $iPerPage        The number of objects per page
      * @param array   $aData           Data to pass to getCountCommon
      * @param boolean $bIncludeDeleted Whether to include deleted results
+     *
      * @return array
      */
-    public function getAll($iPage = null, $iPerPage = null, $aData = array(), $bIncludeDeleted = false)
+    public function getAll($iPage = null, $iPerPage = null, $aData = [], $bIncludeDeleted = false)
     {
+        //  If the first value is an array then treat as if called with getAll(null, null, $aData);
+        //  @todo (Pablo - 2017-10-06) - Convert these to expandable fields
+        if (is_array($iPage)) {
+            $aData = $iPage;
+            $iPage = null;
+        }
+
         $aItems = parent::getAll($iPage, $iPerPage, $aData, $bIncludeDeleted);
 
         if (!empty($aItems)) {
@@ -67,11 +75,12 @@ class Form extends Base
      *
      * @param array   $aData         The data to create the object with
      * @param boolean $bReturnObject Whether to return just the new ID or the full object
+     *
      * @return mixed
      */
-    public function create($aData = array(), $bReturnObject = false)
+    public function create($aData = [], $bReturnObject = false)
     {
-        $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : array();
+        $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : [];
         unset($aData['fields']);
 
         $oDb = Factory::service('Database');
@@ -121,11 +130,12 @@ class Form extends Base
      *
      * @param int   $iId   The ID of the form to update
      * @param array $aData The data to update the form with
+     *
      * @return mixed
      */
-    public function update($iId, $aData = array())
+    public function update($iId, $aData = [])
     {
-        $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : array();
+        $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : [];
         unset($aData['fields']);
 
         $oDb = Factory::service('Database');
@@ -172,9 +182,10 @@ class Form extends Base
      * @param  integer $iFormId       The ID of the form to duplicate
      * @param  boolean $bReturnObject Whether to return the entire new form object, or just the ID
      * @param  array   $aReturnData   An array to pass to the getById() call when $bReturnObject is true
+     *
      * @return mixed
      */
-    public function copy($iFormId, $bReturnObject = false, $aReturnData = array())
+    public function copy($iFormId, $bReturnObject = false, $aReturnData = [])
     {
         $oDb = Factory::service('Database');
 
@@ -184,7 +195,7 @@ class Form extends Base
             $oDb->trans_begin();
 
             //  Check form exists
-            $oForm = $this->getById($iFormId, array('includeAll' => true));
+            $oForm = $this->getById($iFormId, ['includeAll' => true]);
 
             if (empty($oForm)) {
                 throw new \Exception('Not a valid form ID.', 1);
@@ -276,12 +287,11 @@ class Form extends Base
 
     protected function formatObject(
         &$oObj,
-        $aData = array(),
-        $aIntegers = array(),
-        $aBools = array(),
-        $aFloats = array()
-    )
-    {
+        $aData = [],
+        $aIntegers = [],
+        $aBools = [],
+        $aFloats = []
+    ) {
 
         $aBools[] = 'has_captcha';
 
