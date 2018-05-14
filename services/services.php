@@ -173,6 +173,13 @@ return [
                 return new \Nails\FormBuilder\FormBuilder\FieldType\LikertImportance();
             }
         },
+        'FieldTypeLikertInterest'   => function () {
+            if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertInterest')) {
+                return new \App\FormBuilder\FormBuilder\FieldType\LikertInterest();
+            } else {
+                return new \Nails\FormBuilder\FormBuilder\FieldType\LikertInterest();
+            }
+        },
         'FieldTypeLikertLikelihood' => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertLikelihood')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\LikertLikelihood();
