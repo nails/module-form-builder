@@ -21,11 +21,11 @@ class LikertImportance extends Likert
      *
      * @var array
      */
-    protected $aLikertTerms = array(
+    protected $aLikertTerms = [
         'Very Important',
         'Important',
         'Moderately Important',
         'Of Little Importance',
-        'Unimportant'
-    );
+        'Unimportant',
+    ];
 }

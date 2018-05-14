@@ -12,17 +12,17 @@ if (!empty($_POST[$sFieldName])) {
 
         if (!empty($aField['options'])) {
 
-            $aField['options'] = (object) array(
+            $aField['options'] = (object) [
                 'count' => count($aField['options']),
-                'data'  => $aField['options']
-            );
+                'data'  => $aField['options'],
+            ];
 
         } else {
 
-            $aField['options'] = (object) array(
+            $aField['options'] = (object) [
                 'count' => 0,
-                'data'  => array()
-            );
+                'data'  => [],
+            ];
         }
 
         foreach ($aField['options']->data as &$aOption) {
@@ -150,7 +150,7 @@ if (!empty($_POST[$sFieldName])) {
                                     set_value($sFieldName . '[' . $i . '][default_value]', $oField->default_value),
                                     'class="select2 field-default"'
                                 );
-                            ?>
+                                ?>
                             </div>
                             <div class="no-default-value js-no-default-value text-muted">
                                 Field type does not support default values

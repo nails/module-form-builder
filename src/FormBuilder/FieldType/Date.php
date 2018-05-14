@@ -18,7 +18,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Date extends Base
 {
-    const LABEL = 'Date';
+    const LABEL             = 'Date';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
@@ -27,14 +27,15 @@ class Date extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
     {
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-date', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-date', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -46,6 +47,7 @@ class Date extends Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeException
      * @return mixed
      */

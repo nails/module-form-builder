@@ -19,9 +19,9 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Likert extends Base
 {
-    const LABEL = 'Likert - Agreement';
-    const SUPPORTS_DEFAULTS = false;
-    const SUPPORTS_OPTIONS = true;
+    const LABEL                     = 'Likert - Agreement';
+    const SUPPORTS_DEFAULTS         = false;
+    const SUPPORTS_OPTIONS          = true;
     const SUPPORTS_OPTIONS_SELECTED = false;
 
     // --------------------------------------------------------------------------
@@ -31,13 +31,13 @@ class Likert extends Base
      *
      * @var array
      */
-    protected $aLikertTerms = array(
+    protected $aLikertTerms = [
         'Strongly Agree',
         'Agree',
         'Undecided',
         'Disagree',
-        'Strongly Disagree'
-    );
+        'Strongly Disagree',
+    ];
 
     // --------------------------------------------------------------------------
 
@@ -45,6 +45,7 @@ class Likert extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
@@ -55,8 +56,8 @@ class Likert extends Base
 
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-likert', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-likert', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -68,6 +69,7 @@ class Likert extends Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeExceptionInvalidOption
      * @throws FieldTypeException
      * @return boolean
@@ -82,7 +84,7 @@ class Likert extends Base
             //  form is build using the option value as the key rather than the value.
         } catch (FieldTypeExceptionInvalidOption $e) {
 
-            $aValidValues = array();
+            $aValidValues = [];
 
             foreach ($oField->options->data as $oOption) {
                 if (!$oOption->is_disabled) {
@@ -132,6 +134,7 @@ class Likert extends Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractOptionId($sKey, $mValue)
@@ -150,6 +153,7 @@ class Likert extends Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractText($sKey, $mValue)
@@ -164,6 +168,7 @@ class Likert extends Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractData($sKey, $mValue)
@@ -177,39 +182,40 @@ class Likert extends Base
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
      *
      * @param  array $aResponses The array of responses from ResponseAnswer
+     *
      * @return array
      */
     public function getStatsChartData($aResponses)
     {
         //  Work out all the options and assign a value
-        $aCharts = array();
+        $aCharts = [];
         foreach ($aResponses as $oResponse) {
             if (!empty($oResponse->option)) {
                 if (!array_key_exists($oResponse->option->label, $aCharts)) {
-                    $aCharts[$oResponse->option->label] = array(0, 0, 0, 0, 0);
+                    $aCharts[$oResponse->option->label] = [0, 0, 0, 0, 0];
                 }
                 $aCharts[$oResponse->option->label][$oResponse->data]++;
             }
         }
 
-        $aOut = array();
+        $aOut = [];
 
         foreach ($aCharts as $sLabel => $aRows) {
 
-            $aOut[] = array(
+            $aOut[] = [
                 'title'   => $sLabel,
-                'columns' => array(
-                    array('string', 'Label'),
-                    array('number', 'Responses')
-                ),
-                'rows'    => array(
-                    array($this->aLikertTerms[0], $aRows[0]),
-                    array($this->aLikertTerms[1], $aRows[1]),
-                    array($this->aLikertTerms[2], $aRows[2]),
-                    array($this->aLikertTerms[3], $aRows[3]),
-                    array($this->aLikertTerms[4], $aRows[4])
-                )
-            );
+                'columns' => [
+                    ['string', 'Label'],
+                    ['number', 'Responses'],
+                ],
+                'rows'    => [
+                    [$this->aLikertTerms[0], $aRows[0]],
+                    [$this->aLikertTerms[1], $aRows[1]],
+                    [$this->aLikertTerms[2], $aRows[2]],
+                    [$this->aLikertTerms[3], $aRows[3]],
+                    [$this->aLikertTerms[4], $aRows[4]],
+                ],
+            ];
         }
 
         return $aOut;
@@ -221,6 +227,7 @@ class Likert extends Base
      * Takes responses for this field type and extracts all the text components
      *
      * @param  array $aResponses The array of responses from ResponseAnswer
+     *
      * @return array
      */
     public function getStatsTextData($aResponses)

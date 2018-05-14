@@ -21,11 +21,11 @@ class LikertFrequency extends Likert
      *
      * @var array
      */
-    protected $aLikertTerms = array(
+    protected $aLikertTerms = [
         'Very Frequently',
         'Frequently',
         'Occassionally',
         'Rarely',
-        'Never'
-    );
+        'Never',
+    ];
 }

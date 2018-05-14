@@ -17,7 +17,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Checkbox extends Base
 {
-    const LABEL = 'Checkbox';
+    const LABEL            = 'Checkbox';
     const SUPPORTS_OPTIONS = true;
 
     // --------------------------------------------------------------------------
@@ -26,14 +26,15 @@ class Checkbox extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
     {
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-checkbox', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-checkbox', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }

@@ -18,7 +18,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Select extends Base
 {
-    const LABEL = 'Dropdown';
+    const LABEL            = 'Dropdown';
     const SUPPORTS_OPTIONS = true;
 
     // --------------------------------------------------------------------------
@@ -27,14 +27,15 @@ class Select extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
     {
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-select', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-select', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -46,6 +47,7 @@ class Select extends Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeException
      * @return boolean|string   boolean true if valid, string with error if invalid
      */

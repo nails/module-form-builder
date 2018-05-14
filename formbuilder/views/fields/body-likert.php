@@ -13,7 +13,7 @@
         <tbody>
             <?php
 
-            $aOptions = array();
+            $aOptions = [];
             foreach ($options as $oOption) {
 
                 if (!$oOption->is_disabled) {

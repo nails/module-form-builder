@@ -1,6 +1,6 @@
 <?php
 
-$aOptions = array();
+$aOptions = [];
 foreach ($options as $oOption) {
 
     $sDisabled = $oOption->is_disabled ? 'disabled="disabled"' : '';

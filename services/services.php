@@ -1,36 +1,36 @@
 <?php
 
-return array(
-    'models' => array(
-        'Form' => function () {
+return [
+    'models' => [
+        'Form'                      => function () {
             if (class_exists('\App\FormBuilder\Model\Form')) {
                 return new \App\FormBuilder\Model\Form();
             } else {
                 return new \Nails\FormBuilder\Model\Form();
             }
         },
-        'FormField' => function () {
+        'FormField'                 => function () {
             if (class_exists('\App\FormBuilder\Model\FormField')) {
                 return new \App\FormBuilder\Model\FormField();
             } else {
                 return new \Nails\FormBuilder\Model\FormField();
             }
         },
-        'FormFieldOption' => function () {
+        'FormFieldOption'           => function () {
             if (class_exists('\App\FormBuilder\Model\FormFieldOption')) {
                 return new \App\FormBuilder\Model\FormFieldOption();
             } else {
                 return new \Nails\FormBuilder\Model\FormFieldOption();
             }
         },
-        'DefaultValue' => function () {
+        'DefaultValue'              => function () {
             if (class_exists('\App\FormBuilder\Model\DefaultValue')) {
                 return new \App\FormBuilder\Model\DefaultValue();
             } else {
                 return new \Nails\FormBuilder\Model\DefaultValue();
             }
         },
-        'FieldType' => function () {
+        'FieldType'                 => function () {
             if (class_exists('\App\FormBuilder\Model\FieldType')) {
                 return new \App\FormBuilder\Model\FieldType();
             } else {
@@ -42,28 +42,28 @@ return array(
          * Default Values
          *  Silly namespace to avoid collission between app provided field types and app overrides.
          */
-        'DefaultValueCustom' => function () {
+        'DefaultValueCustom'        => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\Custom')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\Custom();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\DefaultValue\Custom();
             }
         },
-        'DefaultValueNone' => function () {
+        'DefaultValueNone'          => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\None')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\None();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\DefaultValue\None();
             }
         },
-        'DefaultValueTimestamp' => function () {
+        'DefaultValueTimestamp'     => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\Timestamp')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\Timestamp();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\DefaultValue\Timestamp();
             }
         },
-        'DefaultValueUserEmail' => function () {
+        'DefaultValueUserEmail'     => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\UserEmail')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\UserEmail();
             } else {
@@ -77,21 +77,21 @@ return array(
                 return new \Nails\FormBuilder\FormBuilder\DefaultValue\UserFirstName();
             }
         },
-        'DefaultValueUserId' => function () {
+        'DefaultValueUserId'        => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\UserId')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\UserId();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\DefaultValue\UserId();
             }
         },
-        'DefaultValueUserLastName' => function () {
+        'DefaultValueUserLastName'  => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\UserLastName')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\UserLastName();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\DefaultValue\UserLastName();
             }
         },
-        'DefaultValueUserName' => function () {
+        'DefaultValueUserName'      => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\UserName')) {
                 return new \App\FormBuilder\FormBuilder\DefaultValue\UserName();
             } else {
@@ -103,63 +103,63 @@ return array(
          * Field Types
          * Silly namespace to avoid collission between app provided field types and app overrides.
          */
-        'FieldTypeCaptcha' => function () {
+        'FieldTypeCaptcha'          => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Captcha')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Captcha();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Captcha();
             }
         },
-        'FieldTypeCheckbox' => function () {
+        'FieldTypeCheckbox'         => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Checkbox')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Checkbox();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Checkbox();
             }
         },
-        'FieldTypeDate' => function () {
+        'FieldTypeDate'             => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Date')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Date();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Date();
             }
         },
-        'FieldTypeDateTime' => function () {
+        'FieldTypeDateTime'         => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\DateTime')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\DateTime();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\DateTime();
             }
         },
-        'FieldTypeEmail' => function () {
+        'FieldTypeEmail'            => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Email')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Email();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Email();
             }
         },
-        'FieldTypeFile' => function () {
+        'FieldTypeFile'             => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\File')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\File();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\File();
             }
         },
-        'FieldTypeHidden' => function () {
+        'FieldTypeHidden'           => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Hidden')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Hidden();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Hidden();
             }
         },
-        'FieldTypeLikert' => function () {
+        'FieldTypeLikert'           => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Likert')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Likert();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Likert();
             }
         },
-        'FieldTypeLikertFrequency' => function () {
+        'FieldTypeLikertFrequency'  => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertFrequency')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\LikertFrequency();
             } else {
@@ -187,75 +187,75 @@ return array(
                 return new \Nails\FormBuilder\FormBuilder\FieldType\LikertUsefulness();
             }
         },
-        'FieldTypeNumber' => function () {
+        'FieldTypeNumber'           => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Number')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Number();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Number();
             }
         },
-        'FieldTypePassword' => function () {
+        'FieldTypePassword'         => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Password')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Password();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Password();
             }
         },
-        'FieldTypeRadio' => function () {
+        'FieldTypeRadio'            => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Radio')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Radio();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Radio();
             }
         },
-        'FieldTypeScale' => function () {
+        'FieldTypeScale'            => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Scale')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Scale();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Scale();
             }
         },
-        'FieldTypeSelect' => function () {
+        'FieldTypeSelect'           => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Select')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Select();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Select();
             }
         },
-        'FieldTypeTel' => function () {
+        'FieldTypeTel'              => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Tel')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Tel();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Tel();
             }
         },
-        'FieldTypeText' => function () {
+        'FieldTypeText'             => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Text')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Text();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Text();
             }
         },
-        'FieldTypeTextarea' => function () {
+        'FieldTypeTextarea'         => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Textarea')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Textarea();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Textarea();
             }
         },
-        'FieldTypeTime' => function () {
+        'FieldTypeTime'             => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Time')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Time();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Time();
             }
         },
-        'FieldTypeUrl' => function () {
+        'FieldTypeUrl'              => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Url')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\Url();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Url();
             }
-        }
-    )
-);
+        },
+    ],
+];

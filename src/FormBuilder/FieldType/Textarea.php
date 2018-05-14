@@ -17,7 +17,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Textarea extends Base
 {
-    const LABEL = 'Textarea';
+    const LABEL             = 'Textarea';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
@@ -26,14 +26,15 @@ class Textarea extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
     {
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-textarea', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-textarea', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }

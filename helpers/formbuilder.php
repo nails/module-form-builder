@@ -18,25 +18,27 @@ if (!function_exists('adminNormalizeFormData')) {
 
     /**
      * Cleans up post data submitted by the admin form builder
+     *
      * @param  integer $iFormId     The form ID, if any
      * @param  boolean $bHasCaptcha Whether the form should have a captcha
      * @param  array   $aFields     The fields to parse
+     *
      * @return array
      */
-    function adminNormalizeFormData($iFormId = null, $bHasCaptcha = false, $aFields = array())
+    function adminNormalizeFormData($iFormId = null, $bHasCaptcha = false, $aFields = [])
     {
         $iFieldOrder = 0;
-        $aOut        = array(
+        $aOut        = [
             'id'          => (int) $iFormId ?: null,
             'has_captcha' => (bool) $bHasCaptcha ?: false,
-            'fields'      => array()
-        );
+            'fields'      => [],
+        ];
 
         if (!empty($aFields)) {
 
             foreach ($aFields as $aField) {
 
-                $aTemp = array(
+                $aTemp = [
                     'id'                => !empty($aField['id']) ? (int) $aField['id'] : null,
                     'form_id'           => $aOut['id'],
                     'type'              => !empty($aField['type']) ? $aField['type'] : 'TEXT',
@@ -47,8 +49,8 @@ if (!function_exists('adminNormalizeFormData')) {
                     'default_value'     => !empty($aField['default_value']) ? $aField['default_value'] : '',
                     'custom_attributes' => !empty($aField['custom_attributes']) ? $aField['custom_attributes'] : '',
                     'order'             => $iFieldOrder,
-                    'options'           => array()
-                );
+                    'options'           => [],
+                ];
 
                 if (!empty($aField['options'])) {
 
@@ -56,13 +58,13 @@ if (!function_exists('adminNormalizeFormData')) {
 
                     foreach ($aField['options'] as $aOption) {
 
-                        $aTemp['options'][] = array(
+                        $aTemp['options'][] = [
                             'id'          => !empty($aOption['id']) ? (int) $aOption['id'] : null,
                             'label'       => !empty($aOption['label']) ? $aOption['label'] : '',
                             'is_selected' => !empty($aOption['is_selected']) ? $aOption['is_selected'] : false,
                             'is_disabled' => !empty($aOption['is_disabled']) ? $aOption['is_disabled'] : false,
-                            'order'       => $iOptionOrder
-                        );
+                            'order'       => $iOptionOrder,
+                        ];
 
                         $iOptionOrder++;
                     }
@@ -83,13 +85,15 @@ if (!function_exists('adminValidateFormData')) {
 
     /**
      * Validates post data submitted by the admin form builder
+     *
      * @param  string $aFormData The form data to validate
+     *
      * @return boolean|array
      */
     function adminValidateFormData($aFormData)
     {
         $aNormalized = adminNormalizeFormData(null, $aFormData);
-        $aErrors     = array();
+        $aErrors     = [];
 
         try {
 
@@ -109,7 +113,9 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
 
     /**
      * Loads up all the assets required for the form builder
+     *
      * @param  string $sSelector The selector for the element(s) to which the JS should bind
+     *
      * @return array
      */
     function adminLoadFormBuilderAssets($sSelector)
@@ -143,24 +149,26 @@ if (!function_exists('adminLoadFormBuilderView')) {
 
     /**
      * Loads the markup for the form builder
+     *
      * @param  string $sId     The ID to give the form
      * @param  array  $aFields Any existing fields to pre-render
+     *
      * @return string
      */
-    function adminLoadFormBuilderView($sId, $sFieldName = 'fields', $aFields = array())
+    function adminLoadFormBuilderView($sId, $sFieldName = 'fields', $aFields = [])
     {
         $oFieldTypeModel    = Factory::model('FieldType', 'nailsapp/module-form-builder');
         $oDefaultValueModel = Factory::model('DefaultValue', 'nailsapp/module-form-builder');
 
         return get_instance()->load->view(
             'formbuilder/admin/fields',
-            array(
+            [
                 'sId'            => $sId,
                 'sFieldName'     => $sFieldName,
                 'aFields'        => $aFields,
-                'aFieldTypes'    => array('Select...') + $oFieldTypeModel->getAllFlat(true),
-                'aDefaultValues' => array('No Default Value') + $oDefaultValueModel->getAllFlat(true),
-            )
+                'aFieldTypes'    => ['Select...'] + $oFieldTypeModel->getAllFlat(true),
+                'aDefaultValues' => ['No Default Value'] + $oDefaultValueModel->getAllFlat(true),
+            ]
         );
     }
 }
@@ -171,7 +179,9 @@ if (!function_exists('formBuilderRender')) {
 
     /**
      * Renders the markup for a form
+     *
      * @param  array $aFormData The data to build the form with
+     *
      * @return string
      */
     function formBuilderRender($aFormData)
@@ -183,7 +193,7 @@ if (!function_exists('formBuilderRender')) {
         $bHasCaptcha   = !empty($aFormData['has_captcha']);
         $sCaptchaError = !empty($aFormData['captcha_error']) ? $aFormData['captcha_error'] : null;
         $sFieldKey     = !empty($aFormData['field_key']) ? strtoupper($aFormData['field_key']) : '';
-        $aFields       = !empty($aFormData['fields']) ? $aFormData['fields'] : array();
+        $aFields       = !empty($aFormData['fields']) ? $aFormData['fields'] : [];
 
         if (!empty($aFormData['buttons'])) {
 
@@ -191,18 +201,18 @@ if (!function_exists('formBuilderRender')) {
 
         } else {
 
-            $aButtons = array(
-                (object) array(
+            $aButtons = [
+                (object) [
                     'type'  => 'submit',
                     'class' => 'btn btn-primary',
                     'label' => 'Submit',
-                    'attr'  => ''
-                )
-            );
+                    'attr'  => '',
+                ],
+            ];
         }
 
         //  Start building the form
-        $sOut  = form_open_multipart($sFormAction, 'method="' . $sFormMethod . '" ' . $sFormAttr);
+        $sOut = form_open_multipart($sFormAction, 'method="' . $sFormMethod . '" ' . $sFormAttr);
         $sOut .= form_hidden('submitting', true);
 
         //  Render the form fields
@@ -215,12 +225,12 @@ if (!function_exists('formBuilderRender')) {
             $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
 
             $sId   = 'form-' . $sUuid . '-' . $iCounter;
-            $aAttr = array(
+            $aAttr = [
                 $sId ? 'id="' . $sId . '"' : '',
                 $oField->placeholder ? 'placeholder="' . $oField->placeholder . '"' : '',
                 $oField->is_required ? 'required="required"' : '',
-                $oField->custom_attributes
-            );
+                $oField->custom_attributes,
+            ];
 
             if (!empty($oFieldType)) {
 
@@ -235,19 +245,19 @@ if (!function_exists('formBuilderRender')) {
                 }
 
                 $sOut .= $oFieldType->render(
-                    array(
-                        'id'          => $sId,
-                        'key'         => 'field[' . $oField->id . ']',
-                        'label'       => $oField->label,
-                        'sub_label'   => $oField->sub_label,
-                        'default'     => $sDefaultValue,
-                        'value'       => isset($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : $sDefaultValue,
-                        'required'    => $oField->is_required,
-                        'class'       => 'form-control',
-                        'attributes'  => implode(' ', $aAttr),
-                        'options'     => $oField->options->data,
-                        'error'       => !empty($oField->error) ? $oField->error : null
-                    )
+                    [
+                        'id'         => $sId,
+                        'key'        => 'field[' . $oField->id . ']',
+                        'label'      => $oField->label,
+                        'sub_label'  => $oField->sub_label,
+                        'default'    => $sDefaultValue,
+                        'value'      => isset($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : $sDefaultValue,
+                        'required'   => $oField->is_required,
+                        'class'      => 'form-control',
+                        'attributes' => implode(' ', $aAttr),
+                        'options'    => $oField->options->data,
+                        'error'      => !empty($oField->error) ? $oField->error : null,
+                    ]
                 );
             }
 
@@ -268,25 +278,25 @@ if (!function_exists('formBuilderRender')) {
                 if (!empty($oFieldType)) {
 
                     $sId   = 'form-' . $sUuid . '-' . $iCounter;
-                    $aAttr = array(
+                    $aAttr = [
                         $sId ? 'id="' . $sId . '"' : '',
-                    );
+                    ];
 
                     $sOut .= $oFieldType->render(
-                        array(
-                            'id'          => $sId,
-                            'key'         => 'captcha_response',
-                            'label'       => '',
-                            'sub_label'   => null,
-                            'default'     => null,
-                            'value'       => null,
-                            'required'    => null,
-                            'class'       => 'form-control',
-                            'attributes'  => implode(' ', $aAttr),
-                            'options'     => null,
-                            'error'       => !empty($sCaptchaError) ? $sCaptchaError : null,
-                            'captcha'     => $oCaptcha
-                        )
+                        [
+                            'id'         => $sId,
+                            'key'        => 'captcha_response',
+                            'label'      => '',
+                            'sub_label'  => null,
+                            'default'    => null,
+                            'value'      => null,
+                            'required'   => null,
+                            'class'      => 'form-control',
+                            'attributes' => implode(' ', $aAttr),
+                            'options'    => null,
+                            'error'      => !empty($sCaptchaError) ? $sCaptchaError : null,
+                            'captcha'    => $oCaptcha,
+                        ]
                     );
                 }
             }
@@ -322,8 +332,10 @@ if (!function_exists('formBuilderValidate')) {
 
     /**
      * Valdates $aUserData against $aFormData
+     *
      * @param  array $aFormFields The form fields
      * @param  array $aUserData   The posted user data
+     *
      * @return boolean|array
      */
     function formBuilderValidate($aFormFields, $aUserData)
@@ -344,7 +356,7 @@ if (!function_exists('formBuilderValidate')) {
                     }
                     $aUserData[$oField->id] = $oFieldType->validate($aUserData[$oField->id], $oField);
 
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
 
                     $oField->error = $e->getMessage();
                     $bIsValid      = false;
@@ -362,16 +374,18 @@ if (!function_exists('formBuilderParseResponse')) {
 
     /**
      * Parses a user's response into the various components, designed for then saving to the databae
+     *
      * @param  array $aFormFields The form fields
      * @param  array $aUserData   The posted user data
+     *
      * @return boolean|array
      */
     function formBuilderParseResponse($aFormFields, $aUserData)
     {
         $aUserData       = array_filter($aUserData);
         $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
-        $aUserDataParsed = array();
-        $aOut            = array();
+        $aUserDataParsed = [];
+        $aOut            = [];
 
         foreach ($aUserData as $iFieldId => $mValue) {
 
@@ -383,14 +397,14 @@ if (!function_exists('formBuilderParseResponse')) {
                 }
             }
 
-            $aUserDataParsed[] = (object) array(
+            $aUserDataParsed[] = (object) [
                 'id'    => $iFieldId,
                 'value' => (array) $mValue,
-                'field' => $oField
-            );
+                'field' => $oField,
+            ];
         }
 
-        for ($i=0; $i < count($aUserDataParsed); $i++) {
+        for ($i = 0; $i < count($aUserDataParsed); $i++) {
 
             $oField     = $aUserDataParsed[$i]->field;
             $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
@@ -401,7 +415,7 @@ if (!function_exists('formBuilderParseResponse')) {
                         'field_id'  => $oField->id,
                         'option_id' => $oFieldType->extractOptionId($sKey, $mValue),
                         'text'      => $oFieldType->extractText($sKey, $mValue),
-                        'data'      => $oFieldType->extractData($sKey, $mValue)
+                        'data'      => $oFieldType->extractData($sKey, $mValue),
                     );
                 }
             }

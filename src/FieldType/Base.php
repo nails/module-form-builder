@@ -66,6 +66,7 @@ class Base
      * Renders the field's HTML
      *
      * @param  array $aConfig The config array
+     *
      * @throws FieldTypeException
      * @return string
      */
@@ -81,6 +82,7 @@ class Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeExceptionRequired
      * @throws FieldTypeExceptionInvalidOption
      * @return mixed
@@ -95,7 +97,7 @@ class Base
         //  If the field accepts options then ensure that the value is a valid option for the field
         if (static::SUPPORTS_OPTIONS) {
 
-            $aValidValues = array();
+            $aValidValues = [];
 
             foreach ($oField->options->data as $oOption) {
                 $aValidValues[] = $oOption->id;
@@ -125,6 +127,7 @@ class Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractOptionId($sKey, $mValue)
@@ -143,6 +146,7 @@ class Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractText($sKey, $mValue)
@@ -161,6 +165,7 @@ class Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractData($sKey, $mValue)
@@ -174,24 +179,25 @@ class Base
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
      *
      * @param  array $aResponses The array of responses from ResponseAnswer
+     *
      * @return array
      */
     public function getStatsChartData($aResponses)
     {
-        $aOut = array(
-            'columns' => array(
-                array('string', 'Label'),
-                array('number', 'Responses')
-            ),
-            'rows'    => array()
-        );
+        $aOut = [
+            'columns' => [
+                ['string', 'Label'],
+                ['number', 'Responses'],
+            ],
+            'rows'    => [],
+        ];
 
         if (!static::SUPPORTS_OPTIONS) {
             return $aOut;
         }
 
         //  Work out all the options and assign a value
-        $aRows = array();
+        $aRows = [];
         foreach ($aResponses as $oResponse) {
             if (!empty($oResponse->option)) {
                 if (!array_key_exists($oResponse->option->label, $aRows)) {
@@ -202,14 +208,14 @@ class Base
         }
 
         foreach ($aRows as $sLabel => $iValue) {
-            $aOut['rows'][] = array(
+            $aOut['rows'][] = [
                 $sLabel,
-                $iValue
-            );
+                $iValue,
+            ];
         }
 
         //  Return the details for a single chart (i.e only 1 item in this array)
-        return array($aOut);
+        return [$aOut];
     }
 
     // --------------------------------------------------------------------------
@@ -218,12 +224,13 @@ class Base
      * Takes responses for this field type and extracts all the text components
      *
      * @param  array $aResponses The array of responses from ResponseAnswer
+     *
      * @return array
      */
     public function getStatsTextData($aResponses)
     {
-        $aOut     = array();
-        $aStrings = array();
+        $aOut     = [];
+        $aStrings = [];
 
         foreach ($aResponses as $oResponse) {
             if (!empty($oResponse->text)) {

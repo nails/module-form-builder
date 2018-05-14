@@ -26,14 +26,15 @@ class File extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
     {
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-file', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-file', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -45,6 +46,7 @@ class File extends Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeException
      * @return mixed
      */
@@ -128,7 +130,7 @@ class File extends Base
             $oResult = $oCdn->objectCreate(
                 $sPath,
                 'formbuilder-file-upload',
-                array('filename_display' => $sName)
+                ['filename_display' => $sName]
             );
 
             if (!$oResult) {
@@ -150,6 +152,7 @@ class File extends Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractText($sKey, $mValue)
@@ -170,6 +173,7 @@ class File extends Base
      *
      * @param  string $sKey   The answer's key
      * @param  string $mValue The answer's value
+     *
      * @return integer
      */
     public function extractData($sKey, $mValue)

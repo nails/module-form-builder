@@ -19,7 +19,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Scale extends Base
 {
-    const LABEL = 'Scale (1-10)';
+    const LABEL       = 'Scale (1-10)';
     const NUM_OPTIONS = 10;
 
     // --------------------------------------------------------------------------
@@ -28,6 +28,7 @@ class Scale extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
@@ -36,8 +37,8 @@ class Scale extends Base
 
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-scale', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-scale', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -49,6 +50,7 @@ class Scale extends Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeExceptionInvalidOption
      * @throws FieldTypeException
      * @return boolean
@@ -74,17 +76,18 @@ class Scale extends Base
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
      *
      * @param  array $aResponses The array of responses from ResponseAnswer
+     *
      * @return array
      */
     public function getStatsChartData($aResponses)
     {
-        $aOut = array(
-            'columns' => array(
-                array('string', 'Label'),
-                array('number', 'Responses')
-            ),
-            'rows'    => array()
-        );
+        $aOut = [
+            'columns' => [
+                ['string', 'Label'],
+                ['number', 'Responses'],
+            ],
+            'rows'    => [],
+        ];
 
         foreach ($aResponses as $oResponse) {
 
@@ -98,7 +101,7 @@ class Scale extends Base
         $aOut['rows'] = array_values($aOut['rows']);
 
         //  Return the details for a single chart (i.e only 1 item in this array)
-        return array($aOut);
+        return [$aOut];
     }
 
     // --------------------------------------------------------------------------
@@ -107,6 +110,7 @@ class Scale extends Base
      * Takes responses for this field type and extracts all the text components
      *
      * @param  array $aResponses The array of responses from ResponseAnswer
+     *
      * @return array
      */
     public function getStatsTextData($aResponses)

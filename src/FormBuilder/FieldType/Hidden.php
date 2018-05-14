@@ -17,7 +17,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Hidden extends Base
 {
-    const LABEL = 'Hidden';
+    const LABEL             = 'Hidden';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
@@ -26,6 +26,7 @@ class Hidden extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)

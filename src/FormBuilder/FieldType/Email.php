@@ -18,7 +18,7 @@ use Nails\FormBuilder\FieldType\Base;
 
 class Email extends Base
 {
-    const LABEL = 'Email';
+    const LABEL             = 'Email';
     const SUPPORTS_DEFAULTS = true;
 
     // --------------------------------------------------------------------------
@@ -27,14 +27,15 @@ class Email extends Base
      * Renders the field's HTML
      *
      * @param  array $aData The field's data
+     *
      * @return string
      */
     public function render($aData)
     {
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/body-email', $aData, true);
-        $sOut .= $oView->load('formbuilder/fields/close', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/body-email', $aData, true);
+        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
 
         return $sOut;
     }
@@ -46,6 +47,7 @@ class Email extends Base
      *
      * @param  mixed     $mInput The form input's value
      * @param  \stdClass $oField The complete field object
+     *
      * @throws FieldTypeException
      * @return boolean|string   boolean true if valid, string with error if invalid
      */

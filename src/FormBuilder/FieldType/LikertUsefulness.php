@@ -21,11 +21,11 @@ class LikertUsefulness extends Likert
      *
      * @var array
      */
-    protected $aLikertTerms = array(
+    protected $aLikertTerms = [
         'Very Useful',
         'Useful',
         'Neither',
         'Not Useful',
-        'Not at all Useful'
-    );
+        'Not at all Useful',
+    ];
 }

@@ -1,7 +1,6 @@
 /* globals Mustache, console */
 var _ADMIN_FORM_EDIT;
-_ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
-{
+_ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue) {
     /**
      * Avoid scope issues in callbacks and anonymous functions by referring to `this` as `base`
      * @type {Object}
@@ -10,12 +9,12 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
 
     // --------------------------------------------------------------------------
 
-    base.domElement           = domElement || null;
-    base.tplField             = $('.js-template-field', base.domElement).html();
-    base.tplOption            = $('.js-template-field-option', base.domElement).html();
-    base.fieldsTable          = $('.form-builder__fields', base.domElement);
-    base.fieldCount           = 0;
-    base.typeWithOptions      = typeWithOptions || [];
+    base.domElement = domElement || null;
+    base.tplField = $('.js-template-field', base.domElement).html();
+    base.tplOption = $('.js-template-field-option', base.domElement).html();
+    base.fieldsTable = $('.form-builder__fields', base.domElement);
+    base.fieldCount = 0;
+    base.typeWithOptions = typeWithOptions || [];
     base.typeWithDefaultValue = typeWithDefaultValue || [];
 
     // --------------------------------------------------------------------------
@@ -24,8 +23,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
      * Construct the class
      * @return {Void}
      */
-    base.__construct = function()
-    {
+    base.__construct = function() {
         //  Field bindings
         $(base.domElement).on('change', '.field-type', function() {
             base.fieldTypeChanged($(this));
@@ -63,7 +61,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
             $(this).trigger('change');
         });
 
-        base.fieldCount = $('tbody tr', base.fieldsTable).length-1;
+        base.fieldCount = $('tbody tr', base.fieldsTable).length - 1;
 
         // --------------------------------------------------------------------------
 
@@ -76,7 +74,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
             'helper': function(e, tbody) {
 
                 var $originals = tbody.find('td');
-                var $helper    = tbody.clone();
+                var $helper = tbody.clone();
 
                 // Set helper cell sizes to match the original sizes
                 $helper.find('td').each(function(index) {
@@ -85,7 +83,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
 
                 //  Some helper styling for nice
                 $helper.css({
-                    'margin-left':'-1px',
+                    'margin-left': '-1px',
                     'box-shadow': '0px 2px 5px rgba(0, 0, 0, 0.25)'
                 });
 
@@ -155,7 +153,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
 
         var fieldNumber, optionCount, table, tpl, tplData;
         fieldNumber = elem.data('field-number');
-        table       = elem.closest('table');
+        table = elem.closest('table');
         optionCount = table.data('option-count') || 0;
 
         base.log('Adding Option for field: ' + fieldNumber);
@@ -344,16 +342,11 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
      * @param  {Mixed}  payload Any additional data to display in the console
      * @return {Void}
      */
-    base.log = function(message, payload)
-    {
+    base.log = function(message, payload) {
         if (typeof(console.log) === 'function') {
-
             if (payload !== undefined) {
-
                 console.log('Nails Form Builder:', message, payload);
-
             } else {
-
                 console.log('Nails Form Builder:', message);
             }
         }
@@ -367,16 +360,11 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue)
      * @param  {Mixed}  payload Any additional data to display in the console
      * @return {Void}
      */
-    base.warn = function(message, payload)
-    {
+    base.warn = function(message, payload) {
         if (typeof(console.warn) === 'function') {
-
             if (payload !== undefined) {
-
                 console.warn('Nails Form Builder:', message, payload);
-
             } else {
-
                 console.warn('Nails Form Builder:', message);
             }
         }
