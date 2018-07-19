@@ -41,7 +41,7 @@ class Form extends Base
      *
      * @return array
      */
-    public function getAll($iPage = null, $iPerPage = null, $aData = [], $bIncludeDeleted = false)
+    public function getAll($iPage = null, $iPerPage = null, array $aData = [], $bIncludeDeleted = false)
     {
         //  If the first value is an array then treat as if called with getAll(null, null, $aData);
         //  @todo (Pablo - 2017-10-06) - Convert these to expandable fields
@@ -77,7 +77,7 @@ class Form extends Base
      *
      * @return mixed
      */
-    public function create($aData = [], $bReturnObject = false)
+    public function create(array $aData = [], $bReturnObject = false)
     {
         $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : [];
         unset($aData['fields']);
@@ -132,7 +132,7 @@ class Form extends Base
      *
      * @return mixed
      */
-    public function update($iId, $aData = [])
+    public function update($iId, array $aData = [])
     {
         $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : [];
         unset($aData['fields']);
@@ -286,10 +286,10 @@ class Form extends Base
 
     protected function formatObject(
         &$oObj,
-        $aData = [],
-        $aIntegers = [],
-        $aBools = [],
-        $aFloats = []
+        array $aData = [],
+        array $aIntegers = [],
+        array $aBools = [],
+        array $aFloats = []
     ) {
 
         $aBools[] = 'has_captcha';

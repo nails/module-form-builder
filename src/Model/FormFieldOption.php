@@ -45,10 +45,10 @@ class FormFieldOption extends Base
      */
     protected function formatObject(
         &$oObj,
-        $aData = [],
-        $aIntegers = [],
-        $aBools = [],
-        $aFloats = []
+        array $aData = [],
+        array $aIntegers = [],
+        array $aBools = [],
+        array $aFloats = []
     ) {
         $aBools[] = 'is_disabled';
         $aBools[] = 'is_selected';

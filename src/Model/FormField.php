@@ -40,7 +40,7 @@ class FormField extends Base
      *
      * @return array
      */
-    public function getAll($iPage = null, $iPerPage = null, $aData = [], $bIncludeDeleted = false)
+    public function getAll($iPage = null, $iPerPage = null, array $aData = [], $bIncludeDeleted = false)
     {
         //  If the first value is an array then treat as if called with getAll(null, null, $aData);
         //  @todo (Pablo - 2017-10-06) - Convert these to expandable fields
@@ -82,10 +82,10 @@ class FormField extends Base
      */
     protected function formatObject(
         &$oObj,
-        $aData = [],
-        $aIntegers = [],
-        $aBools = [],
-        $aFloats = []
+        array $aData = [],
+        array $aIntegers = [],
+        array $aBools = [],
+        array $aFloats = []
     ) {
 
         $aIntegers[] = 'form_id';
@@ -104,7 +104,7 @@ class FormField extends Base
      *
      * @return mixed
      */
-    public function create($aData = [], $bReturnObject = false)
+    public function create(array $aData = [], $bReturnObject = false)
     {
         $aOptions = array_key_exists('options', $aData) ? $aData['options'] : [];
         unset($aData['options']);
@@ -156,7 +156,7 @@ class FormField extends Base
      *
      * @return mixed
      */
-    public function update($iId, $aData = [])
+    public function update($iId, array $aData = [])
     {
         $aOptions = array_key_exists('options', $aData) ? $aData['options'] : [];
         unset($aData['options']);
