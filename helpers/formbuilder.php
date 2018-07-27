@@ -11,7 +11,6 @@
  */
 
 use Nails\Factory;
-use Nails\Environment;
 use Nails\FormBuilder\Exception\ValidationException;
 
 if (!function_exists('adminNormalizeFormData')) {
@@ -160,16 +159,18 @@ if (!function_exists('adminLoadFormBuilderView')) {
         $oFieldTypeModel    = Factory::model('FieldType', 'nailsapp/module-form-builder');
         $oDefaultValueModel = Factory::model('DefaultValue', 'nailsapp/module-form-builder');
 
-        return get_instance()->load->view(
-            'formbuilder/admin/fields',
-            [
-                'sId'            => $sId,
-                'sFieldName'     => $sFieldName,
-                'aFields'        => $aFields,
-                'aFieldTypes'    => ['Select...'] + $oFieldTypeModel->getAllFlat(true),
-                'aDefaultValues' => ['No Default Value'] + $oDefaultValueModel->getAllFlat(true),
-            ]
-        );
+        return Factory::service('View')
+                      ->load(
+                          'formbuilder/admin/fields',
+                          [
+                              'sId'            => $sId,
+                              'sFieldName'     => $sFieldName,
+                              'aFields'        => $aFields,
+                              'aFieldTypes'    => ['Select...'] + $oFieldTypeModel->getAllFlat(true),
+                              'aDefaultValues' => ['No Default Value'] + $oDefaultValueModel->getAllFlat(true),
+                          ],
+                          true
+                      );
     }
 }
 
@@ -411,12 +412,12 @@ if (!function_exists('formBuilderParseResponse')) {
 
             if (!empty($oFieldType)) {
                 foreach ($aUserDataParsed[$i]->value as $sKey => $mValue) {
-                    $aOut[] = (object) array(
+                    $aOut[] = (object) [
                         'field_id'  => $oField->id,
                         'option_id' => $oFieldType->extractOptionId($sKey, $mValue),
                         'text'      => $oFieldType->extractText($sKey, $mValue),
                         'data'      => $oFieldType->extractData($sKey, $mValue),
-                    );
+                    ];
                 }
             }
         }

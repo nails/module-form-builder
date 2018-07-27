@@ -30,7 +30,7 @@ class FormField extends Base
             'property'  => 'options',
             'model'     => 'FormFieldOption',
             'provider'  => 'nailsapp/module-form-builder',
-            'id_column' => 'form-field_id',
+            'id_column' => 'form_field_id',
         ]);
     }
 
