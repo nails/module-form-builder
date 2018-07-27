@@ -1,1 +1,1 @@
-<?=$captcha->html?>
+<?=$captcha->getHtml()?>
