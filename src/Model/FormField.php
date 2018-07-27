@@ -13,7 +13,6 @@
 namespace Nails\FormBuilder\Model;
 
 use Nails\Common\Model\Base;
-use Nails\Factory;
 
 class FormField extends Base
 {
@@ -23,45 +22,16 @@ class FormField extends Base
     public function __construct()
     {
         parent::__construct();
-
         $this->table             = NAILS_DB_PREFIX . 'formbuilder_form_field';
         $this->defaultSortColumn = 'order';
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Returns all field objects
-     *
-     * @param null    $iPage           The page to return
-     * @param null    $iPerPage        The number of objects per page
-     * @param array   $aData           Data to pass to getCountCommon
-     * @param boolean $bIncludeDeleted Whether to include deleted results
-     *
-     * @return array
-     */
-    public function getAll($iPage = null, $iPerPage = null, array $aData = [], $bIncludeDeleted = false)
-    {
-        //  If the first value is an array then treat as if called with getAll(null, null, $aData);
-        //  @todo (Pablo - 2017-10-06) - Convert these to expandable fields
-        if (is_array($iPage)) {
-            $aData = $iPage;
-            $iPage = null;
-        }
-
-        $aItems = parent::getAll($iPage, $iPerPage, $aData, $bIncludeDeleted);
-
-        if (!empty($aItems)) {
-            $this->getManyAssociatedItems(
-                $aItems,
-                'options',
-                'form_field_id',
-                'FormFieldOption',
-                'nailsapp/module-form-builder'
-            );
-        }
-
-        return $aItems;
+        $this->addExpandableField([
+            'trigger'   => 'options',
+            'type'      => self::EXPANDABLE_TYPE_MANY,
+            'property'  => 'options',
+            'model'     => 'FormFieldOption',
+            'provider'  => 'nailsapp/module-form-builder',
+            'id_column' => 'form-field_id',
+        ]);
     }
 
     // --------------------------------------------------------------------------
@@ -87,109 +57,8 @@ class FormField extends Base
         array $aBools = [],
         array $aFloats = []
     ) {
-
         $aIntegers[] = 'form_id';
         $aBools[]    = 'is_required';
-
         parent::formatObject($oObj, $aData, $aIntegers, $aBools, $aFloats);
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Creates a new field
-     *
-     * @param array   $aData         The data to create the object with
-     * @param boolean $bReturnObject Whether to return just the new ID or the full object
-     *
-     * @return mixed
-     */
-    public function create(array $aData = [], $bReturnObject = false)
-    {
-        $aOptions = array_key_exists('options', $aData) ? $aData['options'] : [];
-        unset($aData['options']);
-
-        try {
-
-            $oDb = Factory::service('Database');
-
-            $oDb->trans_begin();
-            $mResult = parent::create($aData, $bReturnObject);
-
-            if ($mResult) {
-
-                $iFormFieldId = $bReturnObject ? $mResult->id : $mResult;
-                $bResult      = $this->saveAssociatedItems(
-                    $iFormFieldId,
-                    $aOptions,
-                    'form_field_id',
-                    'FormFieldOption',
-                    'nailsapp/module-form-builder'
-                );
-
-                if (!$bResult) {
-                    throw new \Exception('Failed to update options.', 1);
-                }
-
-            } else {
-                throw new \Exception('Failed to create field. ' . $this->lastError(), 1);
-            }
-
-            $oDb->trans_commit();
-            return $mResult;
-
-        } catch (\Exception $e) {
-
-            $oDb->trans_rollback();
-            $this->setError($e->getMessage());
-            return false;
-        }
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Update an existing field
-     *
-     * @param int   $iId   The ID of the field to update
-     * @param array $aData The data to update the field with
-     *
-     * @return mixed
-     */
-    public function update($iId, array $aData = [])
-    {
-        $aOptions = array_key_exists('options', $aData) ? $aData['options'] : [];
-        unset($aData['options']);
-
-        try {
-
-            $oDb = Factory::service('Database');
-
-            $oDb->trans_begin();
-
-            if (parent::update($iId, $aData)) {
-                $bResult = $this->saveAssociatedItems(
-                    $iId,
-                    $aOptions,
-                    'form_field_id',
-                    'FormFieldOption',
-                    'nailsapp/module-form-builder'
-                );
-                if (!$bResult) {
-                    throw new \Exception('Failed to update field options.', 1);
-                }
-            } else {
-                throw new \Exception('Failed to update field. ' . $this->lastError(), 1);
-            }
-
-            $oDb->trans_commit();
-            return true;
-
-        } catch (\Exception $e) {
-
-            $oDb->trans_rollback();
-            $this->setError($e->getMessage());
-            return false;
-        }
     }
 }

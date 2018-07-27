@@ -27,150 +27,14 @@ class Form extends Base
         $this->tableSlugColumn   = null;
         $this->tableLabelColumn  = null;
         $this->defaultSortColumn = null;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Returns all form objects
-     *
-     * @param null    $iPage           The page to return
-     * @param null    $iPerPage        The number of objects per page
-     * @param array   $aData           Data to pass to getCountCommon
-     * @param boolean $bIncludeDeleted Whether to include deleted results
-     *
-     * @return array
-     */
-    public function getAll($iPage = null, $iPerPage = null, array $aData = [], $bIncludeDeleted = false)
-    {
-        //  If the first value is an array then treat as if called with getAll(null, null, $aData);
-        //  @todo (Pablo - 2017-10-06) - Convert these to expandable fields
-        if (is_array($iPage)) {
-            $aData = $iPage;
-            $iPage = null;
-        }
-
-        $aItems = parent::getAll($iPage, $iPerPage, $aData, $bIncludeDeleted);
-
-        if (!empty($aItems)) {
-            if (!empty($aData['includeAll']) || !empty($aData['includeFields'])) {
-                $this->getManyAssociatedItems(
-                    $aItems,
-                    'fields',
-                    'form_id',
-                    'FormField',
-                    'nailsapp/module-form-builder'
-                );
-            }
-        }
-
-        return $aItems;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Creates a new form
-     *
-     * @param array   $aData         The data to create the object with
-     * @param boolean $bReturnObject Whether to return just the new ID or the full object
-     *
-     * @return mixed
-     */
-    public function create(array $aData = [], $bReturnObject = false)
-    {
-        $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : [];
-        unset($aData['fields']);
-
-        $oDb = Factory::service('Database');
-
-        try {
-
-            $oDb->trans_begin();
-
-            $mResult = parent::create($aData, $bReturnObject);
-
-            if ($mResult) {
-
-                $iFormId = $bReturnObject ? $mResult->id : $mResult;
-                $bResult = $this->saveAssociatedItems(
-                    $iFormId,
-                    $aFields,
-                    'form_id',
-                    'FormField',
-                    'nailsapp/module-form-builder'
-                );
-
-                if (!$bResult) {
-                    throw new \Exception('Failed to update fields.', 1);
-                }
-
-            } else {
-                throw new \Exception('Failed to create form. ' . $this->lastError(), 1);
-            }
-
-            $oDb->trans_commit();
-
-            return $mResult;
-
-        } catch (\Exception $e) {
-
-            $oDb->trans_rollback();
-            $this->setError($e->getMessage());
-
-            return false;
-        }
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Update an existing form
-     *
-     * @param int   $iId   The ID of the form to update
-     * @param array $aData The data to update the form with
-     *
-     * @return mixed
-     */
-    public function update($iId, array $aData = [])
-    {
-        $aFields = array_key_exists('fields', $aData) ? $aData['fields'] : [];
-        unset($aData['fields']);
-
-        $oDb = Factory::service('Database');
-
-        try {
-
-            $oDb->trans_begin();
-
-            if (parent::update($iId, $aData)) {
-
-                $bResult = $this->saveAssociatedItems(
-                    $iId,
-                    $aFields,
-                    'form_id',
-                    'FormField',
-                    'nailsapp/module-form-builder'
-                );
-
-                if (!$bResult) {
-                    throw new \Exception('Failed to update fields.', 1);
-                }
-            } else {
-                throw new \Exception('Failed to update form. ' . $this->lastError(), 1);
-            }
-
-            $oDb->trans_commit();
-
-            return true;
-
-        } catch (\Exception $e) {
-
-            $oDb->trans_rollback();
-            $this->setError($e->getMessage());
-
-            return false;
-        }
+        $this->addExpandableField([
+            'trigger'   => 'fields',
+            'type'      => self::EXPANDABLE_TYPE_MANY,
+            'property'  => 'fields',
+            'model'     => 'FormField',
+            'provider'  => 'nailsapp/module-form-builder',
+            'id_column' => 'form_id',
+        ]);
     }
 
     // --------------------------------------------------------------------------
@@ -194,7 +58,7 @@ class Form extends Base
             $oDb->trans_begin();
 
             //  Check form exists
-            $oForm = $this->getById($iFormId, ['includeAll' => true]);
+            $oForm = $this->getById($iFormId);
 
             if (empty($oForm)) {
                 throw new \Exception('Not a valid form ID.', 1);
