@@ -1,4 +1,4 @@
-# Docs for `nailsapp/module-form-builder`
+# Docs for `nails/module-form-builder`
 > Documentation is a WIP.
 
 This module provides an interface to allow users to build custom forms with complex field types and dynamic values.

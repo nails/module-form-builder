@@ -29,7 +29,7 @@ class FormField extends Base
             'type'      => self::EXPANDABLE_TYPE_MANY,
             'property'  => 'options',
             'model'     => 'FormFieldOption',
-            'provider'  => 'nailsapp/module-form-builder',
+            'provider'  => 'nails/module-form-builder',
             'id_column' => 'form_field_id',
         ]);
     }

@@ -66,7 +66,7 @@ class File extends Base
 
                     if (!is_null($maxFileSize)) {
 
-                        $oCdn        = Factory::service('Cdn', 'nailsapp/module-cdn');
+                        $oCdn        = Factory::service('Cdn', 'nails/module-cdn');
                         $maxFileSize = $oCdn->returnBytes($maxFileSize);
                         $maxFileSize = $oCdn->formatBytes($maxFileSize);
 
@@ -126,7 +126,7 @@ class File extends Base
 
         if (!empty($sPath)) {
 
-            $oCdn    = Factory::service('Cdn', 'nailsapp/module-cdn');
+            $oCdn    = Factory::service('Cdn', 'nails/module-cdn');
             $oResult = $oCdn->objectCreate(
                 $sPath,
                 'formbuilder-file-upload',
@@ -157,7 +157,7 @@ class File extends Base
      */
     public function extractText($sKey, $mValue)
     {
-        $oCdn = Factory::service('Cdn', 'nailsapp/module-cdn');
+        $oCdn = Factory::service('Cdn', 'nails/module-cdn');
         $oObj = $oCdn->getObject($mValue);
 
         $sOut = $oObj->file->name->human . ' (' . $oObj->file->size->human . ')';

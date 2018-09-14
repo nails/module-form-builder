@@ -1,5 +1,5 @@
 {
-    "name": "nailsapp/module-form-builder",
+    "name": "nails/module-form-builder",
     "keywords": ["Nails", "Shed Collective", "CodeIgniter", "Form Builder Module"],
     "homepage": "http://nailsapp.co.uk/modules/form-builder",
     "description": "The module provides an API for building complex forms.",
@@ -21,7 +21,7 @@
     "prefer-stable": true,
     "require":
     {
-        "nailsapp/common": "dev-develop"
+        "nails/common": "dev-develop"
     },
     "require-dev":
     {

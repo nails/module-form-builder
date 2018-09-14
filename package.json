@@ -1,10 +1,10 @@
 {
-  "name": "nailsapp-module-survey",
+  "name": "nails-module-survey",
   "description": "The module provides an API for building complex forms.",
   "author": "Nails Dev Team <hello@nailsapp.co.uk>",
   "analyze": true,
   "license": "MIT",
-  "repository": "https://github.com/nailsapp/module-form-builder",
+  "repository": "https://github.com/nails/module-form-builder",
   "devDependencies": {
     "gulp": "^3.9",
     "gulp-autoprefixer": "^3.1",

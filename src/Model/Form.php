@@ -32,7 +32,7 @@ class Form extends Base
             'type'      => self::EXPANDABLE_TYPE_MANY,
             'property'  => 'fields',
             'model'     => 'FormField',
-            'provider'  => 'nailsapp/module-form-builder',
+            'provider'  => 'nails/module-form-builder',
             'id_column' => 'form_id',
         ]);
     }
@@ -65,8 +65,8 @@ class Form extends Base
             }
 
             //  Duplicate the form, fields and options
-            $oFormFieldModel       = Factory::model('FormField', 'nailsapp/module-form-builder');
-            $oFormFieldOptionModel = Factory::model('FormFieldOption', 'nailsapp/module-form-builder');
+            $oFormFieldModel       = Factory::model('FormField', 'nails/module-form-builder');
+            $oFormFieldOptionModel = Factory::model('FormFieldOption', 'nails/module-form-builder');
 
             $sTableForm    = $this->getTableName();
             $sTableFields  = $oFormFieldModel->getTableName();

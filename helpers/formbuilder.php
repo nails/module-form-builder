@@ -119,11 +119,11 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
      */
     function adminLoadFormBuilderAssets($sSelector)
     {
-        $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
+        $oFieldTypeModel = Factory::model('FieldType', 'nails/module-form-builder');
         $oAsset          = Factory::service('Asset');
 
-        $oAsset->load('admin.css', 'nailsapp/module-form-builder');
-        $oAsset->load('admin.form.edit.min.js', 'nailsapp/module-form-builder');
+        $oAsset->load('admin.css', 'nails/module-form-builder');
+        $oAsset->load('admin.form.edit.min.js', 'nails/module-form-builder');
         $oAsset->inline(
             '
                 window.NAILS.FORMBUILDER = [];
@@ -156,8 +156,8 @@ if (!function_exists('adminLoadFormBuilderView')) {
      */
     function adminLoadFormBuilderView($sId, $sFieldName = 'fields', $aFields = [])
     {
-        $oFieldTypeModel    = Factory::model('FieldType', 'nailsapp/module-form-builder');
-        $oDefaultValueModel = Factory::model('DefaultValue', 'nailsapp/module-form-builder');
+        $oFieldTypeModel    = Factory::model('FieldType', 'nails/module-form-builder');
+        $oDefaultValueModel = Factory::model('DefaultValue', 'nails/module-form-builder');
 
         return Factory::service('View')
                       ->load(
@@ -217,8 +217,8 @@ if (!function_exists('formBuilderRender')) {
         $sOut .= form_hidden('submitting', true);
 
         //  Render the form fields
-        $oFieldTypeModel    = Factory::model('FieldType', 'nailsapp/module-form-builder');
-        $oDefaultValueModel = Factory::model('DefaultValue', 'nailsapp/module-form-builder');
+        $oFieldTypeModel    = Factory::model('FieldType', 'nails/module-form-builder');
+        $oDefaultValueModel = Factory::model('DefaultValue', 'nails/module-form-builder');
         $iCounter           = 0;
 
         foreach ($aFields as $oField) {
@@ -268,7 +268,7 @@ if (!function_exists('formBuilderRender')) {
         //  Render the captcha
         if ($bHasCaptcha) {
 
-            Factory::helper('captcha', 'nailsapp/module-captcha');
+            Factory::helper('captcha', 'nails/module-captcha');
 
             $oCaptcha = captchaGenerate();
 
@@ -341,7 +341,7 @@ if (!function_exists('formBuilderValidate')) {
      */
     function formBuilderValidate($aFormFields, $aUserData)
     {
-        $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
+        $oFieldTypeModel = Factory::model('FieldType', 'nails/module-form-builder');
         $bIsValid        = true;
 
         foreach ($aFormFields as &$oField) {
@@ -384,7 +384,7 @@ if (!function_exists('formBuilderParseResponse')) {
     function formBuilderParseResponse($aFormFields, $aUserData)
     {
         $aUserData       = array_filter($aUserData);
-        $oFieldTypeModel = Factory::model('FieldType', 'nailsapp/module-form-builder');
+        $oFieldTypeModel = Factory::model('FieldType', 'nails/module-form-builder');
         $aUserDataParsed = [];
         $aOut            = [];
 
