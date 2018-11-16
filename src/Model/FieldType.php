@@ -47,7 +47,7 @@ class FieldType
         //  Any subscriptions for the app?
         $this->autoLoadTypes(
             'App\\',
-            FCPATH,
+            NAILS_APP_PATH,
             'app'
         );
     }

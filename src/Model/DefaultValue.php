@@ -47,7 +47,7 @@ class DefaultValue
         //  Any subscriptions for the app?
         $this->autoLoadDefaults(
             'App\\',
-            FCPATH,
+            NAILS_APP_PATH,
             'app'
         );
     }
