@@ -12,6 +12,7 @@
 
 namespace Nails\FormBuilder\Model;
 
+use Nails\Components;
 use Nails\Factory;
 
 class FieldType
@@ -33,8 +34,7 @@ class FieldType
         //  Look for available FieldTypes
         $this->aAvailable = [];
 
-        $aComponents = _NAILS_GET_COMPONENTS();
-        foreach ($aComponents as $oComponent) {
+        foreach (Components::list() as $oComponent) {
             if (!empty($oComponent->namespace)) {
                 $this->autoLoadTypes(
                     $oComponent->namespace,
