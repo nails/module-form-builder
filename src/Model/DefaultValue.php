@@ -34,7 +34,7 @@ class DefaultValue
         //  Look for available FieldTypes
         $this->aAvailable = [];
 
-        foreach (Components::list() as $oComponent) {
+        foreach (Components::available() as $oComponent) {
             if (!empty($oComponent->namespace)) {
                 $this->autoLoadDefaults(
                     $oComponent->namespace,
