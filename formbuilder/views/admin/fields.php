@@ -234,7 +234,7 @@ if (!empty($_POST[$sFieldName])) {
                                                             echo form_checkbox(
                                                                 $sFieldName . '[' . $i . '][options][' . $x . '][is_selected]',
                                                                 true,
-                                                                $oOption->is_selected
+                                                                !empty($oOption->is_selected)
                                                             );
 
                                                             ?>
