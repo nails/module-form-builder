@@ -12,6 +12,7 @@
 
 namespace Nails\FormBuilder\Model;
 
+use Nails\Common\Exception\NailsException;
 use Nails\Common\Model\Base;
 use Nails\Factory;
 
@@ -61,7 +62,7 @@ class Form extends Base
             $oForm = $this->getById($iFormId);
 
             if (empty($oForm)) {
-                throw new \Exception('Not a valid form ID.', 1);
+                throw new NailsException('Not a valid form ID.', 1);
             }
 
             //  Duplicate the form, fields and options
@@ -87,7 +88,7 @@ class Form extends Base
 
             $oDb->set($oFormRow);
             if (!$oDb->insert($sTableForm)) {
-                throw new \Exception('Failed to copy parent form record.', 1);
+                throw new NailsException('Failed to copy parent form record.', 1);
             }
 
             $iNewFormId = $oDb->insert_id();
@@ -107,7 +108,7 @@ class Form extends Base
 
                 $oDb->set($oRow);
                 if (!$oDb->insert($sTableFields)) {
-                    throw new \Exception('Failed to copy form field record.', 1);
+                    throw new NailsException('Failed to copy form field record.', 1);
                 }
 
                 $iNewFieldId = $oDb->insert_id();
@@ -126,7 +127,7 @@ class Form extends Base
                     }
                     unset($aRow);
                     if (!$oDb->insert_batch($sTableOptions, $aFormOptionRows)) {
-                        throw new \Exception('Failed to copy form field option records.', 1);
+                        throw new NailsException('Failed to copy form field option records.', 1);
                     }
                 }
             }
