@@ -119,8 +119,8 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
      */
     function adminLoadFormBuilderAssets($sSelector)
     {
-        $oFieldTypeModel = Factory::model('FieldType', 'nails/module-form-builder');
-        $oAsset          = Factory::service('Asset');
+        $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
+        $oAsset            = Factory::service('Asset');
 
         $oAsset->load('admin.css', 'nails/module-form-builder');
         $oAsset->load('admin.form.edit.min.js', 'nails/module-form-builder');
@@ -131,8 +131,8 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
                     window.NAILS.FORMBUILDER.push(
                         new _ADMIN_FORM_EDIT(
                             this,
-                            ' . json_encode($oFieldTypeModel->getAllWithOptions(true)) . ',
-                            ' . json_encode($oFieldTypeModel->getAllWithDefaultValue(true)) . '
+                            ' . json_encode($oFieldTypeService->getAllWithOptions(true)) . ',
+                            ' . json_encode($oFieldTypeService->getAllWithDefaultValue(true)) . '
                         )
                     );
                 });
@@ -156,21 +156,21 @@ if (!function_exists('adminLoadFormBuilderView')) {
      */
     function adminLoadFormBuilderView($sId, $sFieldName = 'fields', $aFields = [])
     {
-        $oFieldTypeModel    = Factory::model('FieldType', 'nails/module-form-builder');
-        $oDefaultValueModel = Factory::model('DefaultValue', 'nails/module-form-builder');
+        $oFieldTypeService    = Factory::service('FieldType', 'nails/module-form-builder');
+        $oDefaultValueService = Factory::service('DefaultValue', 'nails/module-form-builder');
 
         return Factory::service('View')
-                      ->load(
-                          'formbuilder/admin/fields',
-                          [
-                              'sId'            => $sId,
-                              'sFieldName'     => $sFieldName,
-                              'aFields'        => $aFields,
-                              'aFieldTypes'    => ['Select...'] + $oFieldTypeModel->getAllFlat(true),
-                              'aDefaultValues' => ['No Default Value'] + $oDefaultValueModel->getAllFlat(true),
-                          ],
-                          true
-                      );
+            ->load(
+                'formbuilder/admin/fields',
+                [
+                    'sId'            => $sId,
+                    'sFieldName'     => $sFieldName,
+                    'aFields'        => $aFields,
+                    'aFieldTypes'    => ['Select...'] + $oFieldTypeService->getAllFlat(true),
+                    'aDefaultValues' => ['No Default Value'] + $oDefaultValueService->getAllFlat(true),
+                ],
+                true
+            );
     }
 }
 
@@ -217,13 +217,13 @@ if (!function_exists('formBuilderRender')) {
         $sOut .= form_hidden('submitting', true);
 
         //  Render the form fields
-        $oFieldTypeModel    = Factory::model('FieldType', 'nails/module-form-builder');
-        $oDefaultValueModel = Factory::model('DefaultValue', 'nails/module-form-builder');
-        $iCounter           = 0;
+        $oFieldTypeService    = Factory::service('FieldType', 'nails/module-form-builder');
+        $oDefaultValueService = Factory::service('DefaultValue', 'nails/module-form-builder');
+        $iCounter             = 0;
 
         foreach ($aFields as $oField) {
 
-            $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+            $oFieldType = $oFieldTypeService->getBySlug($oField->type);
 
             $sId   = 'form-' . $sUuid . '-' . $iCounter;
             $aAttr = [
@@ -235,7 +235,7 @@ if (!function_exists('formBuilderRender')) {
 
             if (!empty($oFieldType)) {
 
-                $oDefaultValue = $oDefaultValueModel->getBySlug($oField->default_value);
+                $oDefaultValue = $oDefaultValueService->getBySlug($oField->default_value);
                 if (!empty($oDefaultValue)) {
 
                     $sDefaultValue = $oDefaultValue->defaultValue();
@@ -274,7 +274,7 @@ if (!function_exists('formBuilderRender')) {
 
             if (!empty($oCaptcha)) {
 
-                $oFieldType = $oFieldTypeModel->getBySlug('\Nails\FormBuilder\FormBuilder\FieldType\Captcha');
+                $oFieldType = $oFieldTypeService->getBySlug('\Nails\FormBuilder\FormBuilder\FieldType\Captcha');
 
                 if (!empty($oFieldType)) {
 
@@ -341,12 +341,12 @@ if (!function_exists('formBuilderValidate')) {
      */
     function formBuilderValidate($aFormFields, $aUserData)
     {
-        $oFieldTypeModel = Factory::model('FieldType', 'nails/module-form-builder');
-        $bIsValid        = true;
+        $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
+        $bIsValid          = true;
 
         foreach ($aFormFields as &$oField) {
 
-            $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+            $oFieldType = $oFieldTypeService->getBySlug($oField->type);
 
             if (!empty($oFieldType)) {
 
@@ -383,10 +383,10 @@ if (!function_exists('formBuilderParseResponse')) {
      */
     function formBuilderParseResponse($aFormFields, $aUserData)
     {
-        $aUserData       = array_filter($aUserData);
-        $oFieldTypeModel = Factory::model('FieldType', 'nails/module-form-builder');
-        $aUserDataParsed = [];
-        $aOut            = [];
+        $aUserData         = array_filter($aUserData);
+        $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
+        $aUserDataParsed   = [];
+        $aOut              = [];
 
         foreach ($aUserData as $iFieldId => $mValue) {
 
@@ -408,7 +408,7 @@ if (!function_exists('formBuilderParseResponse')) {
         for ($i = 0; $i < count($aUserDataParsed); $i++) {
 
             $oField     = $aUserDataParsed[$i]->field;
-            $oFieldType = $oFieldTypeModel->getBySlug($oField->type);
+            $oFieldType = $oFieldTypeService->getBySlug($oField->type);
 
             if (!empty($oFieldType)) {
                 foreach ($aUserDataParsed[$i]->value as $sKey => $mValue) {

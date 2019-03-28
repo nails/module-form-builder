@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This model manages the available default values.
+ * This class manages the available default values.
  *
  * @package     Nails
  * @subpackage  module-form-builder
- * @category    Model
+ * @category    Factory
  * @author      Nails Dev Team
  * @link
  */
 
-namespace Nails\FormBuilder\Model;
+namespace Nails\FormBuilder\Service;
 
 use Nails\Components;
 use Nails\Factory;
@@ -75,11 +75,11 @@ class DefaultValue
                 $sClassName = $sClassNamespace . basename($sFile, '.php');
                 if (class_exists($sClassName)) {
                     $this->aAvailable[] = (object) [
-                        'slug'     => $sClassName,
-                        'label'    => $sClassName::LABEL,
-                        'model'    => 'DefaultValue' . basename($sFile, '.php'),
-                        'provider' => $sComponent,
-                        'instance' => null,
+                        'slug'      => $sClassName,
+                        'label'     => $sClassName::LABEL,
+                        'component' => 'DefaultValue' . basename($sFile, '.php'),
+                        'provider'  => $sComponent,
+                        'instance'  => null,
                     ];
                 }
             }
@@ -135,7 +135,10 @@ class DefaultValue
             if ($oDefault->slug == $sSlug) {
 
                 if (!isset($oDefault->instance)) {
-                    $oDefault->instance = Factory::model($oDefault->model, $oDefault->provider);
+                    $oDefault->instance = Factory::factory(
+                        $oDefault->component,
+                        $oDefault->provider
+                    );
                 }
 
                 return $oDefault->instance;

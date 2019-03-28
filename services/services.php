@@ -1,46 +1,49 @@
 <?php
 
 return [
-    'models' => [
-        'Form'                      => function () {
+    'services'  => [
+        'DefaultValue' => function () {
+            if (class_exists('\App\FormBuilder\Service\DefaultValue')) {
+                return new \App\FormBuilder\Service\DefaultValue();
+            } else {
+                return new \Nails\FormBuilder\Service\DefaultValue();
+            }
+        },
+        'FieldType'    => function () {
+            if (class_exists('\App\FormBuilder\Service\FieldType')) {
+                return new \App\FormBuilder\Service\FieldType();
+            } else {
+                return new \Nails\FormBuilder\Service\FieldType();
+            }
+        },
+    ],
+    'models'    => [
+        'Form'            => function () {
             if (class_exists('\App\FormBuilder\Model\Form')) {
                 return new \App\FormBuilder\Model\Form();
             } else {
                 return new \Nails\FormBuilder\Model\Form();
             }
         },
-        'FormField'                 => function () {
+        'FormField'       => function () {
             if (class_exists('\App\FormBuilder\Model\FormField')) {
                 return new \App\FormBuilder\Model\FormField();
             } else {
                 return new \Nails\FormBuilder\Model\FormField();
             }
         },
-        'FormFieldOption'           => function () {
+        'FormFieldOption' => function () {
             if (class_exists('\App\FormBuilder\Model\FormFieldOption')) {
                 return new \App\FormBuilder\Model\FormFieldOption();
             } else {
                 return new \Nails\FormBuilder\Model\FormFieldOption();
             }
         },
-        'DefaultValue'              => function () {
-            if (class_exists('\App\FormBuilder\Model\DefaultValue')) {
-                return new \App\FormBuilder\Model\DefaultValue();
-            } else {
-                return new \Nails\FormBuilder\Model\DefaultValue();
-            }
-        },
-        'FieldType'                 => function () {
-            if (class_exists('\App\FormBuilder\Model\FieldType')) {
-                return new \App\FormBuilder\Model\FieldType();
-            } else {
-                return new \Nails\FormBuilder\Model\FieldType();
-            }
-        },
-
+    ],
+    'factories' => [
         /**
          * Default Values
-         *  Silly namespace to avoid collission between app provided field types and app overrides.
+         *  Silly namespace to avoid collision between app provided field types and app overrides.
          */
         'DefaultValueCustom'        => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\DefaultValue\Custom')) {
@@ -101,7 +104,7 @@ return [
 
         /**
          * Field Types
-         * Silly namespace to avoid collission between app provided field types and app overrides.
+         * Silly namespace to avoid collision between app provided field types and app overrides.
          */
         'FieldTypeCaptcha'          => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\Captcha')) {

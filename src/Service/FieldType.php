@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This model manages the available field types.
+ * This class manages the available field types.
  *
  * @package     Nails
  * @subpackage  module-form-builder
- * @category    Model
+ * @category    Factory
  * @author      Nails Dev Team
  * @link
  */
 
-namespace Nails\FormBuilder\Model;
+namespace Nails\FormBuilder\Service;
 
 use Nails\Components;
 use Nails\Factory;
@@ -77,7 +77,7 @@ class FieldType
                     $this->aAvailable[] = (object) [
                         'slug'               => $sClassName,
                         'label'              => $sClassName::LABEL,
-                        'model'              => 'FieldType' . basename($sFile, '.php'),
+                        'component'          => 'FieldType' . basename($sFile, '.php'),
                         'provider'           => $sComponent,
                         'instance'           => null,
                         'is_selectable'      => $sClassName::IS_SELECTABLE,
@@ -200,7 +200,10 @@ class FieldType
             if ($oType->slug == $sSlug) {
 
                 if (!isset($oType->instance)) {
-                    $oType->instance = Factory::model($oType->model, $oType->provider);
+                    $oType->instance = Factory::factory(
+                        $oType->component,
+                        $oType->provider
+                    );
                 }
 
                 return $oType->instance;
