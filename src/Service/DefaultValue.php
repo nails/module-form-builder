@@ -67,21 +67,17 @@ class DefaultValue
     {
         $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\DefaultValue\\';
         $sPath           = $sPath . 'src/FormBuilder/DefaultValue/';
-
-        if (is_dir($sPath)) {
-
-            $aFiles = directory_map($sPath);
-            foreach ($aFiles as $sFile) {
-                $sClassName = $sClassNamespace . basename($sFile, '.php');
-                if (class_exists($sClassName)) {
-                    $this->aAvailable[] = (object) [
-                        'slug'      => $sClassName,
-                        'label'     => $sClassName::LABEL,
-                        'component' => 'DefaultValue' . basename($sFile, '.php'),
-                        'provider'  => $sComponent,
-                        'instance'  => null,
-                    ];
-                }
+        $aFiles          = directoryMap($sPath);
+        foreach ($aFiles as $sFile) {
+            $sClassName = $sClassNamespace . basename($sFile, '.php');
+            if (class_exists($sClassName)) {
+                $this->aAvailable[] = (object) [
+                    'slug'      => $sClassName,
+                    'label'     => $sClassName::LABEL,
+                    'component' => 'DefaultValue' . basename($sFile, '.php'),
+                    'provider'  => $sComponent,
+                    'instance'  => null,
+                ];
             }
         }
     }

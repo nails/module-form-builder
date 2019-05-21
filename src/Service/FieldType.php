@@ -67,24 +67,20 @@ class FieldType
     {
         $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\FieldType\\';
         $sPath           = $sPath . 'src/FormBuilder/FieldType/';
-
-        if (is_dir($sPath)) {
-            Factory::helper('directory');
-            $aFiles = directory_map($sPath);
-            foreach ($aFiles as $sFile) {
-                $sClassName = $sClassNamespace . basename($sFile, '.php');
-                if (class_exists($sClassName)) {
-                    $this->aAvailable[] = (object) [
-                        'slug'               => $sClassName,
-                        'label'              => $sClassName::LABEL,
-                        'component'          => 'FieldType' . basename($sFile, '.php'),
-                        'provider'           => $sComponent,
-                        'instance'           => null,
-                        'is_selectable'      => $sClassName::IS_SELECTABLE,
-                        'can_option_select'  => $sClassName::SUPPORTS_OPTIONS_SELECTED,
-                        'can_option_disable' => $sClassName::SUPPORTS_OPTIONS_DISABLE,
-                    ];
-                }
+        $aFiles          = directory_map($sPath);
+        foreach ($aFiles as $sFile) {
+            $sClassName = $sClassNamespace . basename($sFile, '.php');
+            if (class_exists($sClassName)) {
+                $this->aAvailable[] = (object) [
+                    'slug'               => $sClassName,
+                    'label'              => $sClassName::LABEL,
+                    'component'          => 'FieldType' . basename($sFile, '.php'),
+                    'provider'           => $sComponent,
+                    'instance'           => null,
+                    'is_selectable'      => $sClassName::IS_SELECTABLE,
+                    'can_option_select'  => $sClassName::SUPPORTS_OPTIONS_SELECTED,
+                    'can_option_disable' => $sClassName::SUPPORTS_OPTIONS_DISABLE,
+                ];
             }
         }
     }
