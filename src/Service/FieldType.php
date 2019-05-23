@@ -67,7 +67,7 @@ class FieldType
     {
         $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\FieldType\\';
         $sPath           = $sPath . 'src/FormBuilder/FieldType/';
-        $aFiles          = directory_map($sPath);
+        $aFiles          = directoryMap($sPath);
         foreach ($aFiles as $sFile) {
             $sClassName = $sClassNamespace . basename($sFile, '.php');
             if (class_exists($sClassName)) {
