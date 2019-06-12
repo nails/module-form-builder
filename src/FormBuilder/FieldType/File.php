@@ -12,6 +12,8 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+use Nails\Cdn\Service\Cdn;
+use Nails\Common\Service\View;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
@@ -25,12 +27,13 @@ class File extends Base
     /**
      * Renders the field's HTML
      *
-     * @param  array $aData The field's data
+     * @param array $aData The field's data
      *
      * @return string
      */
     public function render($aData)
     {
+        /** @var View $oView */
         $oView = Factory::service('View');
         $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
         $sOut  .= $oView->load('formbuilder/fields/body-file', $aData, true);
@@ -44,8 +47,8 @@ class File extends Base
     /**
      * Validate and clean the user's entry
      *
-     * @param  mixed     $mInput The form input's value
-     * @param  \stdClass $oField The complete field object
+     * @param mixed     $mInput The form input's value
+     * @param \stdClass $oField The complete field object
      *
      * @throws FieldTypeException
      * @return mixed
@@ -55,6 +58,9 @@ class File extends Base
         if (!isset($_FILES['field']['error'][$oField->id]) && $oField->is_required) {
             throw new FieldTypeException('This field is required.', 1);
         }
+
+        /** @var Cdn $oCdn */
+        $oCdn = Factory::service('Cdn', 'nails/module-cdn');
 
         if (isset($_FILES['field']['error'][$oField->id]) && $_FILES['field']['error'][$oField->id] !== UPLOAD_ERR_OK) {
 
@@ -66,7 +72,6 @@ class File extends Base
 
                     if (!is_null($maxFileSize)) {
 
-                        $oCdn        = Factory::service('Cdn', 'nails/module-cdn');
                         $maxFileSize = $oCdn->returnBytes($maxFileSize);
                         $maxFileSize = $oCdn->formatBytes($maxFileSize);
 
@@ -126,10 +131,12 @@ class File extends Base
 
         if (!empty($sPath)) {
 
-            $oCdn    = Factory::service('Cdn', 'nails/module-cdn');
             $oResult = $oCdn->objectCreate(
                 $sPath,
-                'formbuilder-file-upload',
+                [
+                    'slug'      => 'formbuilder-file-upload',
+                    'is_hidden' => true,
+                ],
                 ['filename_display' => $sName]
             );
 
@@ -140,7 +147,6 @@ class File extends Base
             return $oResult->id;
 
         } else {
-
             return null;
         }
     }
@@ -150,8 +156,8 @@ class File extends Base
     /**
      * Extracts the TEXT component of the response
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey   The answer's key
+     * @param string $mValue The answer's value
      *
      * @return integer
      */
@@ -171,8 +177,8 @@ class File extends Base
     /**
      * Extracts any DATA which the Field Type might want to store
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey   The answer's key
+     * @param string $mValue The answer's value
      *
      * @return integer
      */
