@@ -21,7 +21,9 @@
     "prefer-stable": true,
     "require":
     {
-        "nails/common": "dev-develop"
+        "nails/common": "dev-develop",
+        "nails/module-auth": "dev-develop",
+        "nails/module-cdn": "dev-develop"
     },
     "require-dev":
     {
