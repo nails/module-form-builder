@@ -122,8 +122,9 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
         $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
         $oAsset            = Factory::service('Asset');
 
-        $oAsset->load('admin.css', 'nails/module-form-builder');
-        $oAsset->load('admin.form.edit.min.js', 'nails/module-form-builder');
+        $oAsset->load('admin.min.css', 'nails/module-form-builder');
+        //  @todo (Pablo - 2019-09-13) - Update/Remove/Use minified once JS is refactored to be a module
+        $oAsset->load('admin.form.edit.js', 'nails/module-form-builder');
         $oAsset->inline(
             '
                 window.NAILS.FORMBUILDER = [];
