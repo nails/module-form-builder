@@ -60,7 +60,7 @@ class File extends Base
         }
 
         /** @var Cdn $oCdn */
-        $oCdn = Factory::service('Cdn', 'nails/module-cdn');
+        $oCdn = Factory::service('Cdn', \Nails\Cdn\Constants::MODULE_SLUG);
 
         if (isset($_FILES['field']['error'][$oField->id]) && $_FILES['field']['error'][$oField->id] !== UPLOAD_ERR_OK) {
 
@@ -163,7 +163,7 @@ class File extends Base
      */
     public function extractText($sKey, $mValue)
     {
-        $oCdn = Factory::service('Cdn', 'nails/module-cdn');
+        $oCdn = Factory::service('Cdn', \Nails\Cdn\Constants::MODULE_SLUG);
         $oObj = $oCdn->getObject($mValue);
 
         $sOut = $oObj->file->name->human . ' (' . $oObj->file->size->human . ')';
