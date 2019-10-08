@@ -16,6 +16,11 @@ use Nails\Common\Exception\NailsException;
 use Nails\Common\Model\Base;
 use Nails\Factory;
 
+/**
+ * Class Form
+ *
+ * @package Nails\FormBuilder\Model
+ */
 class Form extends Base
 {
     /**
