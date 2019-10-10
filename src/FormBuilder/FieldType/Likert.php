@@ -44,7 +44,7 @@ class Likert extends Base
     /**
      * Renders the field's HTML
      *
-     * @param  array $aData The field's data
+     * @param array $aData The field's data
      *
      * @return string
      */
@@ -67,8 +67,8 @@ class Likert extends Base
     /**
      * Override the parent method to check options are valid and within range
      *
-     * @param  mixed     $mInput The form input's value
-     * @param  \stdClass $oField The complete field object
+     * @param mixed     $mInput The form input's value
+     * @param \stdClass $oField The complete field object
      *
      * @throws FieldTypeExceptionInvalidOption
      * @throws FieldTypeException
@@ -132,8 +132,8 @@ class Likert extends Base
     /**
      * Extracts the OPTION component of the response
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey   The answer's key
+     * @param string $mValue The answer's value
      *
      * @return integer
      */
@@ -151,12 +151,13 @@ class Likert extends Base
     /**
      * Extracts the TEXT component of the response
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey       The answer's key
+     * @param string $mValue     The answer's value
+     * @param bool   $bPlainText Whether to force plaintext
      *
      * @return integer
      */
-    public function extractText($sKey, $mValue)
+    public function extractText($sKey, $mValue, bool $bPlainText = false)
     {
         return array_key_exists($mValue, $this->aLikertTerms) ? $this->aLikertTerms[$mValue] : '';
     }
@@ -166,8 +167,8 @@ class Likert extends Base
     /**
      * Extracts any DATA which the Field Type might want to store
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey   The answer's key
+     * @param string $mValue The answer's value
      *
      * @return integer
      */
@@ -181,7 +182,7 @@ class Likert extends Base
     /**
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
      *
-     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @param array $aResponses The array of responses from ResponseAnswer
      *
      * @return array
      */
@@ -226,12 +227,12 @@ class Likert extends Base
     /**
      * Takes responses for this field type and extracts all the text components
      *
-     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @param array $aResponses The array of responses from ResponseAnswer
      *
      * @return array
      */
     public function getStatsTextData($aResponses)
     {
-        return array();
+        return [];
     }
 }

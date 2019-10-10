@@ -156,18 +156,26 @@ class File extends Base
     /**
      * Extracts the TEXT component of the response
      *
-     * @param string $sKey   The answer's key
-     * @param string $mValue The answer's value
+     * @param string $sKey       The answer's key
+     * @param string $mValue     The answer's value
+     * @param bool   $bPlainText Whether to force plaintext
      *
      * @return integer
      */
-    public function extractText($sKey, $mValue)
+    public function extractText($sKey, $mValue, bool $bPlainText = false)
     {
         $oCdn = Factory::service('Cdn', \Nails\Cdn\Constants::MODULE_SLUG);
         $oObj = $oCdn->getObject($mValue);
 
-        $sOut = $oObj->file->name->human . ' (' . $oObj->file->size->human . ')';
-        $sOut .= '<a href="' . cdnServe($oObj->id, true) . '" class="btn btn-xs btn-primary pull-right">Download</a>';
+        if ($bPlainText) {
+            return cdnServe($oObj->id, true);
+        } else {
+            return anchor(
+                cdnServe($oObj->id, true),
+                'Download – ' . $oObj->file->name->human . ' (' . $oObj->file->size->human . ')',
+                'class="btn btn-xs btn-primary"'
+            );
+        }
 
         return $sOut;
     }

@@ -16,7 +16,12 @@ use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
 use Nails\FormBuilder\Exception\FieldTypeExceptionRequired;
 
-class Base
+/**
+ * Class Base
+ *
+ * @package Nails\FormBuilder\FieldType
+ */
+abstract class Base
 {
     /**
      * The human friendly label to give this field type
@@ -65,10 +70,10 @@ class Base
     /**
      * Renders the field's HTML
      *
-     * @param  array $aConfig The config array
+     * @param array $aConfig The config array
      *
-     * @throws FieldTypeException
      * @return string
+     * @throws FieldTypeException
      */
     public function render($aConfig)
     {
@@ -80,8 +85,8 @@ class Base
     /**
      * Validate and clean the user's entry
      *
-     * @param  mixed     $mInput The form input's value
-     * @param  \stdClass $oField The complete field object
+     * @param mixed     $mInput The form input's value
+     * @param \stdClass $oField The complete field object
      *
      * @throws FieldTypeExceptionRequired
      * @throws FieldTypeExceptionInvalidOption
@@ -125,8 +130,8 @@ class Base
     /**
      * Extracts the OPTION component of the response
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey   The answer's key
+     * @param string $mValue The answer's value
      *
      * @return integer
      */
@@ -144,12 +149,13 @@ class Base
     /**
      * Extracts the TEXT component of the response
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey       The answer's key
+     * @param string $mValue     The answer's value
+     * @param bool   $bPlainText Whether to force plaintext
      *
      * @return integer
      */
-    public function extractText($sKey, $mValue)
+    public function extractText($sKey, $mValue, bool $bPlainText = false)
     {
         if (!static::SUPPORTS_OPTIONS) {
             return trim(strip_tags($mValue));
@@ -163,8 +169,8 @@ class Base
     /**
      * Extracts any DATA which the Field Type might want to store
      *
-     * @param  string $sKey   The answer's key
-     * @param  string $mValue The answer's value
+     * @param string $sKey   The answer's key
+     * @param string $mValue The answer's value
      *
      * @return integer
      */
@@ -178,7 +184,7 @@ class Base
     /**
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
      *
-     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @param array $aResponses The array of responses from ResponseAnswer
      *
      * @return array
      */
@@ -223,7 +229,7 @@ class Base
     /**
      * Takes responses for this field type and extracts all the text components
      *
-     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @param array $aResponses The array of responses from ResponseAnswer
      *
      * @return array
      */
