@@ -73,7 +73,7 @@ if (!empty($_POST[$sFieldName])) {
             foreach ($aFields as $oField) {
 
                 ?>
-                <tbody>
+                <tbody class="form-builder__field">
                     <tr>
                         <td class="order handle" rowspan="2">
                             <b class="fa fa-bars"></b>
