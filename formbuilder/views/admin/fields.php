@@ -77,14 +77,18 @@ if (!empty($_POST[$sFieldName])) {
                     <tr>
                         <td class="order handle" rowspan="2">
                             <b class="fa fa-bars"></b>
-                            <?php
-
-                            echo form_hidden(
-                                $sFieldName . '[' . $i . '][id]',
-                                !empty($oField->id) ? $oField->id : ''
-                            );
-
-                            ?>
+                            <input
+                                type="hidden"
+                                name="<?=$sFieldName . '[' . $i . '][id]'?>"
+                                value="<?=!empty($oField->id) ? $oField->id : ''?>"
+                                class="form-builder__field__id"
+                            >
+                            <input
+                                type="hidden"
+                                name="<?=$sFieldName . '[' . $i . '][fieldNumber]'?>"
+                                value="<?=$i?>"
+                                class="form-builder__field__field-number"
+                            >
                         </td>
                         <td class="type">
                             <?php
@@ -93,7 +97,7 @@ if (!empty($_POST[$sFieldName])) {
                                 $sFieldName . '[' . $i . '][type]',
                                 $aFieldTypes,
                                 set_value($sFieldName . '[' . $i . '][type]', $oField->type),
-                                'class="select2 field-type"'
+                                'class="select2 field-type form-builder__field__type"'
                             );
 
                             ?>
@@ -107,13 +111,13 @@ if (!empty($_POST[$sFieldName])) {
                             echo form_input(
                                 $sFieldName . '[' . $i . '][label]',
                                 set_value($sFieldName . '[' . $i . '][label]', $oField->label),
-                                'placeholder="The field\'s label"'
+                                'placeholder="The field\'s label" class="form-builder__field__label"'
                             );
 
                             echo form_input(
                                 $sFieldName . '[' . $i . '][sub_label]',
                                 set_value($sFieldName . '[' . $i . '][sub_label]', $oField->sub_label),
-                                'placeholder="The field\'s sub-label"'
+                                'placeholder="The field\'s sub-label" class="form-builder__field__sublabel"'
                             );
 
                             ?>
@@ -124,7 +128,7 @@ if (!empty($_POST[$sFieldName])) {
                             echo form_input(
                                 $sFieldName . '[' . $i . '][placeholder]',
                                 set_value($sFieldName . '[' . $i . '][placeholder]', $oField->placeholder),
-                                'placeholder="The field\'s placeholder"'
+                                'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
                             );
 
                             ?>
@@ -135,7 +139,8 @@ if (!empty($_POST[$sFieldName])) {
                             echo form_checkbox(
                                 $sFieldName . '[' . $i . '][is_required]',
                                 true,
-                                !empty($oField->is_required)
+                                !empty($oField->is_required),
+                                'class="form-builder__field__required"'
                             );
 
                             ?>
@@ -148,7 +153,7 @@ if (!empty($_POST[$sFieldName])) {
                                     $sFieldName . '[' . $i . '][default_value]',
                                     $aDefaultValues,
                                     set_value($sFieldName . '[' . $i . '][default_value]', $oField->default_value),
-                                    'class="select2 field-default"'
+                                    'class="select2 field-default form-builder__field__default"'
                                 );
                                 ?>
                             </div>
@@ -165,7 +170,7 @@ if (!empty($_POST[$sFieldName])) {
                                     $sFieldName . '[' . $i . '][custom_attributes]',
                                     $oField->custom_attributes
                                 ),
-                                'placeholder="Any custom attributes"'
+                                'placeholder="Any custom attributes" class="form-builder__field__attributes"'
                             );
 
                             ?>
@@ -300,138 +305,146 @@ if (!empty($_POST[$sFieldName])) {
         </table>
     </div>
     <script type="template/mustache" class="js-template-field">
-        <tbody>
-            <tr>
-                <td class="order handle" rowspan="2">
-                    <b class="fa fa-bars"></b>
-                </td>
-                <td class="type">
-                    <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypes, null, 'class="select2 field-type"')?>
-                    <a href="#" class="js-manage-option btn btn-xs btn-warning" data-field-number="{{fieldNumber}}">
-                        Toggle Options
-                    </a>
-                </td>
-                <td class="field-label">
-                    <?php
-
-                    echo form_input(
-                        $sFieldName . '[{{fieldNumber}}][label]',
-                        null,
-                        'placeholder="The field\'s label"'
-                    );
-
-                    echo form_input(
-                        $sFieldName . '[{{fieldNumber}}][sub_label]',
-                        null,
-                        'placeholder="The field\'s sub-label"'
-                    );
-
-                    ?>
-                </td>
-                <td class="placeholder">
-                    <?=form_input(
-                        $sFieldName . '[{{fieldNumber}}][placeholder]',
-                        null,
-                        'placeholder="The field\'s placeholder"'
-                    )?>
-                </td>
-                <td class="required">
-                    <?=form_checkbox(
-                        $sFieldName . '[{{fieldNumber}}][is_required]',
-                        true
-                    )?>
-                </td>
-                <td class="default">
-                    <div class="supports-defualt-value js-supports-default-value">
-                        <?=form_dropdown(
-                            $sFieldName . '[{{fieldNumber}}][default_value]',
-                            $aDefaultValues,
-                            null,
-                            'class="select2 field-default"'
-                        )?>
-                    </div>
-                    <div class="no-default-value js-no-default-value text-muted">
-                        Field type does not support default values
-                    </div>
-                </td>
-                <td class="attributes">
-                    <?=form_input(
-                        $sFieldName . '[{{fieldNumber}}][custom_attributes]',
-                        null,
-                        'placeholder="Any custom attributes"'
-                    )?>
-                </td>
-                <td class="remove" rowspan="2">
-                    <a href="#" class="js-remove-field" data-field-number="{{fieldNumber}}">
-                        <b class="fa fa-times-circle fa-lg"></b>
-                    </a>
-                </td>
-            </tr>
-            <tr class="options">
-                <td colspan="6">
-                    <div class="form-field-options">
-                        <div class="form-field-options-padder">
-                            <table data-option-count="0">
-                                <thead>
-                                    <tr>
-                                        <th class="option-label">
-                                            Label
-                                        </th>
-                                        <th class="option-selected">
-                                            Selected
-                                        </th>
-                                        <th class="option-disabled">
-                                            Disabled
-                                        </th>
-                                        <th class="option-remove">
-                                            &nbsp;
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4">
-                                            <button type="button" class="btn btn-xs btn-success js-add-option" data-field-number="{{fieldNumber}}">
-                                                Add Option
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </script>
-    <script type="template/mustache" class="js-template-field-option">
+    <tbody class="form-builder__field">
         <tr>
-            <td class="option-label">
-                <?=form_input(
-                    $sFieldName . '[{{fieldNumber}}][options][{{optionNumber}}][label]',
+            <td class="order handle" rowspan="2">
+                <b class="fa fa-bars"></b>
+                <input
+                    type="hidden"
+                    name="<?=$sFieldName . '[{{fieldNumber}}][fieldNumber]'?>"
+                    value="{{fieldNumber}}"
+                    class="form-builder__field__field-number"
+                >
+            </td>
+            <td class="type">
+                <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypes, null, 'class="select2 field-type"')?>
+                <a href="#" class="js-manage-option btn btn-xs btn-warning" data-field-number="{{fieldNumber}}">
+                    Toggle Options
+                </a>
+            </td>
+            <td class="field-label">
+                <?php
+
+                echo form_input(
+                    $sFieldName . '[{{fieldNumber}}][label]',
                     null,
-                    'placeholder="Option Label"'
+                    'placeholder="The field\'s label" class="form-builder__field__label"'
+                );
+
+                echo form_input(
+                    $sFieldName . '[{{fieldNumber}}][sub_label]',
+                    null,
+                    'placeholder="The field\'s sub-label" class="form-builder__field__sublabel"'
+                );
+
+                ?>
+            </td>
+            <td class="placeholder">
+                <?=form_input(
+                    $sFieldName . '[{{fieldNumber}}][placeholder]',
+                    null,
+                    'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
                 )?>
             </td>
-            <td class="option-selected">
+            <td class="required">
                 <?=form_checkbox(
-                    $sFieldName . '[{{fieldNumber}}][options][{{optionNumber}}][is_selected]',
-                    true
+                    $sFieldName . '[{{fieldNumber}}][is_required]',
+                    true,
+                    false,
+                    'class="form-builder__field__required"'
                 )?>
             </td>
-            <td class="option-disabled">
-                <?=form_checkbox(
-                    $sFieldName . '[{{fieldNumber}}][options][{{optionNumber}}][is_disabled]',
-                    true
+            <td class="default">
+                <div class="supports-defualt-value js-supports-default-value">
+                    <?=form_dropdown(
+                        $sFieldName . '[{{fieldNumber}}][default_value]',
+                        $aDefaultValues,
+                        null,
+                        'class="select2 field-default form-builder__field__default"'
+                    )?>
+                </div>
+                <div class="no-default-value js-no-default-value text-muted">
+                    Field type does not support default values
+                </div>
+            </td>
+            <td class="attributes">
+                <?=form_input(
+                    $sFieldName . '[{{fieldNumber}}][custom_attributes]',
+                    null,
+                    'placeholder="Any custom attributes" class="form-builder__field__attributes"'
                 )?>
             </td>
-            <td class="option-remove">
-                <a href="#" class="js-remove-option" data-field-number="{{fieldNumber}}">
+            <td class="remove" rowspan="2">
+                <a href="#" class="js-remove-field" data-field-number="{{fieldNumber}}">
                     <b class="fa fa-times-circle fa-lg"></b>
                 </a>
             </td>
         </tr>
+        <tr class="options">
+            <td colspan="6">
+                <div class="form-field-options">
+                    <div class="form-field-options-padder">
+                        <table data-option-count="0">
+                            <thead>
+                                <tr>
+                                    <th class="option-label">
+                                        Label
+                                    </th>
+                                    <th class="option-selected">
+                                        Selected
+                                    </th>
+                                    <th class="option-disabled">
+                                        Disabled
+                                    </th>
+                                    <th class="option-remove">
+                                        &nbsp;
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <button type="button" class="btn btn-xs btn-success js-add-option" data-field-number="{{fieldNumber}}">
+                                            Add Option
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    </script>
+    <script type="template/mustache" class="js-template-field-option">
+    <tr>
+        <td class="option-label">
+            <?=form_input(
+                $sFieldName . '[{{fieldNumber}}][options][{{optionNumber}}][label]',
+                null,
+                'placeholder="Option Label"'
+            )?>
+        </td>
+        <td class="option-selected">
+            <?=form_checkbox(
+                $sFieldName . '[{{fieldNumber}}][options][{{optionNumber}}][is_selected]',
+                true
+            )?>
+        </td>
+        <td class="option-disabled">
+            <?=form_checkbox(
+                $sFieldName . '[{{fieldNumber}}][options][{{optionNumber}}][is_disabled]',
+                true
+            )?>
+        </td>
+        <td class="option-remove">
+            <a href="#" class="js-remove-option" data-field-number="{{fieldNumber}}">
+                <b class="fa fa-times-circle fa-lg"></b>
+            </a>
+        </td>
+    </tr>
     </script>
 </div>
