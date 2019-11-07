@@ -13,11 +13,19 @@
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Cdn\Service\Cdn;
+use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\ViewNotFoundException;
 use Nails\Common\Service\View;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
+use stdClass;
 
+/**
+ * Class File
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class File extends Base
 {
     const LABEL = 'File';
@@ -30,6 +38,8 @@ class File extends Base
      * @param array $aData The field's data
      *
      * @return string
+     * @throws FactoryException
+     * @throws ViewNotFoundException
      */
     public function render($aData)
     {
@@ -47,10 +57,11 @@ class File extends Base
     /**
      * Validate and clean the user's entry
      *
-     * @param mixed     $mInput The form input's value
-     * @param \stdClass $oField The complete field object
+     * @param mixed    $mInput The form input's value
+     * @param stdClass $oField The complete field object
      *
      * @throws FieldTypeException
+     * @throws FactoryException
      * @return mixed
      */
     public function validate($mInput, $oField)
@@ -161,11 +172,16 @@ class File extends Base
      * @param bool   $bPlainText Whether to force plaintext
      *
      * @return integer
+     * @throws FactoryException
      */
     public function extractText($sKey, $mValue, bool $bPlainText = false)
     {
         $oCdn = Factory::service('Cdn', \Nails\Cdn\Constants::MODULE_SLUG);
         $oObj = $oCdn->getObject($mValue);
+
+        if (empty($oObj)) {
+            return '';
+        };
 
         if ($bPlainText) {
             return cdnServe($oObj->id, true);
@@ -176,8 +192,6 @@ class File extends Base
                 'class="btn btn-xs btn-primary"'
             );
         }
-
-        return $sOut;
     }
 
     // --------------------------------------------------------------------------

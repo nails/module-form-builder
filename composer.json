@@ -23,7 +23,8 @@
     {
         "nails/common": "dev-develop",
         "nails/module-auth": "dev-develop",
-        "nails/module-cdn": "dev-develop"
+        "nails/module-cdn": "dev-develop",
+        "ext-json": "*"
     },
     "require-dev":
     {

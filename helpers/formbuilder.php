@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This helper brings some convinient functions for interacting with the form builder
+ * This helper brings some convenient functions for interacting with the form builder
  *
  * @package     Nails
  * @subpackage  module-form-builder
@@ -10,6 +10,7 @@
  * @link
  */
 
+use Nails\Common\Exception\FactoryException;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\ValidationException;
 
@@ -113,9 +114,10 @@ if (!function_exists('adminLoadFormBuilderAssets')) {
     /**
      * Loads up all the assets required for the form builder
      *
-     * @param  string $sSelector The selector for the element(s) to which the JS should bind
+     * @param string $sSelector The selector for the element(s) to which the JS should bind
      *
-     * @return array
+     * @return void
+     * @throws FactoryException
      */
     function adminLoadFormBuilderAssets($sSelector)
     {
@@ -150,10 +152,11 @@ if (!function_exists('adminLoadFormBuilderView')) {
     /**
      * Loads the markup for the form builder
      *
-     * @param  string $sId     The ID to give the form
-     * @param  array  $aFields Any existing fields to pre-render
+     * @param string $sId     The ID to give the form
+     * @param array  $aFields Any existing fields to pre-render
      *
      * @return string
+     * @throws FactoryException
      */
     function adminLoadFormBuilderView($sId, $sFieldName = 'fields', $aFields = [])
     {
@@ -182,9 +185,10 @@ if (!function_exists('formBuilderRender')) {
     /**
      * Renders the markup for a form
      *
-     * @param  array $aFormData The data to build the form with
+     * @param array $aFormData The data to build the form with
      *
      * @return string
+     * @throws FactoryException
      */
     function formBuilderRender($aFormData)
     {
@@ -194,7 +198,6 @@ if (!function_exists('formBuilderRender')) {
         $sFormAttr     = !empty($aFormData['form_attr']) ? strtoupper($aFormData['form_attr']) : '';
         $bHasCaptcha   = !empty($aFormData['has_captcha']);
         $sCaptchaError = !empty($aFormData['captcha_error']) ? $aFormData['captcha_error'] : null;
-        $sFieldKey     = !empty($aFormData['field_key']) ? strtoupper($aFormData['field_key']) : '';
         $aFields       = !empty($aFormData['fields']) ? $aFormData['fields'] : [];
 
         if (!empty($aFormData['buttons'])) {
@@ -333,12 +336,13 @@ if (!function_exists('formBuilderRender')) {
 if (!function_exists('formBuilderValidate')) {
 
     /**
-     * Valdates $aUserData against $aFormData
+     * Validates $aUserData against $aFormData
      *
-     * @param  array $aFormFields The form fields
-     * @param  array $aUserData   The posted user data
+     * @param array $aFormFields The form fields
+     * @param array $aUserData   The posted user data
      *
      * @return boolean|array
+     * @throws FactoryException
      */
     function formBuilderValidate($aFormFields, $aUserData)
     {
@@ -375,12 +379,13 @@ if (!function_exists('formBuilderValidate')) {
 if (!function_exists('formBuilderParseResponse')) {
 
     /**
-     * Parses a user's response into the various components, designed for then saving to the databae
+     * Parses a user's response into the various components, designed for then saving to the database
      *
-     * @param  array $aFormFields The form fields
-     * @param  array $aUserData   The posted user data
+     * @param array $aFormFields The form fields
+     * @param array $aUserData   The posted user data
      *
      * @return boolean|array
+     * @throws FactoryException
      */
     function formBuilderParseResponse($aFormFields, $aUserData)
     {
