@@ -12,6 +12,7 @@
 
 namespace Nails\FormBuilder\Service;
 
+use Nails\Common\Helper\Directory;
 use Nails\Components;
 use Nails\Factory;
 
@@ -57,9 +58,9 @@ class DefaultValue
     /**
      * Looks for FieldTypes provided by components
      *
-     * @param  string $sNamespace The namespace to check
-     * @param  string $sPath      The path to search
-     * @param  string $sComponent The component being queried
+     * @param string $sNamespace The namespace to check
+     * @param string $sPath      The path to search
+     * @param string $sComponent The component being queried
      *
      * @return void
      */
@@ -67,9 +68,10 @@ class DefaultValue
     {
         $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\DefaultValue\\';
         $sPath           = $sPath . 'src/FormBuilder/DefaultValue/';
-        $aFiles          = directoryMap($sPath);
+        $aFiles          = Directory::map($sPath, null, false);
+
         foreach ($aFiles as $sFile) {
-            $sClassName = $sClassNamespace . basename($sFile, '.php');
+            $sClassName = $sClassNamespace . str_replace(DIRECTORY_SEPARATOR, '\\', preg_replace('/\.php$/', '', $sFile));
             if (class_exists($sClassName)) {
                 $this->aAvailable[] = (object) [
                     'slug'      => $sClassName,
@@ -118,7 +120,7 @@ class DefaultValue
     /**
      * Get an individual default value instance by it's slug
      *
-     * @param  string $sSlug The Default Value's slug
+     * @param string $sSlug The Default Value's slug
      *
      * @return object
      */

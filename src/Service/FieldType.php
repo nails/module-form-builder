@@ -12,6 +12,7 @@
 
 namespace Nails\FormBuilder\Service;
 
+use Nails\Common\Helper\Directory;
 use Nails\Components;
 use Nails\Factory;
 
@@ -57,9 +58,9 @@ class FieldType
     /**
      * Looks for FieldTypes provided by components
      *
-     * @param  string $sNamespace The namespace to check
-     * @param  string $sPath      The path to search
-     * @param  string $sComponent The component being queried
+     * @param string $sNamespace The namespace to check
+     * @param string $sPath      The path to search
+     * @param string $sComponent The component being queried
      *
      * @return void
      */
@@ -67,9 +68,10 @@ class FieldType
     {
         $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\FieldType\\';
         $sPath           = $sPath . 'src/FormBuilder/FieldType/';
-        $aFiles          = directoryMap($sPath);
+        $aFiles          = Directory::map($sPath, null, false);
+
         foreach ($aFiles as $sFile) {
-            $sClassName = $sClassNamespace . basename($sFile, '.php');
+            $sClassName = $sClassNamespace . str_replace(DIRECTORY_SEPARATOR, '\\', preg_replace('/\.php$/', '', $sFile));
             if (class_exists($sClassName)) {
                 $this->aAvailable[] = (object) [
                     'slug'               => $sClassName,
@@ -90,7 +92,7 @@ class FieldType
     /**
      * Returns all available Field definitions
      *
-     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
      * @return array
      */
@@ -113,7 +115,7 @@ class FieldType
     /**
      * Return all the available types of field which can be created as a flat array
      *
-     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
      * @return array
      */
@@ -134,7 +136,7 @@ class FieldType
     /**
      * Returns the types which support defining multiple options
      *
-     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
      * @return array
      */
@@ -158,7 +160,7 @@ class FieldType
     /**
      * Returns the types which support a default value
      *
-     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
      * @return array
      */
@@ -182,8 +184,8 @@ class FieldType
     /**
      * Get an individual field type instance by it's slug
      *
-     * @param  string  $sSlug           The Field Type's slug
-     * @param  boolean $bOnlySelectable Filter out field types which are not selectable by the user
+     * @param string $sSlug           The Field Type's slug
+     * @param bool   $bOnlySelectable Filter out field types which are not selectable by the user
      *
      * @return object
      */
