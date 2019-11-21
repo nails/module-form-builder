@@ -10,6 +10,7 @@
  * @link
  */
 
+use Nails\Captcha;
 use Nails\Common\Exception\FactoryException;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\ValidationException;
@@ -19,9 +20,9 @@ if (!function_exists('adminNormalizeFormData')) {
     /**
      * Cleans up post data submitted by the admin form builder
      *
-     * @param  integer $iFormId     The form ID, if any
-     * @param  boolean $bHasCaptcha Whether the form should have a captcha
-     * @param  array   $aFields     The fields to parse
+     * @param integer $iFormId     The form ID, if any
+     * @param boolean $bHasCaptcha Whether the form should have a captcha
+     * @param array   $aFields     The fields to parse
      *
      * @return array
      */
@@ -86,7 +87,7 @@ if (!function_exists('adminValidateFormData')) {
     /**
      * Validates post data submitted by the admin form builder
      *
-     * @param  string $aFormData The form data to validate
+     * @param string $aFormData The form data to validate
      *
      * @return boolean|array
      */
@@ -272,7 +273,7 @@ if (!function_exists('formBuilderRender')) {
         //  Render the captcha
         if ($bHasCaptcha) {
 
-            Factory::helper('captcha', 'nails/module-captcha');
+            Factory::helper('captcha', Captcha\Constants::MODULE_SLUG);
 
             $oCaptcha = captchaGenerate();
 
