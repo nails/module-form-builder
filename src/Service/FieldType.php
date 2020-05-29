@@ -44,13 +44,6 @@ class FieldType
                 );
             }
         }
-
-        //  Any subscriptions for the app?
-        $this->autoLoadTypes(
-            'App\\',
-            NAILS_APP_PATH,
-            'app'
-        );
     }
 
     // --------------------------------------------------------------------------
@@ -66,7 +59,7 @@ class FieldType
      */
     protected function autoLoadTypes($sNamespace, $sPath, $sComponent)
     {
-        $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\FieldType\\';
+        $sClassNamespace = $sNamespace . 'FormBuilder\\FieldType\\';
         $sPath           = $sPath . 'src/FormBuilder/FieldType/';
         $aFiles          = Directory::map($sPath, null, false);
 

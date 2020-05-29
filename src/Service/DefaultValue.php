@@ -44,13 +44,6 @@ class DefaultValue
                 );
             }
         }
-
-        //  Any subscriptions for the app?
-        $this->autoLoadDefaults(
-            'App\\',
-            NAILS_APP_PATH,
-            'app'
-        );
     }
 
     // --------------------------------------------------------------------------
@@ -66,7 +59,7 @@ class DefaultValue
      */
     protected function autoLoadDefaults($sNamespace, $sPath, $sComponent)
     {
-        $sClassNamespace = '\\' . $sNamespace . 'FormBuilder\\DefaultValue\\';
+        $sClassNamespace = $sNamespace . 'FormBuilder\\DefaultValue\\';
         $sPath           = $sPath . 'src/FormBuilder/DefaultValue/';
         $aFiles          = Directory::map($sPath, null, false);
 
