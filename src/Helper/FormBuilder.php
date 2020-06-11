@@ -241,17 +241,18 @@ class FormBuilder
 
                 $sOut .= $oFieldType->render(
                     [
-                        'id'         => $sId,
-                        'key'        => 'field[' . $oField->id . ']',
-                        'label'      => $oField->label,
-                        'sub_label'  => $oField->sub_label,
-                        'default'    => $sDefaultValue,
-                        'value'      => isset($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : $sDefaultValue,
-                        'required'   => $oField->is_required,
-                        'class'      => 'form-control',
-                        'attributes' => implode(' ', $aAttr),
-                        'options'    => $oField->options->data,
-                        'error'      => !empty($oField->error) ? $oField->error : null,
+                        'id'          => $sId,
+                        'key'         => 'field[' . $oField->id . ']',
+                        'label'       => $oField->label,
+                        'sub_label'   => $oField->sub_label,
+                        'default'     => $sDefaultValue,
+                        'value'       => isset($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : $sDefaultValue,
+                        'required'    => $oField->is_required,
+                        'class'       => 'form-control',
+                        'placeholder' => $oField->placeholder,
+                        'attributes'  => implode(' ', $aAttr),
+                        'options'     => $oField->options->data,
+                        'error'       => !empty($oField->error) ? $oField->error : null,
                     ]
                 );
             }
