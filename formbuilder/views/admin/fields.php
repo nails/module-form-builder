@@ -245,7 +245,7 @@ if (!empty($_POST[$sFieldName])) {
                                                             <?php
 
                                                             echo form_checkbox(
-                                                                $sFieldName . $sFieldName . '[' . $i . '][options][' . $x . '][is_disabled]',
+                                                                $sFieldName . '[' . $i . '][options][' . $x . '][is_disabled]',
                                                                 true,
                                                                 !empty($oOption->is_disabled)
                                                             );
