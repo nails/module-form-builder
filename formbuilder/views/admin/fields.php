@@ -86,7 +86,7 @@ if (!empty($_POST[$sFieldName])) {
                             <input
                                 type="hidden"
                                 name="<?=$sFieldName . '[' . $i . '][fieldNumber]'?>"
-                                value="<?=$i?>"
+                                value="<?=$oField->fieldNumber ?? $i?>"
                                 class="form-builder__field__field-number"
                             >
                         </td>
