@@ -116,7 +116,9 @@ abstract class Base
             $aInput = (array) $mInput;
 
             foreach ($aInput as $sInput) {
-                if (!in_array($sInput, $aValidValues)) {
+                if (empty($sInput) && $oField->is_required) {
+                    throw new FieldTypeExceptionInvalidOption('This field is required.', 1);
+                } elseif (!empty($mInput) && !in_array($sInput, $aValidValues)) {
                     throw new FieldTypeExceptionInvalidOption('Please choose a valid option.', 1);
                 }
             }
