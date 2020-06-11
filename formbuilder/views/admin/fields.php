@@ -96,7 +96,7 @@ if (!empty($_POST[$sFieldName])) {
                             echo form_dropdown(
                                 $sFieldName . '[' . $i . '][type]',
                                 $aFieldTypes,
-                                set_value($sFieldName . '[' . $i . '][type]', $oField->type),
+                                $oField->type,
                                 'class="select2 field-type form-builder__field__type"'
                             );
 
@@ -110,13 +110,13 @@ if (!empty($_POST[$sFieldName])) {
 
                             echo form_input(
                                 $sFieldName . '[' . $i . '][label]',
-                                set_value($sFieldName . '[' . $i . '][label]', $oField->label),
+                                $oField->label,
                                 'placeholder="The field\'s label" class="form-builder__field__label"'
                             );
 
                             echo form_input(
                                 $sFieldName . '[' . $i . '][sub_label]',
-                                set_value($sFieldName . '[' . $i . '][sub_label]', $oField->sub_label),
+                                $oField->sub_label,
                                 'placeholder="The field\'s sub-label" class="form-builder__field__sublabel"'
                             );
 
@@ -127,7 +127,7 @@ if (!empty($_POST[$sFieldName])) {
 
                             echo form_input(
                                 $sFieldName . '[' . $i . '][placeholder]',
-                                set_value($sFieldName . '[' . $i . '][placeholder]', $oField->placeholder),
+                                $oField->placeholder,
                                 'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
                             );
 
@@ -152,7 +152,7 @@ if (!empty($_POST[$sFieldName])) {
                                 echo form_dropdown(
                                     $sFieldName . '[' . $i . '][default_value]',
                                     $aDefaultValues,
-                                    set_value($sFieldName . '[' . $i . '][default_value]', $oField->default_value),
+                                    $oField->default_value,
                                     'class="select2 field-default form-builder__field__default"'
                                 );
                                 ?>
@@ -166,10 +166,7 @@ if (!empty($_POST[$sFieldName])) {
 
                             echo form_input(
                                 $sFieldName . '[' . $i . '][custom_attributes]',
-                                set_value(
-                                    $sFieldName . '[' . $i . '][custom_attributes]',
-                                    $oField->custom_attributes
-                                ),
+                                $oField->custom_attributes,
                                 'placeholder="Any custom attributes" class="form-builder__field__attributes"'
                             );
 
