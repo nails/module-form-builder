@@ -222,7 +222,7 @@ class FormBuilder
             $sId   = 'form-' . $sUuid . '-' . $iCounter;
             $aAttr = [
                 $sId ? 'id="' . $sId . '"' : '',
-                $oField->placeholder ? 'placeholder="' . $oField->placeholder . '"' : '',
+                $oField->placeholder ? 'placeholder="' . htmlspecialchars($oField->placeholder) . '"' : '',
                 $oField->is_required ? 'required="required"' : '',
                 $oField->custom_attributes,
             ];
