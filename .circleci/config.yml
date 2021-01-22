@@ -19,6 +19,9 @@ jobs:
     steps:
     - checkout
 
+    # Upgrade node
+    - run: sudo npm cache clean -f && sudo npm install -g n && sudo n stable
+
     # Restore Composer cache
     - restore_cache:
         keys:
