@@ -24,14 +24,28 @@ use Nails\Factory;
 class Form extends Base
 {
     /**
+     * The name of the "label" column
+     *
+     * @var string
+     */
+    protected $tableLabelColumn = null;
+
+    /**
+     * The name of the "slug" column
+     *
+     * @var string
+     */
+    protected $tableSlugColumn = null;
+
+    // --------------------------------------------------------------------------
+
+    /**
      * Construct the model
      */
     public function __construct()
     {
         parent::__construct();
         $this->table             = NAILS_DB_PREFIX . 'formbuilder_form';
-        $this->tableSlugColumn   = null;
-        $this->tableLabelColumn  = null;
         $this->defaultSortColumn = null;
         $this->addExpandableField([
             'trigger'   => 'fields',
