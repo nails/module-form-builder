@@ -15,6 +15,7 @@ namespace Nails\FormBuilder\Model;
 use Nails\Common\Exception\NailsException;
 use Nails\Common\Model\Base;
 use Nails\Factory;
+use Nails\FormBuilder\Constants;
 
 /**
  * Class Form
@@ -52,7 +53,7 @@ class Form extends Base
             'type'      => self::EXPANDABLE_TYPE_MANY,
             'property'  => 'fields',
             'model'     => 'FormField',
-            'provider'  => 'nails/module-form-builder',
+            'provider'  => Constants::MODULE_SLUG,
             'id_column' => 'form_id',
         ]);
     }
@@ -85,8 +86,8 @@ class Form extends Base
             }
 
             //  Duplicate the form, fields and options
-            $oFormFieldModel       = Factory::model('FormField', 'nails/module-form-builder');
-            $oFormFieldOptionModel = Factory::model('FormFieldOption', 'nails/module-form-builder');
+            $oFormFieldModel       = Factory::model('FormField', Constants::MODULE_SLUG);
+            $oFormFieldOptionModel = Factory::model('FormFieldOption', Constants::MODULE_SLUG);
 
             $sTableForm    = $this->getTableName();
             $sTableFields  = $oFormFieldModel->getTableName();

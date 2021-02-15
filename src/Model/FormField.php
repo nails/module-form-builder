@@ -13,6 +13,7 @@
 namespace Nails\FormBuilder\Model;
 
 use Nails\Common\Model\Base;
+use Nails\FormBuilder\Constants;
 
 class FormField extends Base
 {
@@ -29,7 +30,7 @@ class FormField extends Base
             'type'      => self::EXPANDABLE_TYPE_MANY,
             'property'  => 'options',
             'model'     => 'FormFieldOption',
-            'provider'  => 'nails/module-form-builder',
+            'provider'  => Constants::MODULE_SLUG,
             'id_column' => 'form_field_id',
         ]);
     }

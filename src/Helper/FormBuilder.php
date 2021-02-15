@@ -14,6 +14,7 @@ namespace Nails\FormBuilder\Helper;
 use Nails\Captcha;
 use Nails\Common\Exception\FactoryException;
 use Nails\Factory;
+use Nails\FormBuilder\Constants;
 use Nails\FormBuilder\Exception\ValidationException;
 
 class FormBuilder
@@ -117,12 +118,12 @@ class FormBuilder
      */
     public static function adminLoadAssets($sSelector)
     {
-        $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
+        $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
         $oAsset            = Factory::service('Asset');
 
-        $oAsset->load('admin.min.css', 'nails/module-form-builder');
+        $oAsset->load('admin.min.css', Constants::MODULE_SLUG);
         //  @todo (Pablo - 2019-09-13) - Update/Remove/Use minified once JS is refactored to be a module
-        $oAsset->load('admin.form.edit.js', 'nails/module-form-builder');
+        $oAsset->load('admin.form.edit.js', Constants::MODULE_SLUG);
         $oAsset->inline(
             '
                 window.NAILS.FORMBUILDER = [];
@@ -153,8 +154,8 @@ class FormBuilder
      */
     public static function adminLoadView($sId, $sFieldName = 'fields', $aFields = [])
     {
-        $oFieldTypeService    = Factory::service('FieldType', 'nails/module-form-builder');
-        $oDefaultValueService = Factory::service('DefaultValue', 'nails/module-form-builder');
+        $oFieldTypeService    = Factory::service('FieldType', Constants::MODULE_SLUG);
+        $oDefaultValueService = Factory::service('DefaultValue', Constants::MODULE_SLUG);
 
         return Factory::service('View')
             ->load(
@@ -211,8 +212,8 @@ class FormBuilder
         $sOut .= form_hidden('submitting', true);
 
         //  Render the form fields
-        $oFieldTypeService    = Factory::service('FieldType', 'nails/module-form-builder');
-        $oDefaultValueService = Factory::service('DefaultValue', 'nails/module-form-builder');
+        $oFieldTypeService    = Factory::service('FieldType', Constants::MODULE_SLUG);
+        $oDefaultValueService = Factory::service('DefaultValue', Constants::MODULE_SLUG);
         $iCounter             = 0;
 
         foreach ($aFields as $oField) {
@@ -334,7 +335,7 @@ class FormBuilder
      */
     public static function validate($aFormFields, $aUserData)
     {
-        $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
+        $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
         $bIsValid          = true;
 
         foreach ($aFormFields as &$oField) {
@@ -375,7 +376,7 @@ class FormBuilder
     public static function parseResponse($aFormFields, $aUserData)
     {
         $aUserData         = array_filter($aUserData);
-        $oFieldTypeService = Factory::service('FieldType', 'nails/module-form-builder');
+        $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
         $aUserDataParsed   = [];
         $aOut              = [];
 
