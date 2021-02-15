@@ -10,9 +10,9 @@ if (!function_exists('adminNormalizeFormData')) {
 }
 
 if (!function_exists('adminValidateFormData')) {
-    function adminValidateFormData($aFormData)
+    function adminValidateFormData(array $aFormData)
     {
-        return FormBuilder::adminValidateFormData($aFormData);
+        FormBuilder::adminValidateFormData($aFormData);
     }
 }
 

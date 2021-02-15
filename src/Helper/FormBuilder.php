@@ -13,9 +13,8 @@ namespace Nails\FormBuilder\Helper;
 
 use Nails\Captcha;
 use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\ValidationException;
 use Nails\Factory;
-use Nails\FormBuilder\Constants;
-use Nails\FormBuilder\Exception\ValidationException;
 
 class FormBuilder
 {
@@ -86,24 +85,17 @@ class FormBuilder
     /**
      * Validates post data submitted by the admin form builder
      *
-     * @param string $aFormData The form data to validate
+     * @param array $aFormData The form data to validate
      *
-     * @return bool|array
+     * @return void
+     * @throws ValidationException
      */
-    public static function adminValidateFormData($aFormData)
+    public static function adminValidateFormData(array $aFormData): void
     {
         $aNormalized = static::adminNormalizeFormData(null, $aFormData);
         $aErrors     = [];
 
-        try {
-
-            //  @todo
-            return true;
-
-        } catch (ValidationException $e) {
-
-            return $aErrors;
-        }
+        //  @todo (Pablo 15/02/2021) - Check fields for errors, and throw ValidationException
     }
 
     // --------------------------------------------------------------------------
