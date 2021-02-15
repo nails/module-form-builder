@@ -14,5 +14,5 @@ class Constants
      *
      * @var string
      */
-    const MODULE_SLUG = 'nails/module-for-builder';
+    const MODULE_SLUG = 'nails/module-form-builder';
 }
