@@ -15,6 +15,7 @@ use Nails\Captcha;
 use Nails\Common\Exception\FactoryException;
 use Nails\Common\Exception\ValidationException;
 use Nails\Factory;
+use Nails\FormBuilder\Constants;
 
 class FormBuilder
 {
