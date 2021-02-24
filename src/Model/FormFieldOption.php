@@ -16,15 +16,8 @@ use Nails\Common\Model\Base;
 
 class FormFieldOption extends Base
 {
-    /**
-     * Construct the model
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->table             = NAILS_DB_PREFIX . 'formbuilder_form_field_option';
-        $this->defaultSortColumn = 'order';
-    }
+    const TABLE               = NAILS_DB_PREFIX . 'formbuilder_form_field_option';
+    const DEFAULT_SORT_COLUMN = 'order';
 
     // --------------------------------------------------------------------------
 

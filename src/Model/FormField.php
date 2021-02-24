@@ -17,14 +17,17 @@ use Nails\FormBuilder\Constants;
 
 class FormField extends Base
 {
+    const TABLE               = NAILS_DB_PREFIX . 'formbuilder_form_field';
+    const DEFAULT_SORT_COLUMN = 'order';
+
+    // --------------------------------------------------------------------------
+
     /**
      * Construct the model
      */
     public function __construct()
     {
         parent::__construct();
-        $this->table             = NAILS_DB_PREFIX . 'formbuilder_form_field';
-        $this->defaultSortColumn = 'order';
         $this->addExpandableField([
             'trigger'   => 'options',
             'type'      => self::EXPANDABLE_TYPE_MANY,

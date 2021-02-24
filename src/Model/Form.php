@@ -24,6 +24,10 @@ use Nails\FormBuilder\Constants;
  */
 class Form extends Base
 {
+    const TABLE = NAILS_DB_PREFIX . 'formbuilder_form';
+
+    // --------------------------------------------------------------------------
+
     /**
      * The name of the "label" column
      *
@@ -46,8 +50,6 @@ class Form extends Base
     public function __construct()
     {
         parent::__construct();
-        $this->table             = NAILS_DB_PREFIX . 'formbuilder_form';
-        $this->defaultSortColumn = null;
         $this->addExpandableField([
             'trigger'   => 'fields',
             'type'      => self::EXPANDABLE_TYPE_MANY,
