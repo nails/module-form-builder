@@ -78,7 +78,7 @@ class Form extends Base
         try {
 
             //  Begin the transaction
-            $oDb->trans_begin();
+            $oDb->transaction()->start();
 
             //  Check form exists
             $oForm = $this->getById($iFormId);
@@ -155,14 +155,14 @@ class Form extends Base
             }
 
             //  All done
-            $oDb->trans_commit();
+            $oDb->transaction()->commit();
 
             //  Return the new form's ID or object
             return $bReturnObject ? $this->getById($iNewFormId, $aReturnData) : $iNewFormId;
 
         } catch (\Exception $e) {
 
-            $oDb->trans_rollback();
+            $oDb->transaction()->rollback();
             $this->setError($e->getMessage());
 
             return false;
