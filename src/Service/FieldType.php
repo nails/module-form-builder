@@ -12,72 +12,87 @@
 
 namespace Nails\FormBuilder\Service;
 
-use Nails\Common\Helper\Directory;
+use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\NailsException;
 use Nails\Components;
 use Nails\Factory;
+use Nails\FormBuilder\Constants;
+use Nails\FormBuilder\Resource;
 
+/**
+ * Class FieldType
+ *
+ * @package Nails\FormBuilder\Service
+ */
 class FieldType
 {
     /**
      * The available Field definitions
      *
-     * @var array
+     * @var Resource\FieldType
      */
     protected $aAvailable;
 
     // --------------------------------------------------------------------------
 
     /**
-     * Construct the model, look for available Field definitions
+     * FieldType constructor.
+     *
+     * @throws FactoryException
+     * @throws NailsException
      */
     public function __construct()
     {
-        //  Look for available FieldTypes
-        $this->aAvailable = [];
-
-        foreach (Components::available() as $oComponent) {
-            if (!empty($oComponent->namespace)) {
-                $this->autoLoadTypes(
-                    $oComponent->namespace,
-                    $oComponent->path,
-                    $oComponent->slug
-                );
-            }
-        }
+        $this->discoverFieldTypes();
     }
 
     // --------------------------------------------------------------------------
 
     /**
-     * Looks for FieldTypes provided by components
+     * Discovers available FieldTypes
      *
-     * @param string $sNamespace The namespace to check
-     * @param string $sPath      The path to search
-     * @param string $sComponent The component being queried
-     *
-     * @return void
+     * @return $this
+     * @throws FactoryException
+     * @throws NailsException
      */
-    protected function autoLoadTypes($sNamespace, $sPath, $sComponent)
+    protected function discoverFieldTypes(): self
     {
-        $sClassNamespace = $sNamespace . 'FormBuilder\\FieldType\\';
-        $sPath           = $sPath . 'src/FormBuilder/FieldType/';
-        $aFiles          = Directory::map($sPath, null, false);
+        $this->aAvailable = [];
 
-        foreach ($aFiles as $sFile) {
-            $sClassName = $sClassNamespace . str_replace(DIRECTORY_SEPARATOR, '\\', preg_replace('/\.php$/', '', $sFile));
-            if (class_exists($sClassName)) {
-                $this->aAvailable[] = (object) [
-                    'slug'               => $sClassName,
-                    'label'              => $sClassName::LABEL,
-                    'component'          => 'FieldType' . basename($sFile, '.php'),
-                    'provider'           => $sComponent,
-                    'instance'           => null,
-                    'is_selectable'      => $sClassName::IS_SELECTABLE,
-                    'can_option_select'  => $sClassName::SUPPORTS_OPTIONS_SELECTED,
-                    'can_option_disable' => $sClassName::SUPPORTS_OPTIONS_DISABLE,
-                ];
+        foreach (Components::available() as $oComponent) {
+
+            $aClasses = $oComponent
+                ->findClasses('FormBuilder\\FieldType')
+                ->whichExtend(\Nails\FormBuilder\FieldType\Base::class)
+                ->whichCanBeInstantiated();
+
+            foreach ($aClasses as $sClass) {
+                $this->aAvailable[] = Factory::resource('FieldType', Constants::MODULE_SLUG, [
+                    'slug'               => $sClass,
+                    'label'              => $sClass::LABEL,
+                    'instance'           => new $sClass(),
+                    'is_selectable'      => $sClass::IS_SELECTABLE,
+                    'can_option_select'  => $sClass::SUPPORTS_OPTIONS_SELECTED,
+                    'can_option_disable' => $sClass::SUPPORTS_OPTIONS_DISABLE,
+                ]);
             }
         }
+
+        return $this;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Filter available FieldTypes
+     *
+     * @param callable $cFilter The callable to filter by
+     *
+     * @return Resource\FieldType[]
+     */
+    public function filter(callable $cFilter): array
+    {
+        return array_values(array_filter($this->aAvailable, $cFilter));
     }
 
     // --------------------------------------------------------------------------
@@ -87,20 +102,16 @@ class FieldType
      *
      * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return array
+     * @return Resource\FieldType[]
      */
-    public function getAll($bOnlySelectable = false)
+    public function getAll($bOnlySelectable = false): array
     {
-        $aOut = [];
 
-        foreach ($this->aAvailable as $oType) {
-            $sClassName = $oType->slug;
-            if (!$bOnlySelectable || $sClassName::IS_SELECTABLE) {
-                $aOut[] = $oType;
-            }
-        }
-
-        return $aOut;
+        return $bOnlySelectable
+            ? $this->filter(function ($oType) {
+                return $oType->instance::IS_SELECTABLE;
+            })
+            : $this->aAvailable;
     }
 
     // --------------------------------------------------------------------------
@@ -110,9 +121,9 @@ class FieldType
      *
      * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return array
+     * @return string[]
      */
-    public function getAllFlat($bOnlySelectable = false)
+    public function getAllFlat($bOnlySelectable = false): array
     {
         $aAvailable = $this->getAll($bOnlySelectable);
         $aOut       = [];
@@ -131,21 +142,13 @@ class FieldType
      *
      * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return array
+     * @return Resource\FieldType[]
      */
-    public function getAllWithOptions($bOnlySelectable = false)
+    public function getAllWithOptions($bOnlySelectable = false): array
     {
-        $aAvailable = $this->getAll($bOnlySelectable);
-        $aOut       = [];
-
-        foreach ($aAvailable as $oType) {
-            $sClassName = $oType->slug;
-            if ($sClassName::SUPPORTS_OPTIONS) {
-                $aOut[] = $oType;
-            }
-        }
-
-        return $aOut;
+        return $this->filter(function ($oType) {
+            return $oType->instance::SUPPORTS_OPTIONS;
+        });
     }
 
     // --------------------------------------------------------------------------
@@ -155,21 +158,13 @@ class FieldType
      *
      * @param bool $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return array
+     * @return Resource\FieldType[]
      */
-    public function getAllWithDefaultValue($bOnlySelectable = false)
+    public function getAllWithDefaultValue($bOnlySelectable = false): array
     {
-        $aAvailable = $this->getAll($bOnlySelectable);
-        $aOut       = [];
-
-        foreach ($aAvailable as $oType) {
-            $sClassName = $oType->slug;
-            if ($sClassName::SUPPORTS_DEFAULTS) {
-                $aOut[] = $oType;
-            }
-        }
-
-        return $aOut;
+        return $this->filter(function ($oType) {
+            return $oType->instance::SUPPORTS_DEFAULTS;
+        });
     }
 
     // --------------------------------------------------------------------------
@@ -180,23 +175,12 @@ class FieldType
      * @param string $sSlug           The Field Type's slug
      * @param bool   $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return object
+     * @return \Nails\FormBuilder\FieldType\Base
      */
-    public function getBySlug($sSlug, $bOnlySelectable = false)
+    public function getBySlug($sSlug, $bOnlySelectable = false): ?\Nails\FormBuilder\FieldType\Base
     {
-        $aAvailable = $this->getAll($bOnlySelectable);
-
-        foreach ($aAvailable as $oType) {
-
+        foreach ($this->getAll($bOnlySelectable) as $oType) {
             if ($oType->slug == $sSlug) {
-
-                if (!isset($oType->instance)) {
-                    $oType->instance = Factory::factory(
-                        $oType->component,
-                        $oType->provider
-                    );
-                }
-
                 return $oType->instance;
             }
         }

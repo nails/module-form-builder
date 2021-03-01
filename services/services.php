@@ -190,7 +190,7 @@ return [
                 return new \Nails\FormBuilder\FormBuilder\FieldType\LikertLikelihood();
             }
         },
-        'FieldTypeLikertQuality' => function () {
+        'FieldTypeLikertQuality'    => function () {
             if (class_exists('\App\FormBuilder\FormBuilder\FieldType\LikertQuality')) {
                 return new \App\FormBuilder\FormBuilder\FieldType\LikertQuality();
             } else {
@@ -272,6 +272,15 @@ return [
                 return new \App\FormBuilder\FormBuilder\FieldType\Url();
             } else {
                 return new \Nails\FormBuilder\FormBuilder\FieldType\Url();
+            }
+        },
+    ],
+    'resources' => [
+        'FieldType' => function ($mObj) {
+            if (class_exists('\App\FormBuilder\Resource\FieldType')) {
+                return new \App\FormBuilder\Resource\FieldType($mObj);
+            } else {
+                return new \Nails\FormBuilder\Resource\FieldType($mObj);
             }
         },
     ],
