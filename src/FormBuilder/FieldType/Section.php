@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * This class provides the "Text" field type
+ *
+ * @package     Nails
+ * @subpackage  module-form-builder
+ * @category    Controller
+ * @author      Nails Dev Team
+ * @link
+ */
+
+namespace Nails\FormBuilder\FormBuilder\FieldType;
+
+use Nails\Factory;
+use Nails\FormBuilder\FieldType\Base;
+
+/**
+ * Class Section
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
+class Section extends Base
+{
+    const LABEL        = 'Section';
+    const RENDER_VIEWS = [
+        'formbuilder/fields/body-section',
+    ];
+}
