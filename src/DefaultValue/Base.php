@@ -12,10 +12,18 @@
 
 namespace Nails\FormBuilder\DefaultValue;
 
-class Base
+use Nails\FormBuilder\Interfaces\DefaultValue;
+
+/**
+ * Class Base
+ *
+ * @package Nails\FormBuilder\DefaultValue
+ */
+abstract class Base implements DefaultValue
 {
     /**
-     * The human friendly label to give this field type
+     * The human friendly label to give this default value
+     *
      * @var string
      */
     const LABEL = '';
@@ -23,11 +31,12 @@ class Base
     // --------------------------------------------------------------------------
 
     /**
-     * Return the calculated default value
-     * @return mixed
+     * Returns the default value's label
+     *
+     * @return string
      */
-    public function defaultValue()
+    public static function getLabel(): string
     {
-        return null;
+        return static::LABEL;
     }
 }

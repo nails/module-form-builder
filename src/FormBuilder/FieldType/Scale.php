@@ -17,30 +17,35 @@ use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Scale
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Scale extends Base
 {
-    const LABEL       = 'Scale (1-10)';
-    const NUM_OPTIONS = 10;
+    const LABEL        = 'Scale (1-10)';
+    const NUM_OPTIONS  = 10;
+    const RENDER_VIEWS = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-scale',
+        'formbuilder/fields/close',
+    ];
 
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
      *
-     * @param  array $aData The field's data
+     * @param array $aConfig The field's data
      *
      * @return string
      */
-    public function render($aData)
+    public function render(array $aConfig): string
     {
-        $aData['num_options'] = static::NUM_OPTIONS;
+        $aConfig['num_options'] = static::NUM_OPTIONS;
 
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-scale', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
+        return parent::render($aConfig);
     }
 
     // --------------------------------------------------------------------------
@@ -48,8 +53,8 @@ class Scale extends Base
     /**
      * Override the parent method to check options are valid and within range
      *
-     * @param  mixed     $mInput The form input's value
-     * @param  \stdClass $oField The complete field object
+     * @param mixed     $mInput The form input's value
+     * @param \stdClass $oField The complete field object
      *
      * @throws FieldTypeExceptionInvalidOption
      * @throws FieldTypeException
@@ -75,11 +80,11 @@ class Scale extends Base
     /**
      * Takes responses for this field type and aggregates them into data suitable for stats/charting
      *
-     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @param array $aResponses The array of responses from ResponseAnswer
      *
      * @return array
      */
-    public function getStatsChartData($aResponses)
+    public function getStatsChartData(array $aResponses): array
     {
         $aOut = [
             'columns' => [
@@ -109,12 +114,12 @@ class Scale extends Base
     /**
      * Takes responses for this field type and extracts all the text components
      *
-     * @param  array $aResponses The array of responses from ResponseAnswer
+     * @param array $aResponses The array of responses from ResponseAnswer
      *
      * @return array
      */
-    public function getStatsTextData($aResponses)
+    public function getStatsTextData(array $aResponses): array
     {
-        return array();
+        return [];
     }
 }

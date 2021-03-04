@@ -12,27 +12,18 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
-use Nails\Factory;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Hidden
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Hidden extends Base
 {
     const LABEL             = 'Hidden';
     const SUPPORTS_DEFAULTS = true;
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Renders the field's HTML
-     *
-     * @param  array $aData The field's data
-     *
-     * @return string
-     */
-    public function render($aData)
-    {
-        $oView = Factory::service('View');
-
-        return $oView->load('formbuilder/fields/body-hidden', $aData, true);
-    }
+    const RENDER_VIEWS      = [
+        'formbuilder/fields/body-hidden',
+    ];
 }

@@ -12,35 +12,45 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\ViewNotFoundException;
 use Nails\Factory;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Captcha
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Captcha extends Base
 {
     const LABEL             = 'Captcha';
     const SUPPORTS_OPTIONS  = false;
     const SUPPORTS_DEFAULTS = false;
     const IS_SELECTABLE     = false;
+    const RENDER_VIEWS      = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-captcha',
+        'formbuilder/fields/close',
+    ];
+
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
      *
-     * @param  array $aData The field's data
+     * @param array $aConfig The field's data
      *
      * @return string
+     * @throws FactoryException
+     * @throws ViewNotFoundException
      */
-    public function render($aData)
+    public function render(array $aConfig): string
     {
-        if (empty($aData['captcha'])) {
+        if (empty($aConfig['captcha'])) {
             return '';
         }
 
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-captcha', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
+        return parent::render($aConfig);
     }
 }

@@ -276,7 +276,14 @@ return [
         },
     ],
     'resources' => [
-        'FieldType' => function ($mObj) {
+        'DefaultValue' => function ($mObj) {
+            if (class_exists('\App\FormBuilder\Resource\DefaultValue')) {
+                return new \App\FormBuilder\Resource\DefaultValue($mObj);
+            } else {
+                return new \Nails\FormBuilder\Resource\DefaultValue($mObj);
+            }
+        },
+        'FieldType'    => function ($mObj) {
             if (class_exists('\App\FormBuilder\Resource\FieldType')) {
                 return new \App\FormBuilder\Resource\FieldType($mObj);
             } else {

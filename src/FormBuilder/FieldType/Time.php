@@ -16,37 +16,28 @@ use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Time
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Time extends Base
 {
     const LABEL             = 'Time';
     const SUPPORTS_DEFAULTS = true;
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Renders the field's HTML
-     *
-     * @param  array $aData The field's data
-     *
-     * @return string
-     */
-    public function render($aData)
-    {
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-time', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
-    }
+    const RENDER_VIEWS      = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-time',
+        'formbuilder/fields/close',
+    ];
 
     // --------------------------------------------------------------------------
 
     /**
      * Validate and clean the user's entry
      *
-     * @param  mixed     $mInput The form input's value
-     * @param  \stdClass $oField The complete field object
+     * @param mixed     $mInput The form input's value
+     * @param \stdClass $oField The complete field object
      *
      * @throws FieldTypeException
      * @return mixed

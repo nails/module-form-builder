@@ -12,16 +12,15 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+/**
+ * Class LikertQuality
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class LikertQuality extends Likert
 {
-    const LABEL = 'Likert - Quality';
-
-    /**
-     * The terms to use in this likert question
-     *
-     * @var array
-     */
-    protected $aLikertTerms = [
+    const LABEL        = 'Likert - Quality';
+    const LIKERT_TERMS = [
         'Excellent',
         'Good',
         'Acceptable',

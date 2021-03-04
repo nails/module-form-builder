@@ -12,26 +12,36 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\ViewNotFoundException;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Likert
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Likert extends Base
 {
     const LABEL                     = 'Likert - Agreement';
     const SUPPORTS_DEFAULTS         = false;
     const SUPPORTS_OPTIONS          = true;
     const SUPPORTS_OPTIONS_SELECTED = false;
-
-    // --------------------------------------------------------------------------
+    const RENDER_VIEWS              = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-likert',
+        'formbuilder/fields/close',
+    ];
 
     /**
      * The terms to use in this likert question
      *
-     * @var array
+     * @var string[]
      */
-    protected $aLikertTerms = [
+    const LIKERT_TERMS = [
         'Strongly Agree',
         'Agree',
         'Undecided',
@@ -42,24 +52,12 @@ class Likert extends Base
     // --------------------------------------------------------------------------
 
     /**
-     * Renders the field's HTML
-     *
-     * @param array $aData The field's data
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function render($aData)
+    public function render(array $aConfig): string
     {
-        if (empty($aData['likertTerms'])) {
-            $aData['likertTerms'] = $this->aLikertTerms;
-        }
-
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-likert', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
+        $aConfig['aLikertTerms'] = static::LIKERT_TERMS;
+        return parent::render($aConfig);
     }
 
     // --------------------------------------------------------------------------
@@ -78,10 +76,10 @@ class Likert extends Base
     {
         try {
 
+            //  This field will throw FieldTypeExceptionInvalidOption exception as the
+            //  form is built using the option value as the key rather than the value.
             parent::validate($mInput, $oField);
 
-            //  This field will throw FieldTypeExceptionInvalidOption exception as the
-            //  form is build using the option value as the key rather than the value.
         } catch (FieldTypeExceptionInvalidOption $e) {
 
             $aValidValues = [];
@@ -101,8 +99,7 @@ class Likert extends Base
 
             if (!empty($oField->is_required) && count($aInput) !== count($aValidValues)) {
                 throw new FieldTypeException(
-                    'Please provide a response for each item.',
-                    1
+                    'Please provide a response for each item.'
                 );
             }
 
@@ -110,15 +107,13 @@ class Likert extends Base
 
                 if (!array_key_exists($iOptionId, $aValidValues)) {
                     throw new FieldTypeExceptionInvalidOption(
-                        'You gave an answer for an invalid row.',
-                        1
+                        'You gave an answer for an invalid row.'
                     );
                 }
 
-                if ($iLikertValue < 0 || $iLikertValue > 4) {
+                if ($iLikertValue < 0 || $iLikertValue > (count(static::LIKERT_TERMS) - 1)) {
                     throw new FieldTypeException(
-                        'Invalid response for "' . $aValidValues[$iOptionId] . '".',
-                        1
+                        'Invalid response for "' . $aValidValues[$iOptionId] . '".'
                     );
                 }
             }
@@ -133,11 +128,11 @@ class Likert extends Base
      * Extracts the OPTION component of the response
      *
      * @param string $sKey   The answer's key
-     * @param string $mValue The answer's value
+     * @param mixed  $mValue The answer's value
      *
-     * @return integer
+     * @return int|null
      */
-    public function extractOptionId($sKey, $mValue)
+    public function extractOptionId(string $sKey, $mValue): ?int
     {
         if (static::SUPPORTS_OPTIONS) {
             return $sKey;
@@ -152,14 +147,16 @@ class Likert extends Base
      * Extracts the TEXT component of the response
      *
      * @param string $sKey       The answer's key
-     * @param string $mValue     The answer's value
+     * @param mixed  $mValue     The answer's value
      * @param bool   $bPlainText Whether to force plaintext
      *
-     * @return integer
+     * @return string
      */
-    public function extractText($sKey, $mValue, bool $bPlainText = false)
+    public function extractText(string $sKey, $mValue, bool $bPlainText = false): ?string
     {
-        return array_key_exists($mValue, $this->aLikertTerms) ? $this->aLikertTerms[$mValue] : '';
+        return array_key_exists($mValue, static::LIKERT_TERMS)
+            ? static::LIKERT_TERMS[$mValue]
+            : '';
     }
 
     // --------------------------------------------------------------------------
@@ -168,11 +165,11 @@ class Likert extends Base
      * Extracts any DATA which the Field Type might want to store
      *
      * @param string $sKey   The answer's key
-     * @param string $mValue The answer's value
+     * @param mixed  $mValue The answer's value
      *
-     * @return integer
+     * @return mixed
      */
-    public function extractData($sKey, $mValue)
+    public function extractData(string $sKey, $mValue)
     {
         return $mValue;
     }
@@ -186,7 +183,7 @@ class Likert extends Base
      *
      * @return array
      */
-    public function getStatsChartData($aResponses)
+    public function getStatsChartData(array $aResponses): array
     {
         //  Work out all the options and assign a value
         $aCharts = [];
@@ -210,11 +207,11 @@ class Likert extends Base
                     ['number', 'Responses'],
                 ],
                 'rows'    => [
-                    [$this->aLikertTerms[0], $aRows[0]],
-                    [$this->aLikertTerms[1], $aRows[1]],
-                    [$this->aLikertTerms[2], $aRows[2]],
-                    [$this->aLikertTerms[3], $aRows[3]],
-                    [$this->aLikertTerms[4], $aRows[4]],
+                    [static::LIKERT_TERMS[0], $aRows[0]],
+                    [static::LIKERT_TERMS[1], $aRows[1]],
+                    [static::LIKERT_TERMS[2], $aRows[2]],
+                    [static::LIKERT_TERMS[3], $aRows[3]],
+                    [static::LIKERT_TERMS[4], $aRows[4]],
                 ],
             ];
         }
@@ -231,7 +228,7 @@ class Likert extends Base
      *
      * @return array
      */
-    public function getStatsTextData($aResponses)
+    public function getStatsTextData(array $aResponses): array
     {
         return [];
     }

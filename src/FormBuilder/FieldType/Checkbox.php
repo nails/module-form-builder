@@ -12,30 +12,20 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
-use Nails\Factory;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Checkbox
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Checkbox extends Base
 {
     const LABEL            = 'Checkbox';
     const SUPPORTS_OPTIONS = true;
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Renders the field's HTML
-     *
-     * @param  array $aData The field's data
-     *
-     * @return string
-     */
-    public function render($aData)
-    {
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-checkbox', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
-    }
+    const RENDER_VIEWS     = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-checkbox',
+        'formbuilder/fields/close',
+    ];
 }

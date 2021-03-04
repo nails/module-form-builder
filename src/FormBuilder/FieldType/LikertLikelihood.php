@@ -12,16 +12,15 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+/**
+ * Class LikertLikelihood
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class LikertLikelihood extends Likert
 {
-    const LABEL = 'Likert - Liklihood';
-
-    /**
-     * The terms to use in this likert question
-     *
-     * @var array
-     */
-    protected $aLikertTerms = [
+    const LABEL        = 'Likert - Liklihood';
+    const LIKERT_TERMS = [
         'Very Likely',
         'Likely',
         'Maybe',

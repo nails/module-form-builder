@@ -16,7 +16,14 @@ use Nails\Common\Exception\FactoryException;
 use Nails\Common\Exception\ValidationException;
 use Nails\Factory;
 use Nails\FormBuilder\Constants;
+use Nails\FormBuilder\Service\DefaultValue;
+use Nails\FormBuilder\Service\FieldType;
 
+/**
+ * Class FormBuilder
+ *
+ * @package Nails\FormBuilder\Helper
+ */
 class FormBuilder
 {
     /**
@@ -176,22 +183,29 @@ class FormBuilder
      */
     public static function render($aFormData)
     {
-        $sUuid         = !empty($aFormData['form_uuid']) ? $aFormData['form_uuid'] : md5(microtime(true));
-        $sFormAction   = !empty($aFormData['form_action']) ? $aFormData['form_action'] : null;
-        $sFormMethod   = !empty($aFormData['form_method']) ? strtoupper($aFormData['form_method']) : 'POST';
-        $sFormAttr     = !empty($aFormData['form_attr']) ? strtoupper($aFormData['form_attr']) : '';
-        $bHasCaptcha   = !empty($aFormData['has_captcha']);
-        $sCaptchaError = !empty($aFormData['captcha_error']) ? $aFormData['captcha_error'] : null;
-        $aFields       = !empty($aFormData['fields']) ? $aFormData['fields'] : [];
+        /** @var FieldType $oFieldTypeService */
+        $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
+        /** @var DefaultValue $oDefaultValueService */
+        $oDefaultValueService = Factory::service('DefaultValue', Constants::MODULE_SLUG);
+
+        // --------------------------------------------------------------------------
+
+        $sUuid         = getFromArray('form_uuid', $aFormData, md5(microtime(true)));
+        $sFormAction   = getFromArray('form_action', $aFormData);
+        $sFormMethod   = getFromArray('form_method', $aFormData, 'POST');
+        $sFormAttr     = getFromArray('form_attr', $aFormData);
+        $sFormHeader   = getFromArray('form_header', $aFormData);
+        $sFormFooter   = getFromArray('form_footer', $aFormData);
+        $bHasCaptcha   = getFromArray('has_captcha', $aFormData);
+        $sCaptchaError = getFromArray('captcha_error', $aFormData);
+        $aFields       = getFromArray('fields', $aFormData, []);
 
         if (!empty($aFormData['buttons'])) {
-
             $aButtons = $aFormData['buttons'];
 
         } else {
-
             $aButtons = [
-                (object) [
+                [
                     'type'  => 'submit',
                     'class' => 'btn btn-primary',
                     'label' => 'Submit',
@@ -203,11 +217,10 @@ class FormBuilder
         //  Start building the form
         $sOut = form_open_multipart($sFormAction, 'method="' . $sFormMethod . '" ' . $sFormAttr);
         $sOut .= form_hidden('submitting', true);
+        $sOut .= $sFormHeader;
 
         //  Render the form fields
-        $oFieldTypeService    = Factory::service('FieldType', Constants::MODULE_SLUG);
-        $oDefaultValueService = Factory::service('DefaultValue', Constants::MODULE_SLUG);
-        $iCounter             = 0;
+        $iCounter = 0;
 
         foreach ($aFields as $oField) {
 
@@ -224,31 +237,25 @@ class FormBuilder
             if (!empty($oFieldType)) {
 
                 $oDefaultValue = $oDefaultValueService->getBySlug($oField->default_value);
-                if (!empty($oDefaultValue)) {
+                $sDefaultValue = !empty($oDefaultValue)
+                    ? $oDefaultValue->defaultValue()
+                    : null;
 
-                    $sDefaultValue = $oDefaultValue->defaultValue();
-
-                } else {
-
-                    $sDefaultValue = null;
-                }
-
-                $sOut .= $oFieldType->render(
-                    [
-                        'id'          => $sId,
-                        'key'         => 'field[' . $oField->id . ']',
-                        'label'       => $oField->label,
-                        'sub_label'   => $oField->sub_label,
-                        'default'     => $sDefaultValue,
-                        'value'       => isset($_POST['field'][$oField->id]) ? $_POST['field'][$oField->id] : $sDefaultValue,
-                        'required'    => $oField->is_required,
-                        'class'       => 'form-control',
-                        'placeholder' => $oField->placeholder,
-                        'attributes'  => implode(' ', $aAttr),
-                        'options'     => $oField->options->data,
-                        'error'       => !empty($oField->error) ? $oField->error : null,
-                    ]
-                );
+                $sOut .= $oFieldType->render([
+                    'id'          => $sId,
+                    'key'         => 'field[' . $oField->id . ']',
+                    'label'       => $oField->label,
+                    'sub_label'   => $oField->sub_label,
+                    'default'     => $sDefaultValue,
+                    'value'       => $_POST['field'][$oField->id] ?? $oField->value ?? $sDefaultValue,
+                    'data'        => $oField->data ?? null,
+                    'required'    => $oField->is_required,
+                    'class'       => 'form-control',
+                    'placeholder' => $oField->placeholder,
+                    'attributes'  => implode(' ', $aAttr),
+                    'options'     => $oField->options->data,
+                    'error'       => !empty($oField->error) ? $oField->error : null,
+                ]);
             }
 
             $iCounter++;
@@ -263,7 +270,7 @@ class FormBuilder
 
             if (!empty($oCaptcha)) {
 
-                $oFieldType = $oFieldTypeService->getBySlug('\Nails\FormBuilder\FormBuilder\FieldType\Captcha');
+                $oFieldType = $oFieldTypeService->getBySlug(\Nails\FormBuilder\FormBuilder\FieldType\Captcha::class);
 
                 if (!empty($oFieldType)) {
 
@@ -272,22 +279,20 @@ class FormBuilder
                         $sId ? 'id="' . $sId . '"' : '',
                     ];
 
-                    $sOut .= $oFieldType->render(
-                        [
-                            'id'         => $sId,
-                            'key'        => 'captcha_response',
-                            'label'      => '',
-                            'sub_label'  => null,
-                            'default'    => null,
-                            'value'      => null,
-                            'required'   => null,
-                            'class'      => 'form-control',
-                            'attributes' => implode(' ', $aAttr),
-                            'options'    => null,
-                            'error'      => !empty($sCaptchaError) ? $sCaptchaError : null,
-                            'captcha'    => $oCaptcha,
-                        ]
-                    );
+                    $sOut .= $oFieldType->render([
+                        'id'         => $sId,
+                        'key'        => 'captcha_response',
+                        'label'      => '',
+                        'sub_label'  => null,
+                        'default'    => null,
+                        'value'      => null,
+                        'required'   => null,
+                        'class'      => 'form-control',
+                        'attributes' => implode(' ', $aAttr),
+                        'options'    => null,
+                        'error'      => !empty($sCaptchaError) ? $sCaptchaError : null,
+                        'captcha'    => $oCaptcha,
+                    ]);
                 }
             }
         }
@@ -296,20 +301,33 @@ class FormBuilder
         if (!empty($aButtons)) {
 
             $sOut .= '<p class="text-center">';
-            foreach ($aButtons as $oButton) {
+            foreach ($aButtons as $aButton) {
 
-                $sType  = !empty($oButton['type']) ? $oButton['type'] : 'submit';
-                $sClass = !empty($oButton['class']) ? $oButton['class'] : 'btn btn-primary';
-                $sLabel = !empty($oButton['label']) ? $oButton['label'] : 'Submit';
-                $sAttr  = !empty($oButton['attr']) ? $oButton['attr'] : '';
+                $sTag   = getFromArray('tag', $aButton) ?: 'button';
+                $sType  = getFromArray('type', $aButton) ?: 'submit';
+                $sClass = getFromArray('class', $aButton) ?: 'btn btn-primary';
+                $sName  = getFromArray('name', $aButton);
+                $sValue = getFromArray('value', $aButton);
+                $sLabel = getFromArray('label', $aButton) ?: 'Submit';
+                $sAttr  = getFromArray('attr', $aButton);
 
-                $sOut .= '<button type="' . $sType . '" class="' . $sClass . '" ' . $sAttr . '>';
+                $aAttr = array_filter([
+                    $sType ? 'type="' . $sType . '"' : '',
+                    $sClass ? 'class="' . $sClass . '"' : '',
+                    $sName ? 'name="' . $sName . '"' : '',
+                    $sValue ? 'value="' . $sValue . '"' : '',
+                    $sAttr,
+                ]);
+
+
+                $sOut .= '<' . $sTag . ' ' . implode(' ', $aAttr) . '>';
                 $sOut .= $sLabel;
-                $sOut .= '</button>';
+                $sOut .= '</' . $sTag . '>';
             }
             $sOut .= '</p>';
         }
 
+        $sOut .= $sFormFooter;
         $sOut .= form_close();
 
         return $sOut;

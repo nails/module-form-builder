@@ -13,9 +13,6 @@
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\Cdn\Service\Cdn;
-use Nails\Common\Exception\FactoryException;
-use Nails\Common\Exception\ViewNotFoundException;
-use Nails\Common\Service\View;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
@@ -28,29 +25,12 @@ use stdClass;
  */
 class File extends Base
 {
-    const LABEL = 'File';
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Renders the field's HTML
-     *
-     * @param array $aData The field's data
-     *
-     * @return string
-     * @throws FactoryException
-     * @throws ViewNotFoundException
-     */
-    public function render($aData)
-    {
-        /** @var View $oView */
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-file', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
-    }
+    const LABEL        = 'File';
+    const RENDER_VIEWS = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-file',
+        'formbuilder/fields/close',
+    ];
 
     // --------------------------------------------------------------------------
 
@@ -131,7 +111,7 @@ class File extends Base
                     break;
             }
 
-            if (!emptY($sError)) {
+            if (!empty($sError)) {
                 throw new FieldTypeException($sError, 1);
             }
         }
@@ -168,13 +148,13 @@ class File extends Base
      * Extracts the TEXT component of the response
      *
      * @param string $sKey       The answer's key
-     * @param string $mValue     The answer's value
+     * @param mixed  $mValue     The answer's value
      * @param bool   $bPlainText Whether to force plaintext
      *
-     * @return integer
+     * @return string|null
      * @throws FactoryException
      */
-    public function extractText($sKey, $mValue, bool $bPlainText = false)
+    public function extractText(string $sKey, $mValue, bool $bPlainText = false): ?string
     {
         $oCdn = Factory::service('Cdn', \Nails\Cdn\Constants::MODULE_SLUG);
         $oObj = $oCdn->getObject($mValue);
@@ -200,11 +180,11 @@ class File extends Base
      * Extracts any DATA which the Field Type might want to store
      *
      * @param string $sKey   The answer's key
-     * @param string $mValue The answer's value
+     * @param mixed  $mValue The answer's value
      *
-     * @return integer
+     * @return mixed
      */
-    public function extractData($sKey, $mValue)
+    public function extractData(string $sKey, $mValue)
     {
         return $mValue;
     }

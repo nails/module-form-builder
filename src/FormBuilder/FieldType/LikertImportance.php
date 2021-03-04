@@ -12,16 +12,15 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+/**
+ * Class LikertImportance
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class LikertImportance extends Likert
 {
-    const LABEL = 'Likert - Importance';
-
-    /**
-     * The terms to use in this likert question
-     *
-     * @var array
-     */
-    protected $aLikertTerms = [
+    const LABEL        = 'Likert - Importance';
+    const LIKERT_TERMS = [
         'Very Important',
         'Important',
         'Moderately Important',

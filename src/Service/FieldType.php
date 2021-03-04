@@ -29,7 +29,7 @@ class FieldType
     /**
      * The available Field definitions
      *
-     * @var Resource\FieldType
+     * @var Resource\FieldType[]
      */
     protected $aAvailable;
 
@@ -63,20 +63,23 @@ class FieldType
 
             $aClasses = $oComponent
                 ->findClasses('FormBuilder\\FieldType')
-                ->whichExtend(\Nails\FormBuilder\FieldType\Base::class)
+                ->whichImplement(\Nails\FormBuilder\Interfaces\FieldType::class)
                 ->whichCanBeInstantiated();
 
+            /** @var \Nails\FormBuilder\Interfaces\FieldType $sClass */
             foreach ($aClasses as $sClass) {
                 $this->aAvailable[] = Factory::resource('FieldType', Constants::MODULE_SLUG, [
                     'slug'               => $sClass,
-                    'label'              => $sClass::LABEL,
+                    'label'              => $sClass::getLabel(),
                     'instance'           => new $sClass(),
-                    'is_selectable'      => $sClass::IS_SELECTABLE,
-                    'can_option_select'  => $sClass::SUPPORTS_OPTIONS_SELECTED,
-                    'can_option_disable' => $sClass::SUPPORTS_OPTIONS_DISABLE,
+                    'is_selectable'      => $sClass::isSelectable(),
+                    'can_option_select'  => $sClass::supportsOptionsSelected(),
+                    'can_option_disable' => $sClass::supportsOptionsDisabled(),
                 ]);
             }
         }
+
+        arraySortMulti($this->aAvailable, 'label');
 
         return $this;
     }
@@ -175,7 +178,7 @@ class FieldType
      * @param string $sSlug           The Field Type's slug
      * @param bool   $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return \Nails\FormBuilder\FieldType\Base
+     * @return \Nails\FormBuilder\FieldType\Base|null
      */
     public function getBySlug($sSlug, $bOnlySelectable = false): ?\Nails\FormBuilder\FieldType\Base
     {

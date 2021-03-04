@@ -12,33 +12,23 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
-use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class DateTime
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class DateTime extends Base
 {
     const LABEL             = 'Date &amp; Time';
     const SUPPORTS_DEFAULTS = true;
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Renders the field's HTML
-     *
-     * @param  array $aData The field's data
-     *
-     * @return string
-     */
-    public function render($aData)
-    {
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-datetime', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
-    }
+    const RENDER_VIEWS      = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-datetime',
+        'formbuilder/fields/close',
+    ];
 
     // --------------------------------------------------------------------------
 

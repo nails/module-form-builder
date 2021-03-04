@@ -16,29 +16,20 @@ use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
 
+/**
+ * Class Select
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class Select extends Base
 {
     const LABEL            = 'Dropdown';
     const SUPPORTS_OPTIONS = true;
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Renders the field's HTML
-     *
-     * @param  array $aData The field's data
-     *
-     * @return string
-     */
-    public function render($aData)
-    {
-        $oView = Factory::service('View');
-        $sOut  = $oView->load('formbuilder/fields/open', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/body-select', $aData, true);
-        $sOut  .= $oView->load('formbuilder/fields/close', $aData, true);
-
-        return $sOut;
-    }
+    const RENDER_VIEWS      = [
+        'formbuilder/fields/open',
+        'formbuilder/fields/body-select',
+        'formbuilder/fields/close',
+    ];
 
     // --------------------------------------------------------------------------
 

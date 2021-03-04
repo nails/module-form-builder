@@ -12,16 +12,21 @@
 
 namespace Nails\FormBuilder\FieldType;
 
+use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\ViewNotFoundException;
+use Nails\Common\Service\View;
+use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
 use Nails\FormBuilder\Exception\FieldTypeExceptionRequired;
+use Nails\FormBuilder\Interfaces\FieldType;
 
 /**
  * Class Base
  *
  * @package Nails\FormBuilder\FieldType
  */
-abstract class Base
+abstract class Base implements FieldType
 {
     /**
      * The human friendly label to give this field type
@@ -33,51 +38,141 @@ abstract class Base
     /**
      * Whether this field type supports multiple options (i.e like a dropdown list)
      *
-     * @var boolean
+     * @var bool
      */
     const SUPPORTS_OPTIONS = false;
 
     /**
      * Whether this field type supports setting an option as selected
      *
-     * @var boolean
+     * @var bool
      */
     const SUPPORTS_OPTIONS_SELECTED = true;
 
     /**
      * Whether this field type supports setting an option as disabled
      *
-     * @var boolean
+     * @var bool
      */
     const SUPPORTS_OPTIONS_DISABLE = true;
 
     /**
      * Whether this field type supports a default value
      *
-     * @var boolean
+     * @var bool
      */
     const SUPPORTS_DEFAULTS = false;
 
     /**
      * Whether the field type can be selected by human users
      *
-     * @var boolean
+     * @var bool
      */
     const IS_SELECTABLE = true;
+
+    /**
+     * which views should be used to render the field
+     */
+    const RENDER_VIEWS = [];
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns the field type's label
+     *
+     * @return string
+     */
+    public static function getLabel(): string
+    {
+        return static::LABEL;
+    }
 
     // --------------------------------------------------------------------------
 
     /**
      * Renders the field's HTML
      *
-     * @param array $aConfig The config array
+     * @param array $aConfig The field's data
      *
      * @return string
-     * @throws FieldTypeException
+     * @throws FactoryException
+     * @throws ViewNotFoundException
      */
-    public function render($aConfig)
+    public function render(array $aConfig): string
     {
-        throw new FieldTypeException('Field Type should define the render() method.', 1);
+        if (empty(static::RENDER_VIEWS)) {
+            throw new FieldTypeException(
+                sprintf(
+                    '%s must define static::RENDER_VIEWS, or override render()',
+                    static::class
+                )
+            );
+        }
+
+        /** @var View $oView */
+        $oView = Factory::service('View');
+        return $oView
+            ->load(static::RENDER_VIEWS, $aConfig, true);
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports options
+     *
+     * @return bool
+     */
+    public static function supportsOptions(): bool
+    {
+        return static::SUPPORTS_OPTIONS;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports setting an option as selected
+     *
+     * @return bool
+     */
+    public static function supportsOptionsSelected(): bool
+    {
+        return static::SUPPORTS_OPTIONS_SELECTED;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports setting an option as disabled
+     *
+     * @return bool
+     */
+    public static function supportsOptionsDisabled(): bool
+    {
+        return static::SUPPORTS_OPTIONS_DISABLE;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports default values
+     *
+     * @return bool
+     */
+    public static function supportsDefaultValues(): bool
+    {
+        return static::SUPPORTS_DEFAULTS;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type can be selected by human users
+     *
+     * @return bool
+     */
+    public static function isSelectable(): bool
+    {
+        return static::IS_SELECTABLE;
     }
 
     // --------------------------------------------------------------------------
@@ -94,6 +189,7 @@ abstract class Base
      */
     public function validate($mInput, $oField)
     {
+        dd('what type is this, set as typehint', $oField);
         //  Test for required fields
         if (!empty($oField->is_required) && empty($mInput)) {
             throw new FieldTypeExceptionRequired('This field is required.', 1);
@@ -135,9 +231,9 @@ abstract class Base
      * @param string $sKey   The answer's key
      * @param string $mValue The answer's value
      *
-     * @return integer
+     * @return int|null
      */
-    public function extractOptionId($sKey, $mValue)
+    public function extractOptionId(string $sKey, $mValue): ?int
     {
         if (static::SUPPORTS_OPTIONS) {
             return $mValue;
@@ -155,9 +251,9 @@ abstract class Base
      * @param string $mValue     The answer's value
      * @param bool   $bPlainText Whether to force plaintext
      *
-     * @return integer
+     * @return string
      */
-    public function extractText($sKey, $mValue, bool $bPlainText = false)
+    public function extractText(string $sKey, $mValue, bool $bPlainText = false): ?string
     {
         if (!static::SUPPORTS_OPTIONS) {
             return trim(strip_tags($mValue));
@@ -174,9 +270,9 @@ abstract class Base
      * @param string $sKey   The answer's key
      * @param string $mValue The answer's value
      *
-     * @return integer
+     * @return mixed
      */
-    public function extractData($sKey, $mValue)
+    public function extractData(string $sKey, $mValue)
     {
         return null;
     }
@@ -188,9 +284,9 @@ abstract class Base
      *
      * @param array $aResponses The array of responses from ResponseAnswer
      *
-     * @return array
+     * @return array[]
      */
-    public function getStatsChartData($aResponses)
+    public function getStatsChartData(array $aResponses): array
     {
         $aOut = [
             'columns' => [
@@ -233,9 +329,9 @@ abstract class Base
      *
      * @param array $aResponses The array of responses from ResponseAnswer
      *
-     * @return array
+     * @return string[]
      */
-    public function getStatsTextData($aResponses)
+    public function getStatsTextData(array $aResponses): array
     {
         $aOut     = [];
         $aStrings = [];

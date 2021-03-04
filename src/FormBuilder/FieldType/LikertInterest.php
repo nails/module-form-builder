@@ -12,15 +12,15 @@
 
 namespace Nails\FormBuilder\FormBuilder\FieldType;
 
+/**
+ * Class LikertInterest
+ *
+ * @package Nails\FormBuilder\FormBuilder\FieldType
+ */
 class LikertInterest extends Likert
 {
-    const LABEL = 'Likert - Interest';
-    /**
-     * The terms to use in this likert question
-     *
-     * @var array
-     */
-    protected $aLikertTerms = [
+    const LABEL        = 'Likert - Interest';
+    const LIKERT_TERMS = [
         'Very interested',
         'Interested',
         'Neither',

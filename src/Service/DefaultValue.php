@@ -12,79 +12,83 @@
 
 namespace Nails\FormBuilder\Service;
 
+use Nails\Common\Exception\FactoryException;
+use Nails\Common\Exception\NailsException;
 use Nails\Common\Helper\Directory;
 use Nails\Components;
 use Nails\Factory;
+use Nails\FormBuilder\Constants;
+use Nails\FormBuilder\Resource;
 
+/**
+ * Class DefaultValue
+ *
+ * @package Nails\FormBuilder\Service
+ */
 class DefaultValue
 {
     /**
      * The available DefaultValue definitions
      *
-     * @var array
+     * @var Resource\DefaultValue[]
      */
     protected $aAvailable;
 
     // --------------------------------------------------------------------------
 
     /**
-     * Construct the model, look for available DefaultValue definitions
+     * DefaultValue constructor.
+     *
+     * @throws FactoryException
+     * @throws NailsException
      */
     public function __construct()
     {
-        //  Look for available FieldTypes
-        $this->aAvailable = [];
-
-        foreach (Components::available() as $oComponent) {
-            if (!empty($oComponent->namespace)) {
-                $this->autoLoadDefaults(
-                    $oComponent->namespace,
-                    $oComponent->path,
-                    $oComponent->slug
-                );
-            }
-        }
+        $this->discoverDefaultValues();
     }
 
     // --------------------------------------------------------------------------
 
     /**
-     * Looks for FieldTypes provided by components
+     * Discovers available DefaultValues
      *
-     * @param string $sNamespace The namespace to check
-     * @param string $sPath      The path to search
-     * @param string $sComponent The component being queried
-     *
-     * @return void
+     * @return $this
+     * @throws FactoryException
+     * @throws NailsException
      */
-    protected function autoLoadDefaults($sNamespace, $sPath, $sComponent)
+    protected function discoverDefaultValues(): self
     {
-        $sClassNamespace = $sNamespace . 'FormBuilder\\DefaultValue\\';
-        $sPath           = $sPath . 'src/FormBuilder/DefaultValue/';
-        $aFiles          = Directory::map($sPath, null, false);
+        $this->aAvailable = [];
 
-        foreach ($aFiles as $sFile) {
-            $sClassName = $sClassNamespace . str_replace(DIRECTORY_SEPARATOR, '\\', preg_replace('/\.php$/', '', $sFile));
-            if (class_exists($sClassName)) {
-                $this->aAvailable[] = (object) [
-                    'slug'      => $sClassName,
-                    'label'     => $sClassName::LABEL,
-                    'component' => 'DefaultValue' . basename($sFile, '.php'),
-                    'provider'  => $sComponent,
-                    'instance'  => null,
-                ];
+        foreach (Components::available() as $oComponent) {
+
+            $aClasses = $oComponent
+                ->findClasses('FormBuilder\\DefaultValue')
+                ->whichImplement(\Nails\FormBuilder\Interfaces\DefaultValue::class)
+                ->whichCanBeInstantiated();
+
+            /** @var \Nails\FormBuilder\Interfaces\DefaultValue $sClass */
+            foreach ($aClasses as $sClass) {
+                $this->aAvailable[] = Factory::resource('DefaultValue', Constants::MODULE_SLUG, [
+                    'slug'     => $sClass,
+                    'label'    => $sClass::getLabel(),
+                    'instance' => new $sClass(),
+                ]);
             }
         }
-    }
 
+        arraySortMulti($this->aAvailable, 'label');
+
+        return $this;
+    }
     // --------------------------------------------------------------------------
 
     /**
      * Returns all available DefaultValue definitions
      *
-     * @return array
+     * @return Resource\DefaultValue[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->aAvailable;
     }
@@ -94,9 +98,9 @@ class DefaultValue
     /**
      * Returns the various default values which a field can have as a flat array
      *
-     * @return array
+     * @return string[]
      */
-    public function getAllFlat()
+    public function getAllFlat(): array
     {
         $aAvailable = $this->getAll();
         $aOut       = [];
@@ -115,23 +119,12 @@ class DefaultValue
      *
      * @param string $sSlug The Default Value's slug
      *
-     * @return object
+     * @return \Nails\FormBuilder\DefaultValue\Base|null
      */
-    public function getBySlug($sSlug)
+    public function getBySlug($sSlug): ?\Nails\FormBuilder\DefaultValue\Base
     {
-        $aAvailable = $this->getAll();
-
-        foreach ($aAvailable as $oDefault) {
-
+        foreach ($this->getAll() as $oDefault) {
             if ($oDefault->slug == $sSlug) {
-
-                if (!isset($oDefault->instance)) {
-                    $oDefault->instance = Factory::factory(
-                        $oDefault->component,
-                        $oDefault->provider
-                    );
-                }
-
                 return $oDefault->instance;
             }
         }
