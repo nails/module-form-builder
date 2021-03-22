@@ -26,9 +26,13 @@
         "nails/module-cdn": "dev-develop",
         "ext-json": "*"
     },
-    "require-dev":
-    {
-        "phpunit/phpunit": "9.*"
+    "require-dev": {
+        "phpunit/phpunit": "9.*",
+        "phpstan/phpstan": "0.*"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "analyse": "./vendor/bin/phpstan analyse -c .phpstan/config.neon"
     },
     "autoload":
     {

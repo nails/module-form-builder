@@ -1,0 +1,7 @@
+parameters:
+    level: 0
+    paths:
+        - ../formbuilder
+        - ../helpers
+        - ../src
+        - ../tests
