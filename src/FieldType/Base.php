@@ -64,6 +64,27 @@ abstract class Base implements FieldType
     const SUPPORTS_DEFAULTS = false;
 
     /**
+     * Whether this field type supports placeholder values
+     *
+     * @var bool
+     */
+    const SUPPORTS_PLACEHOLDER = true;
+
+    /**
+     * Whether this field type supports being marked as required
+     *
+     * @var bool
+     */
+    const SUPPORTS_REQUIRED = true;
+
+    /**
+     * Whether this field type supports custom attributes values
+     *
+     * @var bool
+     */
+    const SUPPORTS_CUSTOM_ATTRIBUTES = true;
+
+    /**
      * Whether the field type can be selected by human users
      *
      * @var bool
@@ -161,6 +182,42 @@ abstract class Base implements FieldType
     public static function supportsDefaultValues(): bool
     {
         return static::SUPPORTS_DEFAULTS;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports placeholder values
+     *
+     * @return bool
+     */
+    public static function supportsPlaceholder(): bool
+    {
+        return static::SUPPORTS_PLACEHOLDER;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports being marked as required
+     *
+     * @return bool
+     */
+    public static function supportsRequired(): bool
+    {
+        return static::SUPPORTS_REQUIRED;
+    }
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports custom attributes values
+     *
+     * @return bool
+     */
+    public static function supportsCustomAttributes(): bool
+    {
+        return static::SUPPORTS_CUSTOM_ATTRIBUTES;
     }
 
     // --------------------------------------------------------------------------

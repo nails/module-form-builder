@@ -21,11 +21,26 @@ class FieldType extends Resource
     public $instance;
 
     /** @var bool */
+    public $supports_options;
+
+    /** @var bool */
+    public $supports_options_selected;
+
+    /** @var bool */
+    public $supports_options_disabled;
+
+    /** @var bool */
+    public $supports_default_values;
+
+    /** @var bool */
+    public $supports_placeholder;
+
+    /** @var bool */
+    public $supports_required;
+
+    /** @var bool */
+    public $supports_custom_attributes;
+
+    /** @var bool */
     public $is_selectable;
-
-    /** @var bool */
-    public $can_option_select;
-
-    /** @var bool */
-    public $can_option_disable;
 }

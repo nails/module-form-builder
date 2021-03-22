@@ -55,6 +55,33 @@ interface FieldType
     // --------------------------------------------------------------------------
 
     /**
+     * Returns whether the field type supports placeholder values
+     *
+     * @return bool
+     */
+    public static function supportsPlaceholder(): bool;
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports being marked as required
+     *
+     * @return bool
+     */
+    public static function supportsRequired(): bool;
+
+    // --------------------------------------------------------------------------
+
+    /**
+     * Returns whether the field type supports custom attributes values
+     *
+     * @return bool
+     */
+    public static function supportsCustomAttributes(): bool;
+
+    // --------------------------------------------------------------------------
+
+    /**
      * Returns whether the field type can be selected by human users
      *
      * @return bool

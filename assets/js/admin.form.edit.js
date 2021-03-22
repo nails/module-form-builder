@@ -317,7 +317,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue) {
     base.doesSupportOptionSelect = function(type) {
         for (var i = base.typeWithOptions.length - 1; i >= 0; i--) {
             if (base.typeWithOptions[i].slug === type) {
-                return base.typeWithOptions[i].can_option_select;
+                return base.typeWithOptions[i].supports_options_selected;
             }
         }
         return false;
@@ -328,7 +328,7 @@ _ADMIN_FORM_EDIT = function(domElement, typeWithOptions, typeWithDefaultValue) {
     base.doesSupportOptionDisable = function(type) {
         for (var i = base.typeWithOptions.length - 1; i >= 0; i--) {
             if (base.typeWithOptions[i].slug === type) {
-                return base.typeWithOptions[i].can_option_disable;
+                return base.typeWithOptions[i].supports_options_disabled;
             }
         }
         return false;

@@ -69,12 +69,17 @@ class FieldType
             /** @var \Nails\FormBuilder\Interfaces\FieldType $sClass */
             foreach ($aClasses as $sClass) {
                 $this->aAvailable[] = Factory::resource('FieldType', Constants::MODULE_SLUG, [
-                    'slug'               => $sClass,
-                    'label'              => $sClass::getLabel(),
-                    'instance'           => new $sClass(),
-                    'is_selectable'      => $sClass::isSelectable(),
-                    'can_option_select'  => $sClass::supportsOptionsSelected(),
-                    'can_option_disable' => $sClass::supportsOptionsDisabled(),
+                    'slug'                       => $sClass,
+                    'label'                      => $sClass::getLabel(),
+                    'instance'                   => new $sClass(),
+                    'supports_options'           => $sClass::supportsOptions(),
+                    'supports_options_selected'  => $sClass::supportsOptionsSelected(),
+                    'supports_options_disabled'  => $sClass::supportsOptionsDisabled(),
+                    'supports_default_values'    => $sClass::supportsDefaultValues(),
+                    'supports_placeholder'       => $sClass::supportsPlaceholder(),
+                    'supports_required'          => $sClass::supportsRequired(),
+                    'supports_custom_attributes' => $sClass::supportsCustomAttributes(),
+                    'is_selectable'              => $sClass::isSelectable(),
                 ]);
             }
         }
