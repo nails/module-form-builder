@@ -17,7 +17,7 @@ class FieldType extends Resource
     /** @var string */
     public $label;
 
-    /** @var \Nails\FormBuilder\FieldType\Base */
+    /** @var \Nails\FormBuilder\Interfaces\FieldType */
     public $instance;
 
     /** @var bool */

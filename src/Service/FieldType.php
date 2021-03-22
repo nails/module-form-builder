@@ -178,9 +178,9 @@ class FieldType
      * @param string $sSlug           The Field Type's slug
      * @param bool   $bOnlySelectable Filter out field types which are not selectable by the user
      *
-     * @return \Nails\FormBuilder\FieldType\Base|null
+     * @return \Nails\FormBuilder\Interfaces\FieldType|null
      */
-    public function getBySlug($sSlug, $bOnlySelectable = false): ?\Nails\FormBuilder\FieldType\Base
+    public function getBySlug($sSlug, $bOnlySelectable = false): ?\Nails\FormBuilder\Interfaces\FieldType
     {
         foreach ($this->getAll($bOnlySelectable) as $oType) {
             if ($oType->slug == $sSlug) {
