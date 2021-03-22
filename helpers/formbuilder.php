@@ -16,20 +16,6 @@ if (!function_exists('adminValidateFormData')) {
     }
 }
 
-if (!function_exists('adminLoadFormBuilderAssets')) {
-    function adminLoadFormBuilderAssets($sSelector)
-    {
-        return FormBuilder::adminLoadAssets($sSelector);
-    }
-}
-
-if (!function_exists('adminLoadFormBuilderView')) {
-    function adminLoadFormBuilderView($sId, $sFieldName = 'fields', $aFields = [])
-    {
-        return FormBuilder::adminLoadView($sId, $sFieldName, $aFields);
-    }
-}
-
 if (!function_exists('formBuilderRender')) {
     function formBuilderRender($aFormData)
     {

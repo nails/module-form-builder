@@ -40,7 +40,21 @@
         {
             "moduleName": "formbuilder",
             "type": "module",
-            "namespace": "Nails\\FormBuilder\\"
+            "namespace": "Nails\\FormBuilder\\",
+            "data": {
+                "nails/module-admin": {
+                    "autoload": {
+                        "assets": {
+                            "js": [
+                                "admin.min.js"
+                            ],
+                            "css": [
+                                "admin.min.css"
+                            ]
+                        }
+                    }
+                }
+            }
         }
     }
 }

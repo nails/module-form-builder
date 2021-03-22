@@ -109,41 +109,6 @@ class FormBuilder
     // --------------------------------------------------------------------------
 
     /**
-     * Loads up all the assets required for the form builder
-     *
-     * @param string $sSelector The selector for the element(s) to which the JS should bind
-     *
-     * @return void
-     * @throws FactoryException
-     */
-    public static function adminLoadAssets($sSelector)
-    {
-        $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
-        $oAsset            = Factory::service('Asset');
-
-        $oAsset->load('admin.min.css', Constants::MODULE_SLUG);
-        //  @todo (Pablo - 2019-09-13) - Update/Remove/Use minified once JS is refactored to be a module
-        $oAsset->load('admin.form.edit.js', Constants::MODULE_SLUG);
-        $oAsset->inline(
-            '
-                window.NAILS.FORMBUILDER = [];
-                $("' . $sSelector . '").each(function() {
-                    window.NAILS.FORMBUILDER.push(
-                        new _ADMIN_FORM_EDIT(
-                            this,
-                            ' . json_encode($oFieldTypeService->getAllWithOptions(true)) . ',
-                            ' . json_encode($oFieldTypeService->getAllWithDefaultValue(true)) . '
-                        )
-                    );
-                });
-            ',
-            'JS'
-        );
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
      * Loads the markup for the form builder
      *
      * @param string $sId     The ID to give the form
@@ -154,7 +119,9 @@ class FormBuilder
      */
     public static function adminLoadView($sId, $sFieldName = 'fields', $aFields = [])
     {
-        $oFieldTypeService    = Factory::service('FieldType', Constants::MODULE_SLUG);
+        /** @var FieldType $oFieldTypeService */
+        $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
+        /** @var DefaultValue $oDefaultValueService */
         $oDefaultValueService = Factory::service('DefaultValue', Constants::MODULE_SLUG);
 
         return Factory::service('View')
@@ -164,7 +131,7 @@ class FormBuilder
                     'sId'            => $sId,
                     'sFieldName'     => $sFieldName,
                     'aFields'        => $aFields,
-                    'aFieldTypes'    => ['Select...'] + $oFieldTypeService->getAllFlat(true),
+                    'aFieldTypes'    => $oFieldTypeService->getAll(true),
                     'aDefaultValues' => ['No Default Value'] + $oDefaultValueService->getAllFlat(true),
                 ],
                 true

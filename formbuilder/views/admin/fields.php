@@ -1,7 +1,11 @@
 <?php
 
-$sId        = !empty($sId) ? 'id="' . $sId . '"' : null;
-$sFieldName = !empty($sFieldName) ? $sFieldName : 'fields';
+$sId             = !empty($sId) ? 'id="' . $sId . '"' : null;
+$sFieldName      = !empty($sFieldName) ? $sFieldName : 'fields';
+$aFieldTypeNames = array_combine(
+    [''] + arrayExtractProperty($aFieldTypes, 'slug'),
+    ['Please select...'] + arrayExtractProperty($aFieldTypes, 'label'),
+);
 
 if (!empty($_POST[$sFieldName])) {
 
@@ -36,9 +40,9 @@ if (!empty($_POST[$sFieldName])) {
 }
 
 ?>
-<div class="form-builder" <?=$sId?>>
+<div class="form-builder" <?=$sId?> data-field-types="<?=htmlspecialchars(json_encode($aFieldTypes))?>">
     <div class="table-responsive">
-        <table class="form-builder__fields">
+        <table class="form-builder__header">
             <thead>
                 <tr>
                     <th class="order">
@@ -66,6 +70,8 @@ if (!empty($_POST[$sFieldName])) {
                     </th>
                 </tr>
             </thead>
+        </table>
+        <table class="form-builder__fields">
             <?php
 
             $i = 0;
@@ -95,7 +101,7 @@ if (!empty($_POST[$sFieldName])) {
 
                             echo form_dropdown(
                                 $sFieldName . '[' . $i . '][type]',
-                                $aFieldTypes,
+                                $aFieldTypeNames,
                                 $oField->type,
                                 'class="select2 field-type form-builder__field__type"'
                             );
@@ -123,27 +129,37 @@ if (!empty($_POST[$sFieldName])) {
                             ?>
                         </td>
                         <td class="placeholder">
-                            <?php
+                            <div class="supports-placeholder js-supports-placeholder">
+                                <?php
 
-                            echo form_input(
-                                $sFieldName . '[' . $i . '][placeholder]',
-                                $oField->placeholder,
-                                'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
-                            );
+                                echo form_input(
+                                    $sFieldName . '[' . $i . '][placeholder]',
+                                    $oField->placeholder,
+                                    'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
+                                );
 
-                            ?>
+                                ?>
+                            </div>
+                            <div class="no-placeholder js-no-placeholder text-muted">
+                                &mdash;
+                            </div>
                         </td>
                         <td class="required">
-                            <?php
+                            <div class="supports-required js-supports-required">
+                                <?php
 
-                            echo form_checkbox(
-                                $sFieldName . '[' . $i . '][is_required]',
-                                true,
-                                !empty($oField->is_required),
-                                'class="form-builder__field__required"'
-                            );
+                                echo form_checkbox(
+                                    $sFieldName . '[' . $i . '][is_required]',
+                                    true,
+                                    !empty($oField->is_required),
+                                    'class="form-builder__field__required"'
+                                );
 
-                            ?>
+                                ?>
+                            </div>
+                            <div class="no-required js-no-required text-muted">
+                                &mdash;
+                            </div>
                         </td>
                         <td class="default">
                             <div class="supports-default-value js-supports-default-value">
@@ -158,19 +174,24 @@ if (!empty($_POST[$sFieldName])) {
                                 ?>
                             </div>
                             <div class="no-default-value js-no-default-value text-muted">
-                                Field type does not support default values
+                                &mdash;
                             </div>
                         </td>
                         <td class="attributes">
-                            <?php
+                            <div class="supports-attributes js-supports-attributes">
+                                <?php
 
-                            echo form_input(
-                                $sFieldName . '[' . $i . '][custom_attributes]',
-                                $oField->custom_attributes,
-                                'placeholder="Any custom attributes" class="form-builder__field__attributes"'
-                            );
+                                echo form_input(
+                                    $sFieldName . '[' . $i . '][custom_attributes]',
+                                    $oField->custom_attributes,
+                                    'placeholder="Any custom attributes" class="form-builder__field__attributes"'
+                                );
 
-                            ?>
+                                ?>
+                            </div>
+                            <div class="no-attributes js-no-attributes text-muted">
+                                &mdash;
+                            </div>
                         </td>
                         <td class="remove" rowspan="2">
                             <a href="#" class="js-remove-field" data-field-number="<?=$i?>">
@@ -314,7 +335,7 @@ if (!empty($_POST[$sFieldName])) {
                 >
             </td>
             <td class="type">
-                <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypes, null, 'class="select2 field-type"')?>
+                <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypeNames, null, 'class="select2 field-type"')?>
                 <a href="#" class="js-manage-option btn btn-xs btn-warning" data-field-number="{{fieldNumber}}">
                     Toggle Options
                 </a>
@@ -337,22 +358,32 @@ if (!empty($_POST[$sFieldName])) {
                 ?>
             </td>
             <td class="placeholder">
-                <?=form_input(
-                    $sFieldName . '[{{fieldNumber}}][placeholder]',
-                    null,
-                    'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
-                )?>
+                <div class="supports-placeholder js-supports-placeholder">
+                    <?=form_input(
+                        $sFieldName . '[{{fieldNumber}}][placeholder]',
+                        null,
+                        'placeholder="The field\'s placeholder" class="form-builder__field__placeholder"'
+                    )?>
+                </div>
+                <div class="no-placeholder js-no-placeholder text-muted">
+                    &mdash;
+                </div>
             </td>
             <td class="required">
-                <?=form_checkbox(
-                    $sFieldName . '[{{fieldNumber}}][is_required]',
-                    true,
-                    false,
-                    'class="form-builder__field__required"'
-                )?>
+                <div class="supports-required js-supports-required">
+                    <?=form_checkbox(
+                        $sFieldName . '[{{fieldNumber}}][is_required]',
+                        true,
+                        false,
+                        'class="form-builder__field__required"'
+                    )?>
+                </div>
+                <div class="no-required js-no-required text-muted">
+                    &mdash;
+                </div>
             </td>
             <td class="default">
-                <div class="supports-defualt-value js-supports-default-value">
+                <div class="supports-default-value js-supports-default-value">
                     <?=form_dropdown(
                         $sFieldName . '[{{fieldNumber}}][default_value]',
                         $aDefaultValues,
@@ -361,15 +392,20 @@ if (!empty($_POST[$sFieldName])) {
                     )?>
                 </div>
                 <div class="no-default-value js-no-default-value text-muted">
-                    Field type does not support default values
+                    &mdash;
                 </div>
             </td>
             <td class="attributes">
-                <?=form_input(
-                    $sFieldName . '[{{fieldNumber}}][custom_attributes]',
-                    null,
-                    'placeholder="Any custom attributes" class="form-builder__field__attributes"'
-                )?>
+                <div class="supports-attributes js-supports-attributes">
+                    <?=form_input(
+                        $sFieldName . '[{{fieldNumber}}][custom_attributes]',
+                        null,
+                        'placeholder="Any custom attributes" class="form-builder__field__attributes"'
+                    )?>
+                </div>
+                <div class="no-attributes js-no-attributes text-muted">
+                    &mdash;
+                </div>
             </td>
             <td class="remove" rowspan="2">
                 <a href="#" class="js-remove-field" data-field-number="{{fieldNumber}}">
