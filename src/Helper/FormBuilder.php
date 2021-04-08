@@ -166,6 +166,7 @@ class FormBuilder
         $bHasCaptcha   = getFromArray('has_captcha', $aFormData);
         $sCaptchaError = getFromArray('captcha_error', $aFormData);
         $aFields       = getFromArray('fields', $aFormData, []);
+        $sButtonClass  = getFromArray('button_class', $aFormData, 'text-center');
 
         if (!empty($aFormData['buttons'])) {
             $aButtons = $aFormData['buttons'];
@@ -267,7 +268,7 @@ class FormBuilder
         //  Render any buttons
         if (!empty($aButtons)) {
 
-            $sOut .= '<p class="text-center">';
+            $sOut .= '<p class="' . $sButtonClass . '">';
             foreach ($aButtons as $aButton) {
 
                 $sTag   = getFromArray('tag', $aButton) ?: 'button';
