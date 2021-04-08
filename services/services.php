@@ -31,18 +31,18 @@ return [
                 return new Model\Form();
             }
         },
-        'FormField'       => function (): Model\FormField {
-            if (class_exists('\App\FormBuilder\Model\FormField')) {
-                return new \App\FormBuilder\Model\FormField();
+        'FormField'       => function (): Model\Form\Field {
+            if (class_exists('\App\FormBuilder\Model\Form\Field')) {
+                return new \App\FormBuilder\Model\Form\Field();
             } else {
-                return new Model\FormField();
+                return new Model\Form\Field();
             }
         },
-        'FormFieldOption' => function (): Model\FormFieldOption {
-            if (class_exists('\App\FormBuilder\Model\FormFieldOption')) {
-                return new \App\FormBuilder\Model\FormFieldOption();
+        'FormFieldOption' => function (): Model\Form\Field\Option {
+            if (class_exists('\App\FormBuilder\Model\Form\Field\Option')) {
+                return new \App\FormBuilder\Model\Form\Field\Option();
             } else {
-                return new Model\FormFieldOption();
+                return new Model\Form\Field\Option();
             }
         },
     ],
@@ -282,18 +282,39 @@ return [
         },
     ],
     'resources' => [
-        'DefaultValue' => function ($mObj): Resource\DefaultValue {
+        'DefaultValue'    => function ($mObj): Resource\DefaultValue {
             if (class_exists('\App\FormBuilder\Resource\DefaultValue')) {
                 return new \App\FormBuilder\Resource\DefaultValue($mObj);
             } else {
                 return new Resource\DefaultValue($mObj);
             }
         },
-        'FieldType'    => function ($mObj): Resource\FieldType {
+        'FieldType'       => function ($mObj): Resource\FieldType {
             if (class_exists('\App\FormBuilder\Resource\FieldType')) {
                 return new \App\FormBuilder\Resource\FieldType($mObj);
             } else {
                 return new Resource\FieldType($mObj);
+            }
+        },
+        'Form'            => function ($mObj): Resource\Form {
+            if (class_exists('\App\FormBuilder\Resource\Form')) {
+                return new \App\FormBuilder\Resource\Form($mObj);
+            } else {
+                return new Resource\Form($mObj);
+            }
+        },
+        'FormField'       => function ($mObj): Resource\Form\Field {
+            if (class_exists('\App\FormBuilder\Resource\Form\Field')) {
+                return new \App\FormBuilder\Resource\Form\Field($mObj);
+            } else {
+                return new Resource\Form\Field($mObj);
+            }
+        },
+        'FormFieldOption' => function ($mObj): Resource\Form\Field\Option {
+            if (class_exists('\App\FormBuilder\Resource\Form\Field\Option')) {
+                return new \App\FormBuilder\Resource\Form\Field\Option($mObj);
+            } else {
+                return new Resource\Form\Field\Option($mObj);
             }
         },
     ],

@@ -20,6 +20,7 @@ use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\Exception\FieldTypeExceptionInvalidOption;
 use Nails\FormBuilder\Exception\FieldTypeExceptionRequired;
 use Nails\FormBuilder\Interfaces\FieldType;
+use Nails\FormBuilder\Resource\Form\Field;
 
 /**
  * Class Base
@@ -237,16 +238,15 @@ abstract class Base implements FieldType
     /**
      * Validate and clean the user's entry
      *
-     * @param mixed     $mInput The form input's value
-     * @param \stdClass $oField The complete field object
+     * @param mixed $mInput The form input's value
+     * @param Field $oField The complete field object
      *
      * @throws FieldTypeExceptionRequired
      * @throws FieldTypeExceptionInvalidOption
      * @return mixed
      */
-    public function validate($mInput, $oField)
+    public function validate($mInput, Field $oField)
     {
-        dd('what type is this, set as typehint', $oField);
         //  Test for required fields
         if (!empty($oField->is_required) && empty($mInput)) {
             throw new FieldTypeExceptionRequired('This field is required.', 1);

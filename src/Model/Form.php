@@ -12,6 +12,7 @@
 
 namespace Nails\FormBuilder\Model;
 
+use Nails\Common\Exception\ModelException;
 use Nails\Common\Exception\NailsException;
 use Nails\Common\Model\Base;
 use Nails\Factory;
@@ -24,7 +25,9 @@ use Nails\FormBuilder\Constants;
  */
 class Form extends Base
 {
-    const TABLE = NAILS_DB_PREFIX . 'formbuilder_form';
+    const TABLE             = NAILS_DB_PREFIX . 'formbuilder_form';
+    const RESOURCE_NAME     = 'Form';
+    const RESOURCE_PROVIDER = Constants::MODULE_SLUG;
 
     // --------------------------------------------------------------------------
 
@@ -45,19 +48,14 @@ class Form extends Base
     // --------------------------------------------------------------------------
 
     /**
-     * Construct the model
+     * Form constructor.
+     *
+     * @throws ModelException
      */
     public function __construct()
     {
         parent::__construct();
-        $this->addExpandableField([
-            'trigger'   => 'fields',
-            'type'      => self::EXPANDABLE_TYPE_MANY,
-            'property'  => 'fields',
-            'model'     => 'FormField',
-            'provider'  => Constants::MODULE_SLUG,
-            'id_column' => 'form_id',
-        ]);
+        $this->hasMany('fields', 'FormField', 'form_id', Constants::MODULE_SLUG);
     }
 
     // --------------------------------------------------------------------------
@@ -65,9 +63,9 @@ class Form extends Base
     /**
      * Creates a new copy of an existing form
      *
-     * @param  integer $iFormId       The ID of the form to duplicate
-     * @param  boolean $bReturnObject Whether to return the entire new form object, or just the ID
-     * @param  array   $aReturnData   An array to pass to the getById() call when $bReturnObject is true
+     * @param integer $iFormId       The ID of the form to duplicate
+     * @param boolean $bReturnObject Whether to return the entire new form object, or just the ID
+     * @param array   $aReturnData   An array to pass to the getById() call when $bReturnObject is true
      *
      * @return mixed
      */
@@ -167,20 +165,5 @@ class Form extends Base
 
             return false;
         }
-    }
-
-    // --------------------------------------------------------------------------
-
-    protected function formatObject(
-        &$oObj,
-        array $aData = [],
-        array $aIntegers = [],
-        array $aBools = [],
-        array $aFloats = []
-    ) {
-
-        $aBools[] = 'has_captcha';
-
-        parent::formatObject($oObj, $aData, $aIntegers, $aBools, $aFloats);
     }
 }
