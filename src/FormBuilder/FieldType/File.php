@@ -37,14 +37,14 @@ class File extends Base
     /**
      * Validate and clean the user's entry
      *
-     * @param mixed    $mInput The form input's value
-     * @param stdClass $oField The complete field object
+     * @param mixed $mInput The form input's value
+     * @param Field $oField The complete field object
      *
      * @throws FieldTypeException
      * @throws FactoryException
      * @return mixed
      */
-    public function validate($mInput, $oField)
+    public function validate($mInput, Field $oField)
     {
         if (!isset($_FILES['field']['error'][$oField->id]) && $oField->is_required) {
             throw new FieldTypeException('This field is required.', 1);

@@ -43,7 +43,7 @@ class Select extends Base
      * @throws FieldTypeException
      * @return boolean|string   boolean true if valid, string with error if invalid
      */
-    public function validate($mInput, $oField)
+    public function validate($mInput, Field $oField)
     {
         $mInput = parent::validate($mInput, $oField);
 

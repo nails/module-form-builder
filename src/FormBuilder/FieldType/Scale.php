@@ -61,7 +61,7 @@ class Scale extends Base
      * @throws FieldTypeException
      * @return boolean
      */
-    public function validate($mInput, $oField)
+    public function validate($mInput, Field $oField)
     {
         $iInput = (int) $mInput;
         parent::validate($iInput, $oField);

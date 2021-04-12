@@ -42,7 +42,7 @@ class Date extends Base
      * @throws FieldTypeException
      * @return mixed
      */
-    public function validate($mInput, $oField)
+    public function validate($mInput, Field $oField)
     {
         $mInput = parent::validate($mInput, $oField);
 

@@ -73,7 +73,7 @@ class Likert extends Base
      * @throws FieldTypeException
      * @return boolean
      */
-    public function validate($mInput, $oField)
+    public function validate($mInput, Field $oField)
     {
         try {
 
