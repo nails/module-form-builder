@@ -14,6 +14,7 @@ namespace Nails\FormBuilder\FormBuilder\FieldType;
 
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
+use Nails\FormBuilder\Resource\Form\Field;
 
 /**
  * Class Email
@@ -35,8 +36,8 @@ class Email extends Base
     /**
      * Validate the user's entry
      *
-     * @param mixed     $mInput The form input's value
-     * @param \stdClass $oField The complete field object
+     * @param mixed $mInput The form input's value
+     * @param Field $oField The complete field object
      *
      * @throws FieldTypeException
      * @return boolean|string   boolean true if valid, string with error if invalid

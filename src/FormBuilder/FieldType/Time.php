@@ -15,6 +15,7 @@ namespace Nails\FormBuilder\FormBuilder\FieldType;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
+use Nails\FormBuilder\Resource\Form\Field;
 
 /**
  * Class Time
@@ -36,8 +37,8 @@ class Time extends Base
     /**
      * Validate and clean the user's entry
      *
-     * @param mixed     $mInput The form input's value
-     * @param \stdClass $oField The complete field object
+     * @param mixed $mInput The form input's value
+     * @param Field $oField The complete field object
      *
      * @throws FieldTypeException
      * @return mixed
