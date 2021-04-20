@@ -16,6 +16,7 @@ use Nails\Cdn\Service\Cdn;
 use Nails\Factory;
 use Nails\FormBuilder\Exception\FieldTypeException;
 use Nails\FormBuilder\FieldType\Base;
+use Nails\FormBuilder\Resource\Form\Field;
 use stdClass;
 
 /**
