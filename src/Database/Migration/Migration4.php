@@ -12,7 +12,7 @@
  * @link
  */
 
-namespace Nails\Database\Migration\Nails\ModuleFormBuilder;
+namespace Nails\FormBuilder\Database\Migration;
 
 use Nails\Common\Console\Migrate\Base;
 
