@@ -123,6 +123,8 @@ class DefaultValue
      */
     public function getBySlug($sSlug): ?\Nails\FormBuilder\DefaultValue\Base
     {
+        //  Ensure leading slash
+        $sSlug = substr($sSlug, 0, 1) === '\\' ? $sSlug : '\\' . $sSlug;
         foreach ($this->getAll() as $oDefault) {
             if ($oDefault->slug == $sSlug) {
                 return $oDefault->instance;

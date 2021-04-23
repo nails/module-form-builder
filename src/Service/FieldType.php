@@ -114,7 +114,6 @@ class FieldType
      */
     public function getAll($bOnlySelectable = false): array
     {
-
         return $bOnlySelectable
             ? $this->filter(function ($oType) {
                 return $oType->instance::IS_SELECTABLE;
@@ -187,6 +186,8 @@ class FieldType
      */
     public function getBySlug($sSlug, $bOnlySelectable = false): ?\Nails\FormBuilder\Interfaces\FieldType
     {
+        //  Ensure leading slash
+        $sSlug = substr($sSlug, 0, 1) === '\\' ? $sSlug : '\\' . $sSlug;
         foreach ($this->getAll($bOnlySelectable) as $oType) {
             if ($oType->slug == $sSlug) {
                 return $oType->instance;
