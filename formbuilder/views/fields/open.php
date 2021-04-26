@@ -2,9 +2,22 @@
 
 $sRequired = !empty($label) && !empty($required) ? '*' : '';
 
-?>
-<div class="form-group <?=!empty($error) ? 'has-error' : ''?>">
-    <label for="<?=$id?>" class="label">
-        <?=$label . $sRequired?>
-    </label>
-    <?=$sub_label ? '<p class="sub-label">' . $sub_label . '</p>' : ''?>
+echo sprintf(
+    '<div class="form-group%s">',
+    !empty($error) ? ' has-error' : ''
+);
+
+if ($label) {
+    echo sprintf(
+        '<label for="%s" class="label">%s</label>',
+        $id,
+        $label . $sRequired
+    );
+}
+
+if ($sub_label) {
+    echo sprintf(
+        '<p class="sub-label">%s</p>',
+        $sub_label
+    );
+}
