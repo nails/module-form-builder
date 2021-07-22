@@ -139,11 +139,11 @@ class Form extends Base
                 if (!empty($aFormOptionRows)) {
                     foreach ($aFormOptionRows as &$aRow) {
                         unset($aRow['id']);
-                        $aRow['form_field_id'] = $iNewFieldId;
-                        $aRow['created']       = $sNow;
-                        $aRow['created_by']    = activeUser('id') ?: null;
-                        $aRow['modified']      = $sNow;
-                        $aRow['modified_by']   = activeUser('id') ?: null;
+                        $aRow['form_field_id']              = $iNewFieldId;
+                        $aRow[$this->getColumnCreated()]    = $sNow;
+                        $aRow[$this->getColumnCreatedBy()]  = activeUser('id') ?: null;
+                        $aRow[$this->getColumnModified()]   = $sNow;
+                        $aRow[$this->getColumnModifiedBy()] = activeUser('id') ?: null;
                     }
                     unset($aRow);
                     if (!$oDb->insert_batch($sTableOptions, $aFormOptionRows)) {
