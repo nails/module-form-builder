@@ -24,7 +24,7 @@ if (!function_exists('formBuilderRender')) {
 }
 
 if (!function_exists('formBuilderValidate')) {
-    function formBuilderValidate($aFormFields, $aUserData)
+    function formBuilderValidate(array $aFormFields, array $aUserData)
     {
         return FormBuilder::validate($aFormFields, $aUserData);
     }

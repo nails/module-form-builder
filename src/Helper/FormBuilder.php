@@ -287,7 +287,6 @@ class FormBuilder
                     $sAttr,
                 ]);
 
-
                 $sOut .= '<' . $sTag . ' ' . implode(' ', $aAttr) . '>';
                 $sOut .= $sLabel;
                 $sOut .= '</' . $sTag . '>';
@@ -312,7 +311,7 @@ class FormBuilder
      * @return bool|array
      * @throws FactoryException
      */
-    public static function validate($aFormFields, $aUserData)
+    public static function validate(array $aFormFields, array $aUserData)
     {
         $oFieldTypeService = Factory::service('FieldType', Constants::MODULE_SLUG);
         $bIsValid          = true;
