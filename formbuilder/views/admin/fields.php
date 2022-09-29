@@ -41,9 +41,8 @@ if (!empty($_POST[$sFieldName])) {
 
 ?>
 <div class="form-builder" <?=$sId?> data-field-types="<?=htmlspecialchars(json_encode($aFieldTypes))?>">
-    <div class="table-responsive">
-        <table class="form-builder__header">
-            <thead>
+        <table class="form-builder__header table table-striped table-hover table-bordered table-responsive">
+            <thead class="table-dark">
                 <tr>
                     <th class="order">
                     </th>
@@ -53,7 +52,7 @@ if (!empty($_POST[$sFieldName])) {
                     <th class="field-label">
                         Label &amp; Sub-label
                     </th>
-                    <th class="placeholder">
+                    <th class="field-placeholder">
                         Placeholder
                     </th>
                     <th class="required">
@@ -71,7 +70,7 @@ if (!empty($_POST[$sFieldName])) {
                 </tr>
             </thead>
         </table>
-        <table class="form-builder__fields">
+        <table class="form-builder__fields table table-striped table-hover table-bordered table-responsive">
             <?php
 
             $i = 0;
@@ -79,7 +78,7 @@ if (!empty($_POST[$sFieldName])) {
             foreach ($aFields as $oField) {
 
                 ?>
-                <tbody class="form-builder__field">
+                <tbody class="form-builder__field align-middle">
                     <tr>
                         <td class="order handle" rowspan="2">
                             <b class="fa fa-bars"></b>
@@ -103,7 +102,7 @@ if (!empty($_POST[$sFieldName])) {
                                 $sFieldName . '[' . $i . '][type]',
                                 $aFieldTypeNames,
                                 $oField->type,
-                                'class="select2 field-type form-builder__field__type"'
+                                'class="field-type form-builder__field__type"'
                             );
 
                             ?>
@@ -128,7 +127,7 @@ if (!empty($_POST[$sFieldName])) {
 
                             ?>
                         </td>
-                        <td class="placeholder">
+                        <td class="field-placeholder">
                             <div class="supports-placeholder js-supports-placeholder">
                                 <?php
 
@@ -169,7 +168,7 @@ if (!empty($_POST[$sFieldName])) {
                                     $sFieldName . '[' . $i . '][default_value]',
                                     $aDefaultValues,
                                     $oField->default_value,
-                                    'class="select2 field-default form-builder__field__default"'
+                                    'class="field-default form-builder__field__default"'
                                 );
                                 ?>
                             </div>
@@ -208,8 +207,8 @@ if (!empty($_POST[$sFieldName])) {
                             ?>
                             <div class="form-field-options">
                                 <div class="form-field-options-padder">
-                                    <table data-option-count="<?=$iOptionCount?>">
-                                        <thead>
+                                    <table class="table table-striped table-hover table-bordered table-responsive" data-option-count="<?=$iOptionCount?>">
+                                        <thead class="table-dark">
                                             <tr>
                                                 <th class="option-label">
                                                     Label
@@ -220,12 +219,10 @@ if (!empty($_POST[$sFieldName])) {
                                                 <th class="option-disabled">
                                                     Disabled
                                                 </th>
-                                                <th class="option-remove">
-                                                    &nbsp;
-                                                </th>
+                                                <th class="option-remove"></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="align-middle">
                                             <?php
 
                                             if (!empty($oField->options)) {
@@ -321,7 +318,6 @@ if (!empty($_POST[$sFieldName])) {
                 </tr>
             </tfoot>
         </table>
-    </div>
     <script type="template/mustache" class="js-template-field">
     <tbody class="form-builder__field">
         <tr>
@@ -335,7 +331,7 @@ if (!empty($_POST[$sFieldName])) {
                 >
             </td>
             <td class="type">
-                <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypeNames, null, 'class="select2 field-type"')?>
+                <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypeNames, null, 'class="field-type"')?>
                 <a href="#" class="js-manage-option btn btn-xs btn-warning" data-field-number="{{fieldNumber}}">
                     Toggle Options
                 </a>
@@ -357,7 +353,7 @@ if (!empty($_POST[$sFieldName])) {
 
                 ?>
             </td>
-            <td class="placeholder">
+            <td class="field-placeholder">
                 <div class="supports-placeholder js-supports-placeholder">
                     <?=form_input(
                         $sFieldName . '[{{fieldNumber}}][placeholder]',
@@ -388,7 +384,7 @@ if (!empty($_POST[$sFieldName])) {
                         $sFieldName . '[{{fieldNumber}}][default_value]',
                         $aDefaultValues,
                         null,
-                        'class="select2 field-default form-builder__field__default"'
+                        'class="field-default form-builder__field__default"'
                     )?>
                 </div>
                 <div class="no-default-value js-no-default-value text-muted">
@@ -417,8 +413,8 @@ if (!empty($_POST[$sFieldName])) {
             <td colspan="6">
                 <div class="form-field-options">
                     <div class="form-field-options-padder">
-                        <table data-option-count="0">
-                            <thead>
+                        <table class="table table-striped table-hover table-bordered table-responsive" data-option-count="0">
+                            <thead class="table-dark">
                                 <tr>
                                     <th class="option-label">
                                         Label
@@ -434,7 +430,7 @@ if (!empty($_POST[$sFieldName])) {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="align-middle">
                             </tbody>
                             <tfoot>
                                 <tr>

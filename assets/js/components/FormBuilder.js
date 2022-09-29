@@ -296,12 +296,12 @@ class Instance {
         //  Supports placeholder?
         if (this.doesSupportPlaceholder(slug)) {
             this.log('Supports placeholder; showing');
-            elem.closest('tr').find('td.placeholder .js-supports-placeholder').show();
-            elem.closest('tr').find('td.placeholder .js-no-placeholder').hide();
+            elem.closest('tr').find('td.field-placeholder .js-supports-placeholder').show();
+            elem.closest('tr').find('td.field-placeholder .js-no-placeholder').hide();
         } else {
             this.log('Does not support placeholder; hiding');
-            elem.closest('tr').find('td.placeholder .js-supports-placeholder').hide();
-            elem.closest('tr').find('td.placeholder .js-no-placeholder').show();
+            elem.closest('tr').find('td.field-placeholder .js-supports-placeholder').hide();
+            elem.closest('tr').find('td.field-placeholder .js-no-placeholder').show();
         }
 
         //  Supports required?
