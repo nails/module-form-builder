@@ -25,11 +25,12 @@ use Nails\FormBuilder\FieldType\Base;
  */
 class Captcha extends Base
 {
-    const LABEL             = 'Captcha';
-    const SUPPORTS_OPTIONS  = false;
-    const SUPPORTS_DEFAULTS = false;
-    const IS_SELECTABLE     = false;
-    const RENDER_VIEWS      = [
+    const LABEL                = 'Captcha';
+    const SUPPORTS_OPTIONS     = false;
+    const SUPPORTS_DEFAULTS    = false;
+    const SUPPORTS_PLACEHOLDER = false;
+    const IS_SELECTABLE        = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-captcha',
         'formbuilder/fields/close',

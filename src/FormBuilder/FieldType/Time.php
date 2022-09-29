@@ -24,9 +24,10 @@ use Nails\FormBuilder\Resource\Form\Field;
  */
 class Time extends Base
 {
-    const LABEL             = 'Time';
-    const SUPPORTS_DEFAULTS = true;
-    const RENDER_VIEWS      = [
+    const LABEL                = 'Time';
+    const SUPPORTS_DEFAULTS    = true;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-time',
         'formbuilder/fields/close',

@@ -23,9 +23,10 @@ use Nails\FormBuilder\Resource\Form\Field;
  */
 class DateTime extends Base
 {
-    const LABEL             = 'Date &amp; Time';
-    const SUPPORTS_DEFAULTS = true;
-    const RENDER_VIEWS      = [
+    const LABEL                = 'Date &amp; Time';
+    const SUPPORTS_DEFAULTS    = true;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-datetime',
         'formbuilder/fields/close',

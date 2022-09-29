@@ -21,9 +21,10 @@ use Nails\FormBuilder\FieldType\Base;
  */
 class Hidden extends Base
 {
-    const LABEL             = 'Hidden';
-    const SUPPORTS_DEFAULTS = true;
-    const RENDER_VIEWS      = [
+    const LABEL                = 'Hidden';
+    const SUPPORTS_DEFAULTS    = true;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/body-hidden',
     ];
 }

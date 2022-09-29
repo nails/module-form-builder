@@ -24,9 +24,10 @@ use Nails\FormBuilder\Resource\Form\Field;
  */
 class Number extends Base
 {
-    const LABEL             = 'Number';
-    const SUPPORTS_DEFAULTS = true;
-    const RENDER_VIEWS      = [
+    const LABEL                = 'Number';
+    const SUPPORTS_DEFAULTS    = true;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-number',
         'formbuilder/fields/close',

@@ -25,9 +25,10 @@ use Nails\FormBuilder\Resource\Form\Field;
  */
 class Scale extends Base
 {
-    const LABEL        = 'Scale (1-10)';
-    const NUM_OPTIONS  = 10;
-    const RENDER_VIEWS = [
+    const LABEL                = 'Scale (1-10)';
+    const NUM_OPTIONS          = 10;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-scale',
         'formbuilder/fields/close',

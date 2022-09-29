@@ -29,6 +29,7 @@ class Likert extends Base
 {
     const LABEL                     = 'Likert - Agreement';
     const SUPPORTS_DEFAULTS         = false;
+    const SUPPORTS_PLACEHOLDER      = false;
     const SUPPORTS_OPTIONS          = true;
     const SUPPORTS_OPTIONS_SELECTED = false;
     const RENDER_VIEWS              = [

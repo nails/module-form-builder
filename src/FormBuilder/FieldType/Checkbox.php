@@ -21,9 +21,10 @@ use Nails\FormBuilder\FieldType\Base;
  */
 class Checkbox extends Base
 {
-    const LABEL            = 'Checkbox';
-    const SUPPORTS_OPTIONS = true;
-    const RENDER_VIEWS     = [
+    const LABEL                = 'Checkbox';
+    const SUPPORTS_OPTIONS     = true;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-checkbox',
         'formbuilder/fields/close',

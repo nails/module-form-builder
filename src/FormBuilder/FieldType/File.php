@@ -26,8 +26,9 @@ use stdClass;
  */
 class File extends Base
 {
-    const LABEL        = 'File';
-    const RENDER_VIEWS = [
+    const LABEL                = 'File';
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-file',
         'formbuilder/fields/close',

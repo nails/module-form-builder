@@ -22,9 +22,10 @@ use Nails\FormBuilder\FieldType\Base;
  */
 class Radio extends Base
 {
-    const LABEL            = 'Radio';
-    const SUPPORTS_OPTIONS = true;
-    const RENDER_VIEWS      = [
+    const LABEL                = 'Radio';
+    const SUPPORTS_OPTIONS     = true;
+    const SUPPORTS_PLACEHOLDER = false;
+    const RENDER_VIEWS         = [
         'formbuilder/fields/open',
         'formbuilder/fields/body-radio',
         'formbuilder/fields/close',
