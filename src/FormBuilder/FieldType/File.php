@@ -166,15 +166,13 @@ class File extends Base
             return '';
         };
 
-        if ($bPlainText) {
-            return cdnServe($oObj->id, true);
-        } else {
-            return anchor(
+        return $bPlainText
+            ? cdnServe($oObj->id, true)
+            : anchor(
                 cdnServe($oObj->id, true),
                 'Download – ' . $oObj->file->name->human . ' (' . $oObj->file->size->human . ')',
                 'class="btn btn-xs btn-primary"'
             );
-        }
     }
 
     // --------------------------------------------------------------------------
