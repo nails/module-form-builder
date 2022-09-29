@@ -65,8 +65,8 @@ class File extends Base
 
                     if (!is_null($maxFileSize)) {
 
-                        $maxFileSize = $oCdn->returnBytes($maxFileSize);
-                        $maxFileSize = $oCdn->formatBytes($maxFileSize);
+                        $maxFileSize = returnBytes($maxFileSize);
+                        $maxFileSize = formatBytes($maxFileSize);
 
                         $sError = 'The file exceeds the maximum size accepted by this server (which is ' . $maxFileSize . ').';
 
