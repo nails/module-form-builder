@@ -158,6 +158,7 @@ class File extends Base
      */
     public function extractText(string $sKey, $mValue, bool $bPlainText = false): ?string
     {
+        /** @var Cdn $oCdn */
         $oCdn = Factory::service('Cdn', \Nails\Cdn\Constants::MODULE_SLUG);
         $oObj = $oCdn->getObject($mValue);
 

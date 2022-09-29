@@ -37,8 +37,8 @@ class DateTime extends Base
     /**
      * Validate and clean the user's entry
      *
-     * @param  mixed $mInput The form input's value
-     * @param  Field $oField The complete field object
+     * @param mixed $mInput The form input's value
+     * @param Field $oField The complete field object
      *
      * @throws FieldTypeException
      * @return mixed
