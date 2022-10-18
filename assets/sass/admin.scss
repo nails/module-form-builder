@@ -136,16 +136,10 @@
                         border: 1px solid #DCDCDC;
                         margin: 0;
 
-                        thead {
-                            th {
-                                background: #FFFFFF;
-                                color: #333333;
-                            }
-                        }
-
                         .option-label {
                             input {
                                 width: 100%;
+                                margin-bottom: 0;
                             }
                         }
 
