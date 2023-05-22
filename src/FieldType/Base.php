@@ -313,7 +313,7 @@ abstract class Base implements FieldType
     public function extractText(string $sKey, $mValue, bool $bPlainText = false): ?string
     {
         if (!static::SUPPORTS_OPTIONS) {
-            return trim(strip_tags($mValue));
+            return trim(strip_tags((string) $mValue));
         }
 
         return null;
