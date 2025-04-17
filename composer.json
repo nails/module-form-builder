@@ -21,9 +21,9 @@
     "prefer-stable": true,
     "require":
     {
-        "nails/common": "dev-feature/pre-new-admin",
-        "nails/module-auth": "dev-feature/pre-new-admin",
-        "nails/module-cdn": "dev-feature/pre-new-admin",
+        "nails/common": "dev-feature/pre-new-admin-ci-php8",
+        "nails/module-auth": "dev-feature/pre-new-admin-ci-php8",
+        "nails/module-cdn": "dev-feature/pre-new-admin-ci-php8",
         "ext-json": "*"
     },
     "require-dev": {
