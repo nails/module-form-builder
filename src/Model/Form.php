@@ -114,7 +114,7 @@ class Form extends Base
             $iNewFormId = $oDb->insert_id();
 
             //  Fields
-            $oDb->where_in('form_id', $oForm->id);
+            $oDb->where('form_id', $oForm->id);
             $aFormFieldRows = $oDb->get($sTableFields)->result();
             foreach ($aFormFieldRows as $oRow) {
 
