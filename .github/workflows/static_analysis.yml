@@ -35,7 +35,7 @@ jobs:
                     restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
 
             -   name: Install Composer dependencies
-                run: composer update --no-interaction --prefer-dist
+                run: COMPOSER_ROOT_VERSION=dev-develop composer install --no-interaction --prefer-dist
 
             -   name: Run PHPStan
                 run: composer analyse
