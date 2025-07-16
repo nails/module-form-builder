@@ -32,7 +32,8 @@ jobs:
                 with:
                     path: vendor
                     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-                    restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+                    restore-keys: |
+                        ${{ runner.os }}-composer-
 
             -   name: Install Composer dependencies
                 run: COMPOSER_ROOT_VERSION=dev-develop composer install --no-interaction --prefer-dist

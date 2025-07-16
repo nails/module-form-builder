@@ -36,7 +36,8 @@ jobs:
                 with:
                     path: node_modules
                     key: ${{ runner.os }}-yarn-${{ hashFiles('**/package.json') }}
-                    restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/package.json') }}
+                    restore-keys: |
+                        ${{ runner.os }}-yarn-
 
             -   name: Install Composer dependencies
                 run: COMPOSER_ROOT_VERSION=dev-develop composer install --no-interaction --prefer-dist
