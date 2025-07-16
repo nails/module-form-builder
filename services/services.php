@@ -282,39 +282,41 @@ return [
         },
     ],
     'resources' => [
-        'DefaultValue'    => function ($mObj): Resource\DefaultValue {
+        'DefaultValue'    => function ($resource, $model = null): Resource\DefaultValue {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\FormBuilder\Resource\DefaultValue')) {
-                return new \App\FormBuilder\Resource\DefaultValue($mObj);
+                return new \App\FormBuilder\Resource\DefaultValue($resource);
             } else {
-                return new Resource\DefaultValue($mObj);
+                return new Resource\DefaultValue($resource);
             }
         },
-        'FieldType'       => function ($mObj): Resource\FieldType {
+        'FieldType'       => function ($resource, $model = null): Resource\FieldType {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\FormBuilder\Resource\FieldType')) {
-                return new \App\FormBuilder\Resource\FieldType($mObj);
+                return new \App\FormBuilder\Resource\FieldType($resource);
             } else {
-                return new Resource\FieldType($mObj);
+                return new Resource\FieldType($resource);
             }
         },
-        'Form'            => function ($mObj): Resource\Form {
+        'Form'            => function ($resource, $model): Resource\Form {
             if (class_exists('\App\FormBuilder\Resource\Form')) {
-                return new \App\FormBuilder\Resource\Form($mObj);
+                return new \App\FormBuilder\Resource\Form($resource, $model);
             } else {
-                return new Resource\Form($mObj);
+                return new Resource\Form($resource, $model);
             }
         },
-        'FormField'       => function ($mObj): Resource\Form\Field {
+        'FormField'       => function ($resource, $model): Resource\Form\Field {
             if (class_exists('\App\FormBuilder\Resource\Form\Field')) {
-                return new \App\FormBuilder\Resource\Form\Field($mObj);
+                return new \App\FormBuilder\Resource\Form\Field($resource, $model);
             } else {
-                return new Resource\Form\Field($mObj);
+                return new Resource\Form\Field($resource, $model);
             }
         },
-        'FormFieldOption' => function ($mObj): Resource\Form\Field\Option {
+        'FormFieldOption' => function ($resource, $model): Resource\Form\Field\Option {
             if (class_exists('\App\FormBuilder\Resource\Form\Field\Option')) {
-                return new \App\FormBuilder\Resource\Form\Field\Option($mObj);
+                return new \App\FormBuilder\Resource\Form\Field\Option($resource, $model);
             } else {
-                return new Resource\Form\Field\Option($mObj);
+                return new Resource\Form\Field\Option($resource, $model);
             }
         },
     ],
