@@ -3,7 +3,7 @@
 namespace Nails\FormBuilder\Resource;
 
 use Nails\Common\Resource\Entity;
-use Nails\Common\Resource\ExpandableField;
+use Nails\Common\Resource\ExpandableFieldData;
 
 /**
  * Class Form
@@ -15,7 +15,7 @@ class Form extends Entity
     /** @var bool */
     public $has_captcha;
 
-    /** @var ExpandableField */
+    /** @var ExpandableFieldData */
     public $fields;
 
     /** @var bool */

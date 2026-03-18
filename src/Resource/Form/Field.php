@@ -3,7 +3,7 @@
 namespace Nails\FormBuilder\Resource\Form;
 
 use Nails\Common\Resource\Entity;
-use Nails\Common\Resource\ExpandableField;
+use Nails\Common\Resource\ExpandableFieldData;
 
 /**
  * Class Field
@@ -39,7 +39,7 @@ class Field extends Entity
     /** @var int */
     public $order;
 
-    /** @var ExpandableField */
+    /** @var ExpandableFieldData */
     public $options;
 
     /** @var bool */
