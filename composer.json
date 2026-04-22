@@ -21,7 +21,7 @@
     "prefer-stable": true,
     "require":
     {
-        "php": ">=8.0",
+        "php": ">=8.3",
         "nails/common": "dev-develop",
         "nails/module-auth": "dev-develop",
         "nails/module-cdn": "dev-develop",
