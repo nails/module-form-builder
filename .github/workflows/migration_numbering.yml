@@ -38,7 +38,7 @@ jobs:
 
             #   The check itself ships with nails/common
             -   name: Install Composer dependencies
-                run: COMPOSER_ROOT_VERSION=dev-develop composer install --no-interaction --prefer-dist
+                run: COMPOSER_ROOT_VERSION=dev-feature/pre-new-admin composer install --no-interaction --prefer-dist
 
             #   The branch being merged into is not a counterpart to compare against
             -   name: Check migration numbering
