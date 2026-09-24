@@ -106,7 +106,7 @@ if (!empty($_POST[$sFieldName])) {
                             );
 
                             ?>
-                            <a href="#" class="js-manage-option btn btn-xs btn-warning" data-field-number="<?=$i?>">
+                            <a href="#" class="js-manage-option btn btn-xs btn-default" data-field-number="<?=$i?>">
                                 Toggle Options
                             </a>
                         </td>
@@ -193,8 +193,8 @@ if (!empty($_POST[$sFieldName])) {
                             </div>
                         </td>
                         <td class="remove" rowspan="2">
-                            <a href="#" class="js-remove-field" data-field-number="<?=$i?>">
-                                <b class="fa fa-times-circle fa-lg"></b>
+                            <a href="#" class="btn btn-xs btn-danger js-remove-field" data-field-number="<?=$i?>">
+                                &times;
                             </a>
                         </td>
                     </tr>
@@ -271,8 +271,8 @@ if (!empty($_POST[$sFieldName])) {
                                                             ?>
                                                         </td>
                                                         <td class="option-remove">
-                                                            <a href="#" class="js-remove-option" data-field-number="<?=$i?>">
-                                                                <b class="fa fa-times-circle fa-lg"></b>
+                                                            <a href="#" class="btn btn-xs btn-danger js-remove-option" data-field-number="<?=$i?>">
+                                                                &times;
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -287,8 +287,8 @@ if (!empty($_POST[$sFieldName])) {
                                         <tfoot>
                                             <tr>
                                                 <td colspan="4">
-                                                    <button type="button" class="btn btn-xs btn-success js-add-option" data-field-number="<?=$i?>">
-                                                        Add Option
+                                                    <button type="button" class="btn btn-xs btn-primary js-add-option" data-field-number="<?=$i?>">
+                                                        &plus; Add Option
                                                     </button>
                                                 </td>
                                             </tr>
@@ -311,8 +311,8 @@ if (!empty($_POST[$sFieldName])) {
             <tfoot>
                 <tr>
                     <td colspan="8">
-                        <a href="#" class="js-add-field btn btn-xs btn-success">
-                            Add Field
+                        <a href="#" class="js-add-field btn btn-xs btn-primary">
+                            &plus; Add Field
                         </a>
                     </td>
                 </tr>
@@ -332,7 +332,7 @@ if (!empty($_POST[$sFieldName])) {
             </td>
             <td class="type">
                 <?=form_dropdown($sFieldName . '[{{fieldNumber}}][type]', $aFieldTypeNames, null, 'class="field-type"')?>
-                <a href="#" class="js-manage-option btn btn-xs btn-warning" data-field-number="{{fieldNumber}}">
+                <a href="#" class="js-manage-option btn btn-xs btn-default" data-field-number="{{fieldNumber}}">
                     Toggle Options
                 </a>
             </td>
@@ -404,8 +404,8 @@ if (!empty($_POST[$sFieldName])) {
                 </div>
             </td>
             <td class="remove" rowspan="2">
-                <a href="#" class="js-remove-field" data-field-number="{{fieldNumber}}">
-                    <b class="fa fa-times-circle fa-lg"></b>
+                <a href="#" class="btn btn-xs btn-danger js-remove-field" data-field-number="{{fieldNumber}}">
+                    &times;
                 </a>
             </td>
         </tr>
@@ -435,8 +435,8 @@ if (!empty($_POST[$sFieldName])) {
                             <tfoot>
                                 <tr>
                                     <td colspan="4">
-                                        <button type="button" class="btn btn-xs btn-success js-add-option" data-field-number="{{fieldNumber}}">
-                                            Add Option
+                                        <button type="button" class="btn btn-xs btn-primary js-add-option" data-field-number="{{fieldNumber}}">
+                                            &plus; Add Option
                                         </button>
                                     </td>
                                 </tr>
@@ -470,8 +470,8 @@ if (!empty($_POST[$sFieldName])) {
             )?>
         </td>
         <td class="option-remove">
-            <a href="#" class="js-remove-option" data-field-number="{{fieldNumber}}">
-                <b class="fa fa-times-circle fa-lg"></b>
+            <a href="#" class="btn btn-xs btn-danger js-remove-option" data-field-number="{{fieldNumber}}">
+                &times;
             </a>
         </td>
     </tr>
