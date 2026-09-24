@@ -41,7 +41,7 @@ if (!empty($_POST[$sFieldName])) {
 
 ?>
 <div class="form-builder" <?=$sId?> data-field-types="<?=htmlspecialchars(json_encode($aFieldTypes))?>">
-        <table class="form-builder__header table table-striped table-hover table-bordered table-responsive">
+        <table class="form-builder__header table table-striped table-hover table-responsive">
             <thead class="table-dark">
                 <tr>
                     <th class="order">
@@ -70,7 +70,7 @@ if (!empty($_POST[$sFieldName])) {
                 </tr>
             </thead>
         </table>
-        <table class="form-builder__fields table table-striped table-hover table-bordered table-responsive">
+        <table class="form-builder__fields table table-striped table-hover table-responsive">
             <?php
 
             $i = 0;
@@ -207,7 +207,7 @@ if (!empty($_POST[$sFieldName])) {
                             ?>
                             <div class="form-field-options">
                                 <div class="form-field-options-padder">
-                                    <table class="table table-striped table-hover table-bordered table-responsive" data-option-count="<?=$iOptionCount?>">
+                                    <table class="table table-striped table-hover table-responsive" data-option-count="<?=$iOptionCount?>">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th class="option-label">
@@ -413,7 +413,7 @@ if (!empty($_POST[$sFieldName])) {
             <td colspan="6">
                 <div class="form-field-options">
                     <div class="form-field-options-padder">
-                        <table class="table table-striped table-hover table-bordered table-responsive" data-option-count="0">
+                        <table class="table table-striped table-hover table-responsive" data-option-count="0">
                             <thead class="table-dark">
                                 <tr>
                                     <th class="option-label">
